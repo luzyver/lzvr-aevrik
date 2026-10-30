@@ -1,0 +1,14 @@
+{
+  "identifier": "main-window",
+  "description": "Only the local main window can operate its caption controls.",
+  "windows": [
+    "main"
+  ],
+  "permissions": [
+    "core:default",
+    "core:window:allow-minimize",
+    "core:window:allow-toggle-maximize",
+    "core:window:allow-close",
+    "core:window:allow-start-dragging"
+  ]
+}

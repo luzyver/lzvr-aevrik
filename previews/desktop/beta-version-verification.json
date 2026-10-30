@@ -1,0 +1,30 @@
+{
+  "version": "0.1.0-beta-1",
+  "tag": "v0.1.0-beta-1",
+  "channelBranch": "beta",
+  "futureStableBranch": "master",
+  "checkedAt": "2026-10-30T22:17:57.238480+00:00",
+  "status": "local-checks-passed",
+  "checks": [
+    "All manifest versions and workspace lock entries agree",
+    "Cargo metadata --locked --no-deps and cargo fmt --all --check",
+    "Release tag validation and 2 packaging tests",
+    "5 bridge tests",
+    "TypeScript check and Vite frontend build",
+    "Fixed viewport UI check",
+    "actionlint workflow validation"
+  ],
+  "hostedWorkflowRun": false,
+  "releaseBuildRun": false,
+  "sha256": {
+    "package.json": "211909df9593cb51685140634ca1cbad363bfbaa49cf004fbffeece99910850b",
+    "package-lock.json": "dc04a41b493f8e9330d83689ed24f6488a9131cdb7489b1cfc972f4792f3bf34",
+    "Cargo.lock": "75c17390d9a39a1aac310d2ffc8a9cdd3418e1f1d21894d6051312cc0524eb66",
+    "src-tauri/tauri.conf.json": "e68ca6124350e3b45df76765c82df6a7e0063fd5b50be5c1cb2d40dc959f8073",
+    "src-tauri/Cargo.toml": "9757468327d557031ded6f272dc90f8c7a157841de8c17cc6fdb4c1d479718a8",
+    "crates/aevrik-engine/Cargo.toml": "8e91d1e7ec81d12771ba5e3d3f2ae9cf3e94ad99a8deee26d807186853d9bc64",
+    ".github/workflows/windows-release.yml": "9b5642e526357644ed4c94484fabecdd047c56cd01e553bcec4f21dd0081c858",
+    "desktop/index.html": "1c8fe1452292f71fad4a661061e7c8ca265c605fcb1f3c3eef14bc74a18b852c",
+    "desktop/views.ts": "5740c1529d7319d8e336f83f26b7028d8f6c34e032fd4c18be9ffc6ac57e8c33"
+  }
+}

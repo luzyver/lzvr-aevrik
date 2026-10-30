@@ -1,0 +1,23 @@
+{
+  "status": "review-required",
+  "warnings": [
+    {
+      "rule": "cramped-padding",
+      "target": "app-window",
+      "assessment": "Structural window wrapper; titlebar children have their own inset and vertical centering."
+    },
+    {
+      "rule": "cramped-padding",
+      "target": "shell",
+      "assessment": "Structural content wrapper; main and workspace-bar own their inset."
+    },
+    {
+      "rule": "cramped-padding",
+      "target": "workspace-bar",
+      "assessment": "44px flex-centered bar with 22px horizontal inset; screenshot shows no text touching edges."
+    }
+  ],
+  "advisories": "DESIGN.md frontmatter is missing some actual neutral/overlay colors, 3px and 20px radii and 15/18/20/22px type roles. Documenter must extract complete actual tokens after review; no styling values are changed to silence the detector.",
+  "detector_exit_code": 1,
+  "no_second_detector_run": true
+}

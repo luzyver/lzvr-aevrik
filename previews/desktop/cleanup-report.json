@@ -1,0 +1,142 @@
+[
+  {
+    "path": "D:\\luzyver.dev\\new_project\\target",
+    "bytes": 8335149209,
+    "status": "removed"
+  },
+  {
+    "path": "D:\\luzyver.dev\\new_project\\dist",
+    "bytes": 75428,
+    "status": "removed"
+  },
+  {
+    "path": "D:\\luzyver.dev\\new_project\\node_modules",
+    "bytes": 85662574,
+    "status": "removed"
+  },
+  {
+    "path": "D:\\luzyver.dev\\new_project\\deliverables",
+    "bytes": 55168155,
+    "status": "removed"
+  },
+  {
+    "path": "D:\\luzyver.dev\\new_project\\.tooling\\action-pins.json",
+    "bytes": 670,
+    "status": "removed"
+  },
+  {
+    "path": "D:\\luzyver.dev\\new_project\\.tooling\\actionlint",
+    "bytes": 6432768,
+    "status": "removed"
+  },
+  {
+    "path": "D:\\luzyver.dev\\new_project\\.tooling\\catalog-0.4-candidate.json",
+    "bytes": 76994,
+    "status": "removed"
+  },
+  {
+    "path": "D:\\luzyver.dev\\new_project\\.tooling\\catalog-0.4-candidate.sources.json",
+    "bytes": 26617,
+    "status": "removed"
+  },
+  {
+    "path": "D:\\luzyver.dev\\new_project\\.tooling\\catalog-candidate.json",
+    "bytes": 63836,
+    "status": "removed"
+  },
+  {
+    "path": "D:\\luzyver.dev\\new_project\\.tooling\\catalog-candidate.sources.json",
+    "bytes": 22200,
+    "status": "removed"
+  },
+  {
+    "path": "D:\\luzyver.dev\\new_project\\.tooling\\catalog-source-cache",
+    "bytes": 334886622,
+    "status": "removed"
+  },
+  {
+    "path": "D:\\luzyver.dev\\new_project\\.tooling\\catalog-sources",
+    "bytes": 57417231,
+    "status": "removed"
+  },
+  {
+    "path": "D:\\luzyver.dev\\new_project\\.tooling\\multiversion-install.log",
+    "bytes": 69768,
+    "status": "removed"
+  },
+  {
+    "path": "D:\\luzyver.dev\\new_project\\.tooling\\multiversion-smoke",
+    "bytes": 1223172133,
+    "status": "removed"
+  },
+  {
+    "path": "D:\\luzyver.dev\\new_project\\.tooling\\package-smoke",
+    "bytes": 565481806,
+    "status": "removed"
+  },
+  {
+    "path": "D:\\luzyver.dev\\new_project\\.tooling\\rustup-init.exe",
+    "bytes": 12724224,
+    "status": "removed"
+  },
+  {
+    "path": "D:\\luzyver.dev\\new_project\\.tooling\\vs_BuildTools.exe",
+    "bytes": 4473832,
+    "status": "removed"
+  },
+  {
+    "path": "C:\\Users\\Victus\\AppData\\Roaming\\dev.aevrik.desktop",
+    "bytes": 7787621,
+    "status": "removed"
+  },
+  {
+    "path": "C:\\Users\\Victus\\AppData\\Local\\dev.aevrik.desktop",
+    "bytes": 74604700,
+    "status": "removed"
+  },
+  {
+    "path": "C:\\Users\\Victus\\AppData\\Local\\Temp\\aevrik-layout-probe-gbwodglu",
+    "bytes": 9983186,
+    "status": "removed"
+  },
+  {
+    "path": "C:\\Users\\Victus\\AppData\\Local\\Temp\\aevrik-native-09lrvbh4",
+    "bytes": 12291786,
+    "status": "removed"
+  },
+  {
+    "path": "C:\\Users\\Victus\\AppData\\Local\\Temp\\aevrik-native-bxpxt8pf",
+    "bytes": 12479104,
+    "status": "removed"
+  },
+  {
+    "path": "C:\\Users\\Victus\\AppData\\Local\\Temp\\aevrik-native-dvsvndgk",
+    "bytes": 12413732,
+    "status": "removed"
+  },
+  {
+    "path": "C:\\Users\\Victus\\AppData\\Local\\Temp\\aevrik-native-nke6e7p0",
+    "bytes": 12289090,
+    "status": "removed"
+  },
+  {
+    "path": "C:\\Users\\Victus\\AppData\\Local\\Temp\\aevrik-packages-ab7e9zz3",
+    "bytes": 118770911,
+    "status": "removed"
+  },
+  {
+    "path": "C:\\Users\\Victus\\AppData\\Local\\Temp\\aevrik-packages-lp9mb3qy",
+    "bytes": 65650692,
+    "status": "removed"
+  },
+  {
+    "path": "D:\\luzyver.dev\\new_project\\tools\\__pycache__",
+    "bytes": 71039,
+    "status": "removed"
+  },
+  {
+    "path": "D:\\luzyver.dev\\new_project\\tools\\catalog_sources\\__pycache__",
+    "bytes": 21874,
+    "status": "removed"
+  }
+]

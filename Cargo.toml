@@ -1,0 +1,4 @@
+[workspace]
+members = ["crates/aevrik-engine", "src-tauri"]
+default-members = ["crates/aevrik-engine"]
+resolver = "2"

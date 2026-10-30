@@ -1,0 +1,179 @@
+{
+  "status": "source-checks-passed-hosted-build-pending",
+  "version": "0.4.0",
+  "identifier": "id.luzyver.aevrik.desktop",
+  "checkedAt": "2026-10-30T22:15:17.853404+00:00",
+  "catalog": {
+    "products": 14,
+    "versions": 140,
+    "allUrlsPassed": 140,
+    "previousPinsPreserved": 108,
+    "cachedNewArchivesHashAndEntryChecked": [
+      "sqlite-3.54.1",
+      "sqlite-3.53.0"
+    ]
+  },
+  "checks": [
+    {
+      "command": "cargo test -p aevrik-engine --locked --jobs 2",
+      "passed": 26
+    },
+    {
+      "command": "cargo fmt --all --check",
+      "status": "passed"
+    },
+    {
+      "command": "cargo check --workspace --jobs 2",
+      "status": "passed"
+    },
+    {
+      "command": "cargo clippy --workspace --all-targets --all-features --locked --jobs 2 -- -D warnings",
+      "status": "passed"
+    },
+    {
+      "command": "npm test",
+      "passed": 5
+    },
+    {
+      "command": "npm run build",
+      "status": "passed",
+      "scope": "frontend only"
+    },
+    {
+      "command": "python -m unittest discover -s tools -p test_ci_release.py",
+      "passed": 2
+    },
+    {
+      "command": "python tools/ci_release.py --check --tag v0.4.0",
+      "status": "passed"
+    },
+    {
+      "command": "python tools/run_ui_checks.py",
+      "status": "passed",
+      "scope": "five mocked-IPC UI scripts; storage UI rerun after adding compact dialog and service removal checks"
+    },
+    {
+      "command": "actionlint 1.7.12 .github/workflows/windows-release.yml",
+      "status": "passed"
+    },
+    {
+      "command": "Python AST parse of tools/*.py",
+      "status": "passed"
+    }
+  ],
+  "visualReview": [
+    "install-location-800-0.4.0.png",
+    "uninstall-confirmation-0.4.0.png"
+  ],
+  "notRun": [
+    "Local release compilation (user requested hosted build)",
+    "GitHub Actions execution (no Git repository or remote)",
+    "New 0.4 executable/native smoke",
+    "Full MongoDB and DuckDB archive install/version command; CI tag gate"
+  ],
+  "lastBuiltVersion": "0.3.0",
+  "newReleaseArtifactCreated": false,
+  "changedFromBackup": [
+    "desktop/bridge.ts",
+    "desktop/index.html",
+    "desktop/main.ts",
+    "desktop/native.css",
+    "desktop/package-model.ts",
+    "desktop/package-view.ts",
+    "desktop/packages.ts",
+    "desktop/panels.ts",
+    "desktop/views.ts",
+    "crates/aevrik-engine/Cargo.toml",
+    "crates/aevrik-engine/src/lib.rs",
+    "crates/aevrik-engine/src/store.rs",
+    "crates/aevrik-engine/tests/persistence.rs",
+    "crates/aevrik-engine/src/packages/archive.rs",
+    "crates/aevrik-engine/src/packages/catalog.json",
+    "crates/aevrik-engine/src/packages/catalog.sources.json",
+    "crates/aevrik-engine/src/packages/download.rs",
+    "crates/aevrik-engine/src/packages/mod.rs",
+    "crates/aevrik-engine/src/packages/tests.rs",
+    "src-tauri/Cargo.toml",
+    "src-tauri/tauri.conf.json",
+    "src-tauri/src/commands.rs",
+    "src-tauri/src/main.rs",
+    "src-tauri/src/packages.rs",
+    "tools/check_desktop_ui.py",
+    "tools/check_multiversion_ui.py",
+    "tools/check_native_packages.py",
+    "tools/check_packages_ui.py",
+    "tools/run_ui_checks.py",
+    "tools/sync_catalog.py",
+    "tools/verify_catalog.py",
+    "tools/catalog_sources/languages.py",
+    "docs/native-runtime-brief.md",
+    "docs/PACKAGE-CATALOG.md",
+    "Cargo.lock",
+    "package.json",
+    "package-lock.json",
+    "README.md",
+    "PRODUCT.md",
+    ".gitignore"
+  ],
+  "sourceSha256": {
+    ".github/workflows/windows-release.yml": "002aff0b79f75ed898f1fb7cbb7dbdf5174e575fe7e24ea962d4534bce4f4b3d",
+    "Cargo.lock": "f9dd0245f01f18071ffda7aba90223bf0b9b50d216803113ec76ba019f9bf428",
+    "crates/aevrik-engine/src/error.rs": "c9017699fb7fe12a06f8cd2f3d835117a5d08feed1b1a3aadc67739c58380495",
+    "crates/aevrik-engine/src/job.rs": "2a018b84ec3e2f986ba3010ae1487c499e9e0e112c37caf9b5299e5cae20eb32",
+    "crates/aevrik-engine/src/lib.rs": "1f8817ca20529f783e0fd46388d922388c7619a6e950fb95cf385fb0b3becff4",
+    "crates/aevrik-engine/src/logs.rs": "8b09819e9bee845c929495a4add3f9575055f62e488ce29a15a1b4e8276915ae",
+    "crates/aevrik-engine/src/model.rs": "bbd32072260818651df9757e16b0e89d375784ff8085b86ea6722ea142b5bc27",
+    "crates/aevrik-engine/src/packages/archive.rs": "b29a3b71ecb778e8e007dcee62de25128008eaf527ba1fdee865d739465610ec",
+    "crates/aevrik-engine/src/packages/catalog.json": "df82385c00dac3ea82193df4e2109f0b58bf8666b420415fea759683feb74042",
+    "crates/aevrik-engine/src/packages/catalog.rs": "614042da2632e594857a3bd6fb8d53916292ab64ea006f17a4771acea6d14f04",
+    "crates/aevrik-engine/src/packages/catalog.sources.json": "c263d3b3dc04a3862d45db746a99e778efdde0dfff6fbebabdc8805b0266d1cf",
+    "crates/aevrik-engine/src/packages/download.rs": "ba74fc4ff514b07f1d5f102e27ba750d0dd67cb59040de0e40a08951e50104d7",
+    "crates/aevrik-engine/src/packages/locations.rs": "29add273a0c9e3585c7fa42fbdeec5b6b4ce05ccc751b27d36f64b45b72aca8b",
+    "crates/aevrik-engine/src/packages/mod.rs": "22657999849f81795f3055470415e6929218f96a19d46b3899fe18ab15e62d35",
+    "crates/aevrik-engine/src/packages/removal.rs": "99f4d38ae7e12c28ae6055cfd1a9a52674bc94fe2d8744cb5a61d2dbf9f7c43e",
+    "crates/aevrik-engine/src/packages/tests.rs": "2326ff106e180b68e9db96a05efad062817636f17cc98173ef4665a8e1ba4c10",
+    "crates/aevrik-engine/src/process.rs": "cd1a3af964507abb06b0a839d08ab7aea2cadbce7378011f162e0e9b9a5bf4a2",
+    "crates/aevrik-engine/src/service_removal.rs": "6b08d0d8ab4304483668158d06a6a281f6b2ef2347e79b9a0fcaaab268feab76",
+    "crates/aevrik-engine/src/storage.rs": "bb7ff49003c29364d61a8bfcd2b014a7cc0d9ca5624dd6473e954c96b357a1d1",
+    "crates/aevrik-engine/src/store.rs": "a031dffe7db63d37de0cc1d2df24167381548db1f01cfcab8fa18bc545418b3b",
+    "crates/aevrik-engine/src/validation.rs": "8654310f5a442be96cf3436453970a229046aea0b0163b62ed85a2ad63961d03",
+    "desktop/bridge.ts": "11f355084307b87db47b46a6e4e2b71480cd4938e4efe0e8818e9808afabf5b2",
+    "desktop/env.d.ts": "65996936fbb042915f7b74a200fcdde7e410f32a669b1ab9597cfaa4b0faddb5",
+    "desktop/forms.ts": "d803ee8dae442c3e6d9c72b084dd7943ce616ba9a66c3d04b37d01380ab33092",
+    "desktop/index.html": "7a85d285c01311988be49fbc6a7aeee6025aed990cbfd0431d97246670a2fd61",
+    "desktop/main.ts": "216f82534d745d4dfb71ba0369a9350c16db7e051288b9382ff804d94f934e51",
+    "desktop/native.css": "cfe344681a57b73b3cc2bb5debf1ebd3b96e0fe81defd4c71260856a83186017",
+    "desktop/package-dialogs.ts": "18a2946a2510ed02e77d5e3b693eeba674f5809483fc75a47064a5a8b5856dd2",
+    "desktop/package-model.ts": "dc33a28acc8855e02910b3c0b3c0b8ef981df2a2fa6b9e08c13325d0303dcba4",
+    "desktop/package-view.ts": "37f0ce6f9a8d72ee1aa1c6d3feed08c9b3f801c83f8da72eef2d307fe8427c0d",
+    "desktop/packages.ts": "5016e14ff2c1955bc0e9925e918f4f4abad303381638849872ef6cfe1338c2ec",
+    "desktop/panels.ts": "a5659bdf032b2fe236e87434553cd63d403965b426bdf1b5f42ef102b9e1ff11",
+    "desktop/state.ts": "903c3bbc372630c7126e2dfe610306c2d1f791c563c2e4822f630427ae5d38e6",
+    "desktop/ui.ts": "38f13f484ae2e2eb156ed197f204bc424d859d74c6c75f50e4409d96a35a034d",
+    "desktop/views.ts": "fc737cc301485bfa19cfe1a4845efb58f64630fc827301db1460a9eeac6b8a71",
+    "package-lock.json": "31d7f2bacbad7b66728ecdfd3f61357327e7d27e30975072abab21a658d0cb5f",
+    "src-tauri/src/commands.rs": "e0186dc138f896c6dd81d893873a41498b9e7c2d960b7dd80c00ea1f6afd7e47",
+    "src-tauri/src/main.rs": "960c05b63792ddfa30bbf6ed6d54c1618230f04a6c83fbd3b6f1a6f3953b0ad7",
+    "src-tauri/src/packages.rs": "06a5385c7b0debee55818551ee666c793a9eb816afe319982f12ad5b09f50690",
+    "src-tauri/tauri.conf.json": "929b8713e2d276bd65b1a74a8806c5483ab93fcfd1b168dd35ce253be53990bf",
+    "tools/catalog_sources/common.py": "5a4cdaf68cd2a4cbf7576962119ccc05ed3c4503f912c43e5fcb07b513368ca0",
+    "tools/catalog_sources/extras.py": "0c2de037a1fd094a427c7feeef94a7eb195eaa97eff549a73b8e02fafc0a8da5",
+    "tools/catalog_sources/languages.py": "b119abf6956af7fc5f911c273b1d8fc1e751769a974191c603c4179411997bc1",
+    "tools/catalog_sources/servers.py": "5efdad57417198c37ef8d2191479eca30e8538c005e53524eff358dc29e9c847",
+    "tools/check_catalog_additions.py": "71586319b28a5db1e8d02c06da2a310c76f4c9b0c58e5534cf1e658ea245354d",
+    "tools/check_desktop_ui.py": "976110ec222d963542e9b2b7c9093dcd7862d52232eb40664399bdae12fa4a3c",
+    "tools/check_mockup.py": "572e83546c853ac8fce52e08933ce2c1daf9d51c8f38ef7656e748cd46fd99c3",
+    "tools/check_multiversion_ui.py": "7db8cb36f4a80b35f83e5ecf9b148f7de47393fe08eefff9bcc0338b32687cd6",
+    "tools/check_native.py": "3ad4c1947f1f82f3c4f018d7aaa731b97e774b08e505a127061763e41557d41d",
+    "tools/check_native_packages.py": "b0b38ddfdc6882642db7051dbb4211a937ee8179e0907eb1ca40136c54b9c16a",
+    "tools/check_packages_ui.py": "fd1ad96eaf4900fff4ac6b1c9791bce0d0b935ee9b3344c4f50a239b81ab8112",
+    "tools/check_runtime_versions.py": "7c4f38b32ea0cd571e6952c04b48ff0deea6a90acce2e85a7a769d6576e585c0",
+    "tools/check_scroll.py": "7e809f559949e708dc1932fba34f0318faec41035997c988ef72a8b3c1133785",
+    "tools/check_storage_ui.py": "569ae4d01a1323ab0cd2ee983819015ba5cf6c7e19bbf9d9a8e8bd27bdaebb20",
+    "tools/ci_release.py": "ec981f56698596e6c02af4a9b99a8bf3028185e8f87d21f2926bd3d8b79900b9",
+    "tools/run_ui_checks.py": "517ff20145e13acf0a97c371b060c6cab7ded8344125a3af3bfe9682332b311c",
+    "tools/sync_catalog.py": "c37b573ae02a9caa0265d0efe84bc5414572c8b7022506026195671ee163ebf2",
+    "tools/test_ci_release.py": "008a341d05e646edc86ed137404af989e191ee0a1b137e52ea7039835b71ff8d",
+    "tools/verify_catalog.py": "b5b151e248905ba0e67b00eb77ff77b77c64166e479cd623235a1fc220f6a8f9"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "status": "passed",
+  "kind": "Mocked IPC frontend tests",
+  "checks": [
+    "browser without engine",
+    "empty native state",
+    "registration forms",
+    "backend error propagation",
+    "authoritative PID/status",
+    "escaped output",
+    "filtering",
+    "project properties",
+    "light theme",
+    "800px desktop"
+  ],
+  "consoleErrors": []
+}

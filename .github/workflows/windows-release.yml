@@ -1,0 +1,202 @@
+name: Windows build and release
+
+on:
+  push:
+    branches: [dev, master]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      verify_catalog:
+        description: Check all upstream package URLs (no full downloads)
+        type: boolean
+        default: false
+      full_package_smoke:
+        description: Download and execute new catalog products (includes large MongoDB archive)
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: windows-${{ github.workflow }}-${{ github.ref }}
+  # Serialize dev runs so an asset replacement is never interrupted by a newer push.
+  cancel-in-progress: ${{ github.ref != 'refs/heads/dev' && !startsWith(github.ref, 'refs/tags/') }}
+
+jobs:
+  build:
+    runs-on: windows-2022
+    timeout-minutes: 60
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+          cache: npm
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.13'
+      - name: Install pinned Rust toolchain
+        run: |
+          $toolchain = (Select-String -LiteralPath rust-toolchain.toml -Pattern '^channel = "([^"]+)"').Matches.Groups[1].Value
+          rustup toolchain install $toolchain --profile minimal --component rustfmt --component clippy
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+          key: windows-cargo-${{ hashFiles('Cargo.lock', 'rust-toolchain.toml') }}
+          restore-keys: windows-cargo-
+      - name: Validate release version and application identifier
+        env:
+          BUILD_REF: ${{ github.ref }}
+          BUILD_TAG: ${{ github.ref_name }}
+        run: |
+          if ($env:BUILD_REF.StartsWith('refs/tags/')) {
+            python tools/ci_release.py --check --tag $env:BUILD_TAG
+          } else {
+            python tools/ci_release.py --check
+          }
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+      - run: cargo fmt --all --check
+      - run: cargo clippy --workspace --all-targets --all-features --locked -- -D warnings
+      - run: cargo test --workspace --locked
+      - run: python -m unittest discover -s tools -p test_ci_release.py
+      - name: Install browser test tooling
+        run: python -m pip install playwright==1.63.0
+      - run: python -m playwright install chromium
+      - run: python tools/run_ui_checks.py
+      - name: Check official package URLs
+        if: inputs.verify_catalog == true
+        run: python tools/verify_catalog.py
+      - name: Build Windows executable on hosted runner
+        run: npm run desktop:build -- --ci -- --locked
+      - name: Verify new catalog products with full downloads
+        if: startsWith(github.ref, 'refs/tags/v') || inputs.full_package_smoke == true
+        run: python tools/check_catalog_additions.py
+      - name: Ensure WebView2 is available for native smoke tests
+        run: |
+          $runtime = Get-ChildItem 'C:\Program Files (x86)\Microsoft\EdgeWebView\Application\*\msedgewebview2.exe' -ErrorAction SilentlyContinue
+          if (-not $runtime) {
+            $installer = Join-Path $env:RUNNER_TEMP 'WebView2Bootstrapper.exe'
+            Invoke-WebRequest 'https://go.microsoft.com/fwlink/p/?LinkId=2124703' -OutFile $installer
+            $process = Start-Process -FilePath $installer -ArgumentList '/silent','/install' -Wait -PassThru -WindowStyle Hidden
+            if ($process.ExitCode -ne 0) { throw "WebView2 installer failed: $($process.ExitCode)" }
+          }
+      - name: Test actual desktop process management
+        run: python tools/check_native.py
+      - name: Test real installation, custom location, persistence and uninstall
+        run: python tools/check_native_packages.py
+      - name: Package EXE, ZIP and checksums
+        env:
+          BUILD_REF: ${{ github.ref }}
+          BUILD_TAG: ${{ github.ref_name }}
+        run: |
+          if ($env:BUILD_REF.StartsWith('refs/tags/')) {
+            python tools/ci_release.py --tag $env:BUILD_TAG
+          } elseif ($env:BUILD_REF -eq 'refs/heads/dev') {
+            python tools/ci_release.py --channel dev
+          } else {
+            python tools/ci_release.py
+          }
+      - name: Upload portable release artifacts
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: aevrik-windows-x64
+          path: release/*
+          if-no-files-found: error
+          retention-days: 14
+      - name: Upload verification evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: windows-verification
+          path: previews/desktop/
+          retention-days: 7
+
+  release-dev:
+    if: github.ref == 'refs/heads/dev' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: aevrik-windows-x64
+          path: release
+      - name: Replace the rolling dev prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          BUILD_SHA: ${{ github.sha }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          cd release
+          sha256sum --check SHA256SUMS.txt
+          current_sha=$(gh api "repos/$GH_REPO/git/ref/heads/dev" --jq '.object.sha')
+          if [[ "$current_sha" != "$BUILD_SHA" ]]; then
+            echo 'Skipping publication: dev has a newer commit.'
+            exit 0
+          fi
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          info = json.loads(Path('build-info.json').read_text())
+          assert info['commit'] == os.environ['BUILD_SHA'] and info['channel'] == 'dev'
+          notes = Path('RELEASE-NOTES.md')
+          notes.write_text(f"Rolling development build. Replaced after successful dev builds.\n\nVersion: {info['version']}\nCommit: {info['commit']}\nRun: {os.environ['RUN_URL']}\n\n" + notes.read_text())
+          PY
+          dev_ref=$(gh api "repos/$GH_REPO/git/matching-refs/tags/dev" --jq '.[] | select(.ref == "refs/tags/dev") | .ref')
+          if [[ -n "$dev_ref" ]]; then
+            gh api --method PATCH "repos/$GH_REPO/git/refs/tags/dev" -f sha="$BUILD_SHA" -F force=true
+          else
+            gh api --method POST "repos/$GH_REPO/git/refs" -f ref='refs/tags/dev' -f sha="$BUILD_SHA"
+          fi
+          release_id=$(gh api --paginate "repos/$GH_REPO/releases?per_page=100" --jq '.[] | select(.tag_name == "dev") | .id')
+          assets=(Aevrik-dev-windows-x64.exe Aevrik-dev-windows-x64.zip SHA256SUMS.txt build-info.json)
+          if [[ -n "$release_id" ]]; then
+            gh release upload dev --repo "$GH_REPO" --clobber "${assets[@]}"
+            gh release edit dev --repo "$GH_REPO" --title 'Aevrik dev' --prerelease --latest=false --notes-file RELEASE-NOTES.md
+          else
+            gh release create dev --repo "$GH_REPO" --verify-tag --title 'Aevrik dev' --prerelease --latest=false --notes-file RELEASE-NOTES.md "${assets[@]}"
+          fi
+
+  release:
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: aevrik-windows-x64
+          path: release
+      - name: Publish the verified tagged build
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          cd release
+          sha256sum --check SHA256SUMS.txt
+          release_flags=()
+          if [[ "$RELEASE_TAG" == *-beta-* ]]; then
+            release_flags+=(--prerelease --latest=false)
+          fi
+          gh release create "$RELEASE_TAG" --repo "$GH_REPO" --verify-tag \
+            "${release_flags[@]}" \
+            --title "Aevrik $RELEASE_TAG" --notes-file RELEASE-NOTES.md \
+            ./*.exe ./*.zip SHA256SUMS.txt build-info.json

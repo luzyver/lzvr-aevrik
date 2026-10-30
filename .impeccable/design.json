@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-31T00:00:00+07:00",
+  "title": "Design System: Aevrik",
+  "extensions": {
+    "colorMeta": {
+      "iris-light": {"role":"primary","displayName":"Iris","canonical":"#6550b5","tonalRamp":["#24163f","#382565","#4d388a","#6550b5","#806bc9","#9b87dc","#c2b6ed","#eee9fb"]},
+      "iris-dark": {"role":"primary","displayName":"Pale Iris","canonical":"#b8adff","tonalRamp":["#241d47","#3d326b","#635699","#8679c4","#b8adff","#c9c0ff","#ded8ff","#f4f2ff"]},
+      "graphite": {"role":"neutral","displayName":"Graphite","canonical":"#1c1c20","tonalRamp":["#1c1c20","#242428","#2b2a31","#39373f","#62606e","#aaa7b5","#dedce5","#f8f8fa"]},
+      "pearl": {"role":"neutral","displayName":"Pearl","canonical":"#f8f8fa","tonalRamp":["#24232b","#62606e","#aaa7b5","#dedce5","#efedf4","#efeff3","#f8f8fa","#ffffff"]},
+      "danger-light": {"role":"semantic","displayName":"Error Red","canonical":"#b52b39","tonalRamp":["#441018","#681b26","#8d2633","#b52b39","#cf5963","#e27f88","#f0b2b8","#fbe7e9"]},
+      "amber-light": {"role":"semantic","displayName":"Warning Amber","canonical":"#8a5a12","tonalRamp":["#3b2608","#5b3b0d","#70490f","#8a5a12","#a87529","#c89b53","#e3c797","#f6ead5"]}
+    },
+    "typographyMeta": {
+      "page-title": {"displayName":"Page title","purpose":"Route headings and primary page identity."},
+      "body": {"displayName":"Operate text","purpose":"Default interface copy and controls."},
+      "label": {"displayName":"Metadata label","purpose":"Table metadata, status text, and compact supporting copy."},
+      "data": {"displayName":"Technical data","purpose":"Versions, paths, ports, and logs only."}
+    },
+    "shadows": [{"name":"window-ambient","value":"0 18px 60px #00000029","purpose":"App frame, dialog, and toast; dark theme uses #00000059."}],
+    "motion": [{"name":"short-state","value":".12s ease-out","purpose":"Switch thumb transition."},{"name":"toast-enter","value":".15s ease","purpose":"Toast opacity and position transition."}],
+    "breakpoints": [{"name":"compact-navigation","value":"960px"},{"name":"stacked-workspace","value":"700px"}],
+    "narrative": {
+      "northStar":"The Local Stack Instrument",
+      "overview":"Aevrik is a compact Windows-operate interface for inspecting a local development stack. Its visual language is instrument-like: neutral layered surfaces, aligned data, a persistent master/detail workspace, and a restrained iris signal for selection, focus, and action. The browser artifact uses Windows-oriented proportions and Segoe UI rather than a marketing dashboard vocabulary.\n\nThe dark graphite preview is the primary expression; the pearl light theme preserves the same hierarchy with lighter surfaces. The name and palette are agent-proposed working choices, not a final brand approval.",
+      "keyCharacteristics":["Dense, labelled operational UI","Graphite/pearl neutral layers with one iris accent","Persistent list-and-inspector workspace","Reversible preview controls and explicit simulated states"],
+      "rules":[{"name":"The Signal Rule","body":"Use iris for a functional signal, not a broad decorative fill.","section":"Colors"},{"name":"The Labelled Status Rule","body":"Pair status color with words or a control state; color alone does not carry operational meaning.","section":"Colors"},{"name":"The Data Font Rule","body":"Use the monospace face only for technical values, never ordinary interface prose.","section":"Typography"},{"name":"The Instrument Panel Rule","body":"Keep the working list and properties pane in one surface whenever the viewport permits.","section":"Layout"},{"name":"The Quiet Depth Rule","body":"Use surface changes and hairline dividers internally; reserve shadow for floating boundaries.","section":"Elevation & Depth"}],
+      "dos":["Use compact labelled operational controls and readable technical data.","Preserve visible focus, reduced-motion behavior, and text alongside status colors.","Keep sample state distinct from a native engine or live machine state."],
+      "donts":["Do not reintroduce green branding, SaaS chrome, marketing heroes, or decorative metric cards.","Do not use iris as a generic decorative wash or make color the only status cue.","Do not promote simulated caption controls into native window behavior.","Do not canonize invented kickers/eyebrows, hard offset shadows, glyph icons, or display-face styling; none are part of this shipped system."]
+    }
+  },
+  "components": [
+    {"name":"Primary button","category":"button","html":"<button class=\"ds-btn-primary\">Start service</button>","css":".ds-btn-primary{display:inline-flex;align-items:center;justify-content:center;min-height:32px;padding:5px 11px;border:0;border-radius:4px;background:#6550b5;color:#fff;font:500 12px/1.45 'Segoe UI',sans-serif;cursor:pointer}.ds-btn-primary:hover{filter:brightness(.95)}.ds-btn-primary:focus-visible{outline:2px solid #6550b5;outline-offset:3px}"},
+    {"name":"Default button","category":"button","html":"<button class=\"ds-btn-default\">Details</button>","css":".ds-btn-default{min-height:32px;padding:5px 11px;border:1px solid #dedce5;border-radius:4px;background:#fff;color:#24232b;font:500 12px/1.45 'Segoe UI',sans-serif;cursor:pointer}.ds-btn-default:hover{background:#e8e6ed}.ds-btn-default:focus-visible{outline:2px solid #6550b5;outline-offset:3px}"},
+    {"name":"Text field","category":"input","html":"<label class=\"ds-field\"><span>Search</span><input placeholder=\"Search services\"></label>","css":".ds-field{display:flex;flex-direction:column;gap:7px;color:#62606e;font:12px 'Segoe UI',sans-serif}.ds-field input{min-height:32px;padding:7px 10px;border:1px solid #dedce5;border-bottom-color:#62606e;border-radius:4px;background:#fff;color:#24232b;font:13px 'Segoe UI',sans-serif}.ds-field input:focus-visible{outline:2px solid #6550b5;outline-offset:3px}"},
+    {"name":"Navigation item","category":"navigation","html":"<button class=\"ds-nav-item ds-nav-active\">Services</button>","css":".ds-nav-item{position:relative;width:100%;min-height:38px;padding:8px 13px;border:0;border-radius:4px;background:transparent;color:#24232b;text-align:left;font:13px 'Segoe UI',sans-serif;cursor:pointer}.ds-nav-item:hover,.ds-nav-active{background:#e8e6ed}.ds-nav-active:before{content:'';position:absolute;left:3px;top:12px;bottom:12px;width:3px;border-radius:3px;background:#6550b5}"},
+    {"name":"Service row","category":"signature","html":"<div class=\"ds-service-row\"><strong>PostgreSQL</strong><span class=\"ds-service-status\">Running</span></div>","css":".ds-service-row{display:flex;align-items:center;justify-content:space-between;min-height:49px;padding:9px 13px;border-bottom:1px solid #dedce5;background:#fff;color:#24232b;font:12px 'Segoe UI',sans-serif}.ds-service-row:hover{background:#efedf4}.ds-service-status{color:#6550b5}"}
+  ]
+}

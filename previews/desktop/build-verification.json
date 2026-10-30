@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "artifact": "deliverables\\Aevrik-0.1.0-windows-x64.exe",
+  "sha256": "b53911cfcb0b5c4cc302fc65ce567ace4f2bb2c634cb58be723eb48942e075f5",
+  "bytes": 11105792,
+  "rust": "1.99.1 x86_64-pc-windows-msvc",
+  "checks": {
+    "cargo fmt --all --check": "passed",
+    "cargo test --workspace": "9 integration tests passed; all workspace targets compiled",
+    "cargo clippy --workspace --all-targets --all-features -- -D warnings": "passed",
+    "npm run build": "TypeScript check and Vite production build passed",
+    "npm test": "3 bridge contract tests passed",
+    "python tools/check_mockup.py": "passed; no console errors",
+    "python tools/check_desktop_ui.py": "passed with mocked IPC; 1280px and 800px layouts inspected",
+    "python tools/check_native.py --exe deliverables/Aevrik-0.1.0-windows-x64.exe": "passed against packaged executable, no dev server, isolated data and WebView2 profile"
+  },
+  "scope": "First native foundation; forceful stop and exit; no graceful DB shutdown, runtime downloads, DNS/HTTPS, tray/autostart, registration editing/removal or installer.",
+  "visual_review": "Dark native service and pearl project captures inspected; existing design tokens preserved. Compact frontend capture inspected at 800px.",
+  "tdd_note": "Frontend bridge assertions were observed failing before implementation. Initial engine test execution was blocked by missing MSVC; no assertion-level engine red phase was observed."
+}

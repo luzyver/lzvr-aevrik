@@ -1,0 +1,371 @@
+{
+  "status": "passed",
+  "executable": "D:\\luzyver.dev\\new_project\\deliverables\\Aevrik-0.2.0-windows-x64.exe",
+  "testDirectory": "C:\\Users\\Victus\\AppData\\Local\\Temp\\aevrik-packages-lp9mb3qy",
+  "checks": [
+    "Real Caddy download, SHA-256 verification, extraction and Installed state; navigation responsive during install",
+    "Installed executable configured via form and started; real HTTP response served from an isolated fixture folder",
+    "Real native window resized at three sizes: fixed titlebar, statusbar and main across all seven routes",
+    "Installed package persists across restart; managed server closes and does not autostart"
+  ],
+  "viewportMetrics": [
+    {
+      "requestedSize": [
+        800,
+        600
+      ],
+      "actualSize": {
+        "width": 784,
+        "height": 591
+      },
+      "route": "overview",
+      "root": 0,
+      "main": 0,
+      "overflow": 0,
+      "title": 0,
+      "bottom": 591,
+      "height": 591
+    },
+    {
+      "requestedSize": [
+        800,
+        600
+      ],
+      "actualSize": {
+        "width": 784,
+        "height": 591
+      },
+      "route": "services",
+      "root": 0,
+      "main": 0,
+      "overflow": 0,
+      "title": 0,
+      "bottom": 591,
+      "height": 591
+    },
+    {
+      "requestedSize": [
+        800,
+        600
+      ],
+      "actualSize": {
+        "width": 784,
+        "height": 591
+      },
+      "route": "projects",
+      "root": 0,
+      "main": 0,
+      "overflow": 0,
+      "title": 0,
+      "bottom": 591,
+      "height": 591
+    },
+    {
+      "requestedSize": [
+        800,
+        600
+      ],
+      "actualSize": {
+        "width": 784,
+        "height": 591
+      },
+      "route": "logs",
+      "root": 0,
+      "main": 0,
+      "overflow": 0,
+      "title": 0,
+      "bottom": 591,
+      "height": 591
+    },
+    {
+      "requestedSize": [
+        800,
+        600
+      ],
+      "actualSize": {
+        "width": 784,
+        "height": 591
+      },
+      "route": "packages",
+      "root": 0,
+      "main": 0,
+      "overflow": 0,
+      "title": 0,
+      "bottom": 591,
+      "height": 591
+    },
+    {
+      "requestedSize": [
+        800,
+        600
+      ],
+      "actualSize": {
+        "width": 784,
+        "height": 591
+      },
+      "route": "domains",
+      "root": 0,
+      "main": 0,
+      "overflow": 0,
+      "title": 0,
+      "bottom": 591,
+      "height": 591
+    },
+    {
+      "requestedSize": [
+        800,
+        600
+      ],
+      "actualSize": {
+        "width": 784,
+        "height": 591
+      },
+      "route": "settings",
+      "root": 0,
+      "main": 0,
+      "overflow": 0,
+      "title": 0,
+      "bottom": 591,
+      "height": 591
+    },
+    {
+      "requestedSize": [
+        1280,
+        820
+      ],
+      "actualSize": {
+        "width": 1264,
+        "height": 811
+      },
+      "route": "overview",
+      "root": 0,
+      "main": 0,
+      "overflow": 0,
+      "title": 0,
+      "bottom": 811,
+      "height": 811
+    },
+    {
+      "requestedSize": [
+        1280,
+        820
+      ],
+      "actualSize": {
+        "width": 1264,
+        "height": 811
+      },
+      "route": "services",
+      "root": 0,
+      "main": 0,
+      "overflow": 0,
+      "title": 0,
+      "bottom": 811,
+      "height": 811
+    },
+    {
+      "requestedSize": [
+        1280,
+        820
+      ],
+      "actualSize": {
+        "width": 1264,
+        "height": 811
+      },
+      "route": "projects",
+      "root": 0,
+      "main": 0,
+      "overflow": 0,
+      "title": 0,
+      "bottom": 811,
+      "height": 811
+    },
+    {
+      "requestedSize": [
+        1280,
+        820
+      ],
+      "actualSize": {
+        "width": 1264,
+        "height": 811
+      },
+      "route": "logs",
+      "root": 0,
+      "main": 0,
+      "overflow": 0,
+      "title": 0,
+      "bottom": 811,
+      "height": 811
+    },
+    {
+      "requestedSize": [
+        1280,
+        820
+      ],
+      "actualSize": {
+        "width": 1264,
+        "height": 811
+      },
+      "route": "packages",
+      "root": 0,
+      "main": 0,
+      "overflow": 0,
+      "title": 0,
+      "bottom": 811,
+      "height": 811
+    },
+    {
+      "requestedSize": [
+        1280,
+        820
+      ],
+      "actualSize": {
+        "width": 1264,
+        "height": 811
+      },
+      "route": "domains",
+      "root": 0,
+      "main": 0,
+      "overflow": 0,
+      "title": 0,
+      "bottom": 811,
+      "height": 811
+    },
+    {
+      "requestedSize": [
+        1280,
+        820
+      ],
+      "actualSize": {
+        "width": 1264,
+        "height": 811
+      },
+      "route": "settings",
+      "root": 0,
+      "main": 0,
+      "overflow": 0,
+      "title": 0,
+      "bottom": 811,
+      "height": 811
+    },
+    {
+      "requestedSize": [
+        1440,
+        1000
+      ],
+      "actualSize": {
+        "width": 1424,
+        "height": 991
+      },
+      "route": "overview",
+      "root": 0,
+      "main": 0,
+      "overflow": 0,
+      "title": 0,
+      "bottom": 991,
+      "height": 991
+    },
+    {
+      "requestedSize": [
+        1440,
+        1000
+      ],
+      "actualSize": {
+        "width": 1424,
+        "height": 991
+      },
+      "route": "services",
+      "root": 0,
+      "main": 0,
+      "overflow": 0,
+      "title": 0,
+      "bottom": 991,
+      "height": 991
+    },
+    {
+      "requestedSize": [
+        1440,
+        1000
+      ],
+      "actualSize": {
+        "width": 1424,
+        "height": 991
+      },
+      "route": "projects",
+      "root": 0,
+      "main": 0,
+      "overflow": 0,
+      "title": 0,
+      "bottom": 991,
+      "height": 991
+    },
+    {
+      "requestedSize": [
+        1440,
+        1000
+      ],
+      "actualSize": {
+        "width": 1424,
+        "height": 991
+      },
+      "route": "logs",
+      "root": 0,
+      "main": 0,
+      "overflow": 0,
+      "title": 0,
+      "bottom": 991,
+      "height": 991
+    },
+    {
+      "requestedSize": [
+        1440,
+        1000
+      ],
+      "actualSize": {
+        "width": 1424,
+        "height": 991
+      },
+      "route": "packages",
+      "root": 0,
+      "main": 0,
+      "overflow": 0,
+      "title": 0,
+      "bottom": 991,
+      "height": 991
+    },
+    {
+      "requestedSize": [
+        1440,
+        1000
+      ],
+      "actualSize": {
+        "width": 1424,
+        "height": 991
+      },
+      "route": "domains",
+      "root": 0,
+      "main": 0,
+      "overflow": 0,
+      "title": 0,
+      "bottom": 991,
+      "height": 991
+    },
+    {
+      "requestedSize": [
+        1440,
+        1000
+      ],
+      "actualSize": {
+        "width": 1424,
+        "height": 991
+      },
+      "route": "settings",
+      "root": 0,
+      "main": 0,
+      "overflow": 0,
+      "title": 0,
+      "bottom": 991,
+      "height": 991
+    }
+  ],
+  "consoleErrors": []
+}

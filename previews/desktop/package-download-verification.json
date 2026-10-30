@@ -1,0 +1,38 @@
+[
+  {
+    "id": "caddy",
+    "version": "2.11.7",
+    "sha256": "0a1edc0b799512051c57071ce0e798d3f2cf67dc98171366f1d2b326072e3b06",
+    "source": "https://github.com/caddyserver/caddy/releases/download/v2.11.7/caddy_2.11.7_windows_amd64.zip",
+    "installedExecutable": "D:\\luzyver.dev\\new_project\\.tooling\\package-smoke\\caddy\\2.11.7\\caddy.exe",
+    "exitCode": 0,
+    "versionOutput": "v2.11.7 h1:yj0Y4fYZGPkSvibBJ1sTWE33xC0fxztVyXEW5iIdUT4="
+  },
+  {
+    "id": "php84",
+    "version": "8.4.27-1",
+    "sha256": "dbae154a0a89791f36c3d48e68bae797878333e7d6cb5721e74617de59b63ab7",
+    "source": "https://windows.php.net/downloads/releases/php-8.4.27-1-nts-Win32-vs17-x64.zip",
+    "installedExecutable": "D:\\luzyver.dev\\new_project\\.tooling\\package-smoke\\php84\\8.4.27-1\\php.exe",
+    "exitCode": 0,
+    "versionOutput": "PHP 8.4.27 (cli) (built: Oct 26 2026 09:50:21) (NTS Visual C++ 2022 x64)\nCopyright (c) The PHP Group\nBuilt by The PHP Group\nZend Engine v4.4.27, Copyright (c) Zend Technologies"
+  },
+  {
+    "id": "node24",
+    "version": "24.22.2",
+    "sha256": "ca1bff5d8ead13c9f2ea404a176db46bd430704d5b5113734049fa365e7799e2",
+    "source": "https://nodejs.org/dist/v24.22.2/node-v24.22.2-win-x64.zip",
+    "installedExecutable": "D:\\luzyver.dev\\new_project\\.tooling\\package-smoke\\node24\\24.22.2\\node-v24.22.2-win-x64\\node.exe",
+    "exitCode": 0,
+    "versionOutput": "v24.22.2"
+  },
+  {
+    "id": "mariadb118",
+    "version": "11.8.9",
+    "sha256": "830c46727d9278eae212ae3eca44eeb9e71b2a68704e95f344a64fba7b1963f5",
+    "source": "https://archive.mariadb.org/mariadb-11.8.9/winx64-packages/mariadb-11.8.9-winx64.zip",
+    "installedExecutable": "D:\\luzyver.dev\\new_project\\.tooling\\package-smoke\\mariadb118\\11.8.9\\mariadb-11.8.9-winx64\\bin\\mariadbd.exe",
+    "exitCode": 0,
+    "versionOutput": "D:\\luzyver.dev\\new_project\\.tooling\\package-smoke\\mariadb118\\11.8.9\\mariadb-11.8.9-winx64\\bin\\mariadbd.exe  Ver 11.8.9-MariaDB for Win64 on AMD64 (MariaDB Server)"
+  }
+]

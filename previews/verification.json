@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "application": "Aevrik",
+  "console_errors": [],
+  "checks": [
+    "Service selection, start/stop/restart, properties, output and count stay synchronized",
+    "Inline project inspector, runtime change, start/stop, filtering, empty state and duplicate-domain validation",
+    "Package installation loading state and HTTPS toggle",
+    "Keyboard search, Enter navigation, Escape dismissal, log export and clear",
+    "Light theme, preference toggle, maximize/restore, minimize/reopen and close/reopen preview",
+    "Start/stop all",
+    "No page overflow or clipped service statuses/actions at 1440/1280/1024/768/390; compact inspector works",
+    "All seven routes reachable without content overflow"
+  ]
+}

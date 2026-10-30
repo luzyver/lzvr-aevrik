@@ -1,0 +1,57 @@
+[
+  {
+    "id": "nginx-1.31.8",
+    "path": "D:\\luzyver.dev\\new_project\\.tooling\\multiversion-smoke\\nginx-1.31.8\\1.31.8\\nginx-1.31.8\\nginx.exe",
+    "output": "nginx version: nginx/1.31.8",
+    "status": "passed"
+  },
+  {
+    "id": "python-3.15.2",
+    "path": "D:\\luzyver.dev\\new_project\\.tooling\\multiversion-smoke\\python-3.15.2\\3.15.2\\tools\\python.exe",
+    "output": "Python 3.15.2",
+    "status": "passed",
+    "pip": "pip 26.2.2 from D:\\luzyver.dev\\new_project\\.tooling\\multiversion-smoke\\python-3.15.2\\3.15.2\\tools\\Lib\\site-packages\\pip (python 3.15)"
+  },
+  {
+    "id": "go-1.27.3",
+    "path": "D:\\luzyver.dev\\new_project\\.tooling\\multiversion-smoke\\go-1.27.3\\1.27.3\\go\\bin\\go.exe",
+    "output": "go version go1.27.3 windows/amd64",
+    "status": "passed"
+  },
+  {
+    "id": "java-25.0.5-8",
+    "path": "D:\\luzyver.dev\\new_project\\.tooling\\multiversion-smoke\\java-25.0.5-8\\25.0.5+8\\jdk-25.0.5+8\\bin\\java.exe",
+    "output": "openjdk version \"25.0.5\" 2026-10-20 LTS\nOpenJDK Runtime Environment Temurin-25.0.5+8 (build 25.0.5+8-LTS)\nOpenJDK 64-Bit Server VM Temurin-25.0.5+8 (build 25.0.5+8-LTS, mixed mode, sharing)",
+    "status": "passed"
+  },
+  {
+    "id": "bun-1.4.4",
+    "path": "D:\\luzyver.dev\\new_project\\.tooling\\multiversion-smoke\\bun-1.4.4\\1.4.4\\bun-windows-x64-baseline\\bun.exe",
+    "output": "1.4.4",
+    "status": "passed"
+  },
+  {
+    "id": "deno-2.9.8",
+    "path": "D:\\luzyver.dev\\new_project\\.tooling\\multiversion-smoke\\deno-2.9.8\\2.9.8\\deno.exe",
+    "output": "deno 2.9.8 (stable, release, x86_64-pc-windows-msvc)\nv8 15.0.245.2-rusty\ntypescript 6.0.3",
+    "status": "passed"
+  },
+  {
+    "id": "mailpit-1.32.0",
+    "path": "D:\\luzyver.dev\\new_project\\.tooling\\multiversion-smoke\\mailpit-1.32.0\\1.32.0\\mailpit.exe",
+    "output": "D:\\luzyver.dev\\new_project\\.tooling\\multiversion-smoke\\mailpit-1.32.0\\1.32.0\\mailpit.exe v1.32.0 compiled with go1.27.3 on windows/amd64",
+    "status": "passed"
+  },
+  {
+    "id": "php-5.6.40",
+    "path": "D:\\luzyver.dev\\new_project\\.tooling\\multiversion-smoke\\php-5.6.40\\5.6.40\\php.exe",
+    "output": "PHP 5.6.40 (cli) (built: Jan  9 2019 15:10:55) \nCopyright (c) 1997-2016 The PHP Group\nZend Engine v2.6.0, Copyright (c) 1998-2016 Zend Technologies",
+    "status": "passed"
+  },
+  {
+    "id": "mariadb-12.2.2",
+    "path": "D:\\luzyver.dev\\new_project\\.tooling\\multiversion-smoke\\mariadb-12.2.2\\12.2.2\\mariadb-12.2.2-winx64\\bin\\mariadbd.exe",
+    "output": "D:\\luzyver.dev\\new_project\\.tooling\\multiversion-smoke\\mariadb-12.2.2\\12.2.2\\mariadb-12.2.2-winx64\\bin\\mariadbd.exe  Ver 12.2.2-MariaDB for Win64 on AMD64 (MariaDB Server)",
+    "status": "passed"
+  }
+]

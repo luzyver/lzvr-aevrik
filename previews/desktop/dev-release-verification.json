@@ -1,0 +1,23 @@
+{
+  "checkedAt": "2026-10-30T22:34:38.935743+00:00",
+  "status": "local-checks-passed",
+  "branch": "dev",
+  "applicationVersion": "0.1.0-beta-1",
+  "rollingTag": "dev",
+  "checks": {
+    "packagingTestsPassed": 3,
+    "bridgeTestsPassed": 5,
+    "bashSyntax": "passed",
+    "actionlint": "1.7.12 passed",
+    "versionValidation": "passed"
+  },
+  "behavior": [
+    "dev push/manual builds update one prerelease",
+    "stable dev asset names replace previous assets",
+    "dev tag points to built commit",
+    "serialized dev runs and branch-head check prevent stale publication",
+    "versioned tags stay separate"
+  ],
+  "hostedWorkflowRun": false,
+  "localReleaseBuildRun": false
+}

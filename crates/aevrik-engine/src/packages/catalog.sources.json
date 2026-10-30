@@ -1,0 +1,845 @@
+{
+  "generatedAt": "2026-10-30T21:58:51.773930+00:00",
+  "entries": [
+    {
+      "id": "caddy",
+      "version": "2.11.7",
+      "url": "https://api.github.com/repos/caddyserver/caddy/releases?per_page=12",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "caddy-2.11.6",
+      "version": "2.11.6",
+      "url": "https://api.github.com/repos/caddyserver/caddy/releases?per_page=12",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "caddy-2.11.4",
+      "version": "2.11.4",
+      "url": "https://api.github.com/repos/caddyserver/caddy/releases?per_page=12",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "caddy-2.11.3",
+      "version": "2.11.3",
+      "url": "https://api.github.com/repos/caddyserver/caddy/releases?per_page=12",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "caddy-2.11.2",
+      "version": "2.11.2",
+      "url": "https://api.github.com/repos/caddyserver/caddy/releases?per_page=12",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "caddy-2.11.1",
+      "version": "2.11.1",
+      "url": "https://api.github.com/repos/caddyserver/caddy/releases?per_page=12",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "nginx-1.31.8",
+      "version": "1.31.8",
+      "url": "https://nginx.org/download/",
+      "digestMethod": "official-https-archive-sha256"
+    },
+    {
+      "id": "nginx-1.30.6",
+      "version": "1.30.6",
+      "url": "https://nginx.org/download/",
+      "digestMethod": "official-https-archive-sha256"
+    },
+    {
+      "id": "nginx-1.28.3",
+      "version": "1.28.3",
+      "url": "https://nginx.org/download/",
+      "digestMethod": "official-https-archive-sha256"
+    },
+    {
+      "id": "nginx-1.26.3",
+      "version": "1.26.3",
+      "url": "https://nginx.org/download/",
+      "digestMethod": "official-https-archive-sha256"
+    },
+    {
+      "id": "nginx-1.24.0",
+      "version": "1.24.0",
+      "url": "https://nginx.org/download/",
+      "digestMethod": "official-https-archive-sha256"
+    },
+    {
+      "id": "php-8.5.12-1",
+      "version": "8.5.12-1",
+      "url": "https://windows.php.net/downloads/releases/releases.json",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "php84",
+      "version": "8.4.27-1",
+      "url": "https://windows.php.net/downloads/releases/releases.json",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "php-8.3.36-1",
+      "version": "8.3.36-1",
+      "url": "https://windows.php.net/downloads/releases/releases.json",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "php-8.2.35-1",
+      "version": "8.2.35-1",
+      "url": "https://windows.php.net/downloads/releases/releases.json",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "php-8.1.34",
+      "version": "8.1.34",
+      "url": "https://windows.php.net/downloads/releases/releases.json",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "php-8.0.30",
+      "version": "8.0.30",
+      "url": "https://windows.php.net/downloads/releases/releases.json",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "php-7.4.33",
+      "version": "7.4.33",
+      "url": "https://windows.php.net/downloads/releases/releases.json",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "php-7.3.33",
+      "version": "7.3.33",
+      "url": "https://windows.php.net/downloads/releases/archives/php-7.3.33-nts-Win32-vc15-x64.zip",
+      "digestMethod": "official-https-archive-sha256"
+    },
+    {
+      "id": "php-7.2.34",
+      "version": "7.2.34",
+      "url": "https://windows.php.net/downloads/releases/archives/php-7.2.34-nts-Win32-vc15-x64.zip",
+      "digestMethod": "official-https-archive-sha256"
+    },
+    {
+      "id": "php-7.1.33",
+      "version": "7.1.33",
+      "url": "https://windows.php.net/downloads/releases/archives/php-7.1.33-nts-Win32-vc14-x64.zip",
+      "digestMethod": "official-https-archive-sha256"
+    },
+    {
+      "id": "php-7.0.33",
+      "version": "7.0.33",
+      "url": "https://windows.php.net/downloads/releases/archives/php-7.0.33-nts-Win32-vc14-x64.zip",
+      "digestMethod": "official-https-archive-sha256"
+    },
+    {
+      "id": "php-5.6.40",
+      "version": "5.6.40",
+      "url": "https://windows.php.net/downloads/releases/archives/php-5.6.40-nts-Win32-vc11-x64.zip",
+      "digestMethod": "official-https-archive-sha256"
+    },
+    {
+      "id": "node-26.13.0",
+      "version": "26.13.0",
+      "url": "https://nodejs.org/dist/v26.13.0/SHASUMS256.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "node-26.12.1",
+      "version": "26.12.1",
+      "url": "https://nodejs.org/dist/v26.12.1/SHASUMS256.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "node-26.12.0",
+      "version": "26.12.0",
+      "url": "https://nodejs.org/dist/v26.12.0/SHASUMS256.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "node-26.11.1",
+      "version": "26.11.1",
+      "url": "https://nodejs.org/dist/v26.11.1/SHASUMS256.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "node-26.11.0",
+      "version": "26.11.0",
+      "url": "https://nodejs.org/dist/v26.11.0/SHASUMS256.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "node24",
+      "version": "24.22.2",
+      "url": "https://nodejs.org/dist/v24.22.2/SHASUMS256.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "node-24.22.1",
+      "version": "24.22.1",
+      "url": "https://nodejs.org/dist/v24.22.1/SHASUMS256.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "node-24.22.0",
+      "version": "24.22.0",
+      "url": "https://nodejs.org/dist/v24.22.0/SHASUMS256.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "node-24.21.0",
+      "version": "24.21.0",
+      "url": "https://nodejs.org/dist/v24.21.0/SHASUMS256.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "node-24.20.0",
+      "version": "24.20.0",
+      "url": "https://nodejs.org/dist/v24.20.0/SHASUMS256.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "node-22.23.4",
+      "version": "22.23.4",
+      "url": "https://nodejs.org/dist/v22.23.4/SHASUMS256.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "node-22.23.3",
+      "version": "22.23.3",
+      "url": "https://nodejs.org/dist/v22.23.3/SHASUMS256.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "node-22.23.2",
+      "version": "22.23.2",
+      "url": "https://nodejs.org/dist/v22.23.2/SHASUMS256.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "node-22.23.1",
+      "version": "22.23.1",
+      "url": "https://nodejs.org/dist/v22.23.1/SHASUMS256.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "node-22.23.0",
+      "version": "22.23.0",
+      "url": "https://nodejs.org/dist/v22.23.0/SHASUMS256.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "node-20.20.2",
+      "version": "20.20.2",
+      "url": "https://nodejs.org/dist/v20.20.2/SHASUMS256.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "node-20.20.1",
+      "version": "20.20.1",
+      "url": "https://nodejs.org/dist/v20.20.1/SHASUMS256.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "node-20.20.0",
+      "version": "20.20.0",
+      "url": "https://nodejs.org/dist/v20.20.0/SHASUMS256.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "node-20.19.6",
+      "version": "20.19.6",
+      "url": "https://nodejs.org/dist/v20.19.6/SHASUMS256.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "node-20.19.5",
+      "version": "20.19.5",
+      "url": "https://nodejs.org/dist/v20.19.5/SHASUMS256.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "node-18.20.8",
+      "version": "18.20.8",
+      "url": "https://nodejs.org/dist/v18.20.8/SHASUMS256.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "node-18.20.7",
+      "version": "18.20.7",
+      "url": "https://nodejs.org/dist/v18.20.7/SHASUMS256.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "node-18.20.6",
+      "version": "18.20.6",
+      "url": "https://nodejs.org/dist/v18.20.6/SHASUMS256.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "node-18.20.5",
+      "version": "18.20.5",
+      "url": "https://nodejs.org/dist/v18.20.5/SHASUMS256.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "node-18.20.4",
+      "version": "18.20.4",
+      "url": "https://nodejs.org/dist/v18.20.4/SHASUMS256.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "node-16.20.2",
+      "version": "16.20.2",
+      "url": "https://nodejs.org/dist/v16.20.2/SHASUMS256.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "node-16.20.1",
+      "version": "16.20.1",
+      "url": "https://nodejs.org/dist/v16.20.1/SHASUMS256.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "node-16.20.0",
+      "version": "16.20.0",
+      "url": "https://nodejs.org/dist/v16.20.0/SHASUMS256.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "node-16.19.1",
+      "version": "16.19.1",
+      "url": "https://nodejs.org/dist/v16.19.1/SHASUMS256.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "node-16.19.0",
+      "version": "16.19.0",
+      "url": "https://nodejs.org/dist/v16.19.0/SHASUMS256.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "node-14.21.3",
+      "version": "14.21.3",
+      "url": "https://nodejs.org/dist/v14.21.3/SHASUMS256.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "node-14.21.2",
+      "version": "14.21.2",
+      "url": "https://nodejs.org/dist/v14.21.2/SHASUMS256.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "node-14.21.1",
+      "version": "14.21.1",
+      "url": "https://nodejs.org/dist/v14.21.1/SHASUMS256.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "node-14.21.0",
+      "version": "14.21.0",
+      "url": "https://nodejs.org/dist/v14.21.0/SHASUMS256.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "node-14.20.1",
+      "version": "14.20.1",
+      "url": "https://nodejs.org/dist/v14.20.1/SHASUMS256.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "node-12.22.12",
+      "version": "12.22.12",
+      "url": "https://nodejs.org/dist/v12.22.12/SHASUMS256.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "node-12.22.11",
+      "version": "12.22.11",
+      "url": "https://nodejs.org/dist/v12.22.11/SHASUMS256.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "node-12.22.10",
+      "version": "12.22.10",
+      "url": "https://nodejs.org/dist/v12.22.10/SHASUMS256.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "node-12.22.9",
+      "version": "12.22.9",
+      "url": "https://nodejs.org/dist/v12.22.9/SHASUMS256.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "node-12.22.8",
+      "version": "12.22.8",
+      "url": "https://nodejs.org/dist/v12.22.8/SHASUMS256.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "python-3.15.2",
+      "version": "3.15.2",
+      "url": "https://api.nuget.org/v3-flatcontainer/python/index.json",
+      "digestMethod": "official-https-archive-sha256"
+    },
+    {
+      "id": "python-3.14.10",
+      "version": "3.14.10",
+      "url": "https://api.nuget.org/v3-flatcontainer/python/index.json",
+      "digestMethod": "official-https-archive-sha256"
+    },
+    {
+      "id": "python-3.13.17",
+      "version": "3.13.17",
+      "url": "https://api.nuget.org/v3-flatcontainer/python/index.json",
+      "digestMethod": "official-https-archive-sha256"
+    },
+    {
+      "id": "python-3.12.10",
+      "version": "3.12.10",
+      "url": "https://api.nuget.org/v3-flatcontainer/python/index.json",
+      "digestMethod": "official-https-archive-sha256"
+    },
+    {
+      "id": "python-3.11.9",
+      "version": "3.11.9",
+      "url": "https://api.nuget.org/v3-flatcontainer/python/index.json",
+      "digestMethod": "official-https-archive-sha256"
+    },
+    {
+      "id": "python-3.10.11",
+      "version": "3.10.11",
+      "url": "https://api.nuget.org/v3-flatcontainer/python/index.json",
+      "digestMethod": "official-https-archive-sha256"
+    },
+    {
+      "id": "python-3.9.13",
+      "version": "3.9.13",
+      "url": "https://api.nuget.org/v3-flatcontainer/python/index.json",
+      "digestMethod": "official-https-archive-sha256"
+    },
+    {
+      "id": "python-3.8.10",
+      "version": "3.8.10",
+      "url": "https://api.nuget.org/v3-flatcontainer/python/index.json",
+      "digestMethod": "official-https-archive-sha256"
+    },
+    {
+      "id": "go-1.27.3",
+      "version": "1.27.3",
+      "url": "https://go.dev/dl/?mode=json&include=all",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "go-1.27.2",
+      "version": "1.27.2",
+      "url": "https://go.dev/dl/?mode=json&include=all",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "go-1.26.10",
+      "version": "1.26.10",
+      "url": "https://go.dev/dl/?mode=json&include=all",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "go-1.26.9",
+      "version": "1.26.9",
+      "url": "https://go.dev/dl/?mode=json&include=all",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "go-1.25.14",
+      "version": "1.25.14",
+      "url": "https://go.dev/dl/?mode=json&include=all",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "go-1.25.13",
+      "version": "1.25.13",
+      "url": "https://go.dev/dl/?mode=json&include=all",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "go-1.24.13",
+      "version": "1.24.13",
+      "url": "https://go.dev/dl/?mode=json&include=all",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "go-1.24.12",
+      "version": "1.24.12",
+      "url": "https://go.dev/dl/?mode=json&include=all",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "go-1.23.12",
+      "version": "1.23.12",
+      "url": "https://go.dev/dl/?mode=json&include=all",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "go-1.23.11",
+      "version": "1.23.11",
+      "url": "https://go.dev/dl/?mode=json&include=all",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "go-1.22.12",
+      "version": "1.22.12",
+      "url": "https://go.dev/dl/?mode=json&include=all",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "go-1.22.11",
+      "version": "1.22.11",
+      "url": "https://go.dev/dl/?mode=json&include=all",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "go-1.21.13",
+      "version": "1.21.13",
+      "url": "https://go.dev/dl/?mode=json&include=all",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "go-1.21.12",
+      "version": "1.21.12",
+      "url": "https://go.dev/dl/?mode=json&include=all",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "go-1.20.14",
+      "version": "1.20.14",
+      "url": "https://go.dev/dl/?mode=json&include=all",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "go-1.20.13",
+      "version": "1.20.13",
+      "url": "https://go.dev/dl/?mode=json&include=all",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "java-25.0.5-8",
+      "version": "25.0.5+8",
+      "url": "https://api.adoptium.net/v3/assets/latest/25/hotspot?architecture=x64&image_type=jdk&os=windows",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "java-21.0.13-9",
+      "version": "21.0.13+9",
+      "url": "https://api.adoptium.net/v3/assets/latest/21/hotspot?architecture=x64&image_type=jdk&os=windows",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "java-17.0.20.1-1",
+      "version": "17.0.20.1+1",
+      "url": "https://api.adoptium.net/v3/assets/latest/17/hotspot?architecture=x64&image_type=jdk&os=windows",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "java-11.0.32.1-1",
+      "version": "11.0.32.1+1",
+      "url": "https://api.adoptium.net/v3/assets/latest/11/hotspot?architecture=x64&image_type=jdk&os=windows",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "java-8u504-b01",
+      "version": "8u504-b01",
+      "url": "https://api.adoptium.net/v3/assets/latest/8/hotspot?architecture=x64&image_type=jdk&os=windows",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "bun-1.4.4",
+      "version": "1.4.4",
+      "url": "https://api.github.com/repos/oven-sh/bun/releases?per_page=12",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "bun-1.4.3",
+      "version": "1.4.3",
+      "url": "https://api.github.com/repos/oven-sh/bun/releases?per_page=12",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "bun-1.4.2",
+      "version": "1.4.2",
+      "url": "https://api.github.com/repos/oven-sh/bun/releases?per_page=12",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "bun-1.4.1",
+      "version": "1.4.1",
+      "url": "https://api.github.com/repos/oven-sh/bun/releases?per_page=12",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "bun-1.4.0",
+      "version": "1.4.0",
+      "url": "https://api.github.com/repos/oven-sh/bun/releases?per_page=12",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "bun-1.3.14",
+      "version": "1.3.14",
+      "url": "https://api.github.com/repos/oven-sh/bun/releases?per_page=12",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "deno-2.9.8",
+      "version": "2.9.8",
+      "url": "https://api.github.com/repos/denoland/deno/releases?per_page=12",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "deno-2.9.7",
+      "version": "2.9.7",
+      "url": "https://api.github.com/repos/denoland/deno/releases?per_page=12",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "deno-2.9.6",
+      "version": "2.9.6",
+      "url": "https://api.github.com/repos/denoland/deno/releases?per_page=12",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "deno-2.9.5",
+      "version": "2.9.5",
+      "url": "https://api.github.com/repos/denoland/deno/releases?per_page=12",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "deno-2.9.4",
+      "version": "2.9.4",
+      "url": "https://api.github.com/repos/denoland/deno/releases?per_page=12",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "deno-2.9.3",
+      "version": "2.9.3",
+      "url": "https://api.github.com/repos/denoland/deno/releases?per_page=12",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "mariadb-12.2.2",
+      "version": "12.2.2",
+      "url": "https://archive.mariadb.org/mariadb-12.2.2/winx64-packages/sha256sums.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "mariadb-12.2.1",
+      "version": "12.2.1",
+      "url": "https://archive.mariadb.org/mariadb-12.2.1/winx64-packages/sha256sums.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "mariadb-12.1.2",
+      "version": "12.1.2",
+      "url": "https://archive.mariadb.org/mariadb-12.1.2/winx64-packages/sha256sums.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "mariadb-12.1.1",
+      "version": "12.1.1",
+      "url": "https://archive.mariadb.org/mariadb-12.1.1/winx64-packages/sha256sums.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "mariadb-12.0.2",
+      "version": "12.0.2",
+      "url": "https://archive.mariadb.org/mariadb-12.0.2/winx64-packages/sha256sums.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "mariadb-12.0.1",
+      "version": "12.0.1",
+      "url": "https://archive.mariadb.org/mariadb-12.0.1/winx64-packages/sha256sums.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "mariadb118",
+      "version": "11.8.9",
+      "url": "https://archive.mariadb.org/mariadb-11.8.9/winx64-packages/sha256sums.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "mariadb-11.8.8",
+      "version": "11.8.8",
+      "url": "https://archive.mariadb.org/mariadb-11.8.8/winx64-packages/sha256sums.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "mariadb-11.4.13",
+      "version": "11.4.13",
+      "url": "https://archive.mariadb.org/mariadb-11.4.13/winx64-packages/sha256sums.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "mariadb-11.4.12",
+      "version": "11.4.12",
+      "url": "https://archive.mariadb.org/mariadb-11.4.12/winx64-packages/sha256sums.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "mariadb-10.11.19",
+      "version": "10.11.19",
+      "url": "https://archive.mariadb.org/mariadb-10.11.19/winx64-packages/sha256sums.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "mariadb-10.11.18",
+      "version": "10.11.18",
+      "url": "https://archive.mariadb.org/mariadb-10.11.18/winx64-packages/sha256sums.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "mariadb-10.6.28",
+      "version": "10.6.28",
+      "url": "https://archive.mariadb.org/mariadb-10.6.28/winx64-packages/sha256sums.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "mariadb-10.6.27",
+      "version": "10.6.27",
+      "url": "https://archive.mariadb.org/mariadb-10.6.27/winx64-packages/sha256sums.txt",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "mongodb-9.0.4",
+      "version": "9.0.4",
+      "url": "https://downloads.mongodb.org/full.json",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "mongodb-9.0.2",
+      "version": "9.0.2",
+      "url": "https://downloads.mongodb.org/full.json",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "mongodb-8.3.13",
+      "version": "8.3.13",
+      "url": "https://downloads.mongodb.org/full.json",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "mongodb-8.3.11",
+      "version": "8.3.11",
+      "url": "https://downloads.mongodb.org/full.json",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "mongodb-8.0.34",
+      "version": "8.0.34",
+      "url": "https://downloads.mongodb.org/full.json",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "mongodb-8.0.32",
+      "version": "8.0.32",
+      "url": "https://downloads.mongodb.org/full.json",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "mongodb-7.0.45",
+      "version": "7.0.45",
+      "url": "https://downloads.mongodb.org/full.json",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "mongodb-7.0.43",
+      "version": "7.0.43",
+      "url": "https://downloads.mongodb.org/full.json",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "duckdb-1.5.6",
+      "version": "1.5.6",
+      "url": "https://api.github.com/repos/duckdb/duckdb/releases?per_page=20",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "duckdb-1.5.5",
+      "version": "1.5.5",
+      "url": "https://api.github.com/repos/duckdb/duckdb/releases?per_page=20",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "duckdb-1.5.4",
+      "version": "1.5.4",
+      "url": "https://api.github.com/repos/duckdb/duckdb/releases?per_page=20",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "duckdb-1.5.3",
+      "version": "1.5.3",
+      "url": "https://api.github.com/repos/duckdb/duckdb/releases?per_page=20",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "duckdb-1.5.2",
+      "version": "1.5.2",
+      "url": "https://api.github.com/repos/duckdb/duckdb/releases?per_page=20",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "duckdb-1.4.5",
+      "version": "1.4.5",
+      "url": "https://api.github.com/repos/duckdb/duckdb/releases?per_page=20",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "sqlite-3.54.1",
+      "version": "3.54.1",
+      "url": "https://www.sqlite.org/download.html",
+      "digestMethod": "official-https-archive-sha256"
+    },
+    {
+      "id": "sqlite-3.53.0",
+      "version": "3.53.0",
+      "url": "https://www.sqlite.org/releaselog/3_53_0.html",
+      "digestMethod": "official-https-archive-sha256"
+    },
+    {
+      "id": "mailpit-1.32.0",
+      "version": "1.32.0",
+      "url": "https://api.github.com/repos/axllent/mailpit/releases?per_page=12",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "mailpit-1.31.6",
+      "version": "1.31.6",
+      "url": "https://api.github.com/repos/axllent/mailpit/releases?per_page=12",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "mailpit-1.31.5",
+      "version": "1.31.5",
+      "url": "https://api.github.com/repos/axllent/mailpit/releases?per_page=12",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "mailpit-1.31.4",
+      "version": "1.31.4",
+      "url": "https://api.github.com/repos/axllent/mailpit/releases?per_page=12",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "mailpit-1.31.3",
+      "version": "1.31.3",
+      "url": "https://api.github.com/repos/axllent/mailpit/releases?per_page=12",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "mailpit-1.31.2",
+      "version": "1.31.2",
+      "url": "https://api.github.com/repos/axllent/mailpit/releases?per_page=12",
+      "digestMethod": "publisher-sha256"
+    }
+  ]
+}

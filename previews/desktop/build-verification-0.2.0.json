@@ -1,0 +1,37 @@
+{
+  "status": "passed",
+  "artifact": "deliverables\\Aevrik-0.2.0-windows-x64.exe",
+  "sha256": "4f4b9caa06658a3320ebf1b960129a5c6a128a1dbd76e6d8ec75e3dc163e8155",
+  "bytes": 14340096,
+  "zip": "deliverables\\Aevrik-0.2.0-windows-x64.zip",
+  "zipBytes": 5039642,
+  "zipSha256": "90245b6bc4f2ceff2f86fb76a1c9eea4dec65fe7a382fe909cc0be89e5d4d2dd",
+  "checks": {
+    "cargo fmt --all --check": "passed",
+    "cargo test --workspace": "15 passed (6 package unit tests, 9 process/persistence integration tests)",
+    "cargo clippy --workspace --all-targets --all-features -- -D warnings": "passed",
+    "npm run desktop:build": "TypeScript, Vite and optimized Windows executable build passed",
+    "npm test": "4 bridge tests passed",
+    "python tools/check_desktop_ui.py": "passed; mocked IPC",
+    "python tools/check_scroll.py": "passed; seven routes, three viewport sizes, 800 log lines, independent log scrolling",
+    "python tools/check_packages_ui.py": "passed; initial catalog, search, progress, checksum failure, retry, installed configuration, dark/light and compact capture",
+    "official archive smoke": "all four official archives installed with pinned hashes; all four executables returned their expected version with exit code 0",
+    "python tools/check_native.py --exe deliverables\\Aevrik-0.2.0-windows-x64.exe": "passed; packaged executable, no development server, isolated data",
+    "python tools/check_native_packages.py --exe deliverables\\Aevrik-0.2.0-windows-x64.exe": "passed; real HTTPS Caddy installation, real HTTP server, native resize across seven routes, close cleanup and persistence",
+    "zip integrity": "CRC and embedded executable SHA-256 matched"
+  },
+  "evidence": [
+    "native-package-verification.json",
+    "native-verification.json",
+    "package-download-verification.json"
+  ],
+  "visualReview": "Real packaged graphite catalog and pearl compact catalog inspected. Scrollbar remains within catalog, fixed caption/status and main overflow 0. Shared brand tokens unchanged.",
+  "tdd": "Observed failing scroll assertions against old layout, four package assertions against stubs, and missing Install UI assertion before implementation. Additional lock/symlink and native smoke checks added afterward.",
+  "limitations": [
+    "Four pinned Windows x64 packages; no automatic catalog updates/version switch/uninstall",
+    "MariaDB binaries only; initialization/configuration manual",
+    "Forceful process stop/restart/exit; graceful database shutdown unfinished",
+    "No DNS/HTTPS, tray or autostart"
+  ],
+  "designNote": "Preexisting DESIGN.md/sidecar timestamp drift retained; no new detector ignores."
+}

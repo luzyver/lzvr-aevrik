@@ -1,0 +1,77 @@
+{
+  "version": "0.3.0",
+  "status": "passed",
+  "verifiedAt": "2026-10-30T21:48:37.556629+00:00",
+  "artifacts": [
+    {
+      "path": "deliverables\\Aevrik-0.3.0-windows-x64.exe",
+      "bytes": 14422016,
+      "sha256": "5a105cd1db0574f744bbb618491cb030a1b1cb352f96835c1651abd44e7c170c"
+    },
+    {
+      "path": "deliverables\\Aevrik-0.3.0-windows-x64.zip",
+      "bytes": 5051485,
+      "sha256": "1fb47d566be33f268feb838c0ad0c73ca9110ffa1c87a6e03210cd5189287fc3"
+    }
+  ],
+  "catalog": {
+    "products": {
+      "Caddy": 6,
+      "nginx": 5,
+      "PHP": 12,
+      "Node.js": 24,
+      "Python": 8,
+      "Go": 16,
+      "Java (Temurin)": 5,
+      "Bun": 6,
+      "Deno": 6,
+      "MariaDB": 14,
+      "Mailpit": 6
+    },
+    "releases": 108,
+    "urlsChecked": 108,
+    "fullArchiveChecksFromCache": 18,
+    "newFullInstallAndExecutableVersionChecks": [
+      "nginx-1.31.8",
+      "python-3.15.2",
+      "go-1.27.3",
+      "java-25.0.5-8",
+      "bun-1.4.4",
+      "deno-2.9.8",
+      "mailpit-1.32.0",
+      "php-5.6.40",
+      "mariadb-12.2.2"
+    ],
+    "legacyPinsAndPaths": "All four 0.2 IDs, versions, URLs, SHA-256 and executable paths match the pre-change backup; old completion marker deserialization covered by a Rust test."
+  },
+  "checks": {
+    "rustTests": 18,
+    "bridgeTests": 4,
+    "cargoFmt": "passed",
+    "cargoClippyWorkspaceAllTargets": "passed",
+    "typescriptAndViteBuild": "passed",
+    "tauriReleaseBuild": "passed",
+    "mockedUI": [
+      "frontend contract/layout",
+      "fixed viewport",
+      "catalog search/progress/error/retry/configure",
+      "product grouping/version search/selection during download/side-by-side Installed states"
+    ],
+    "native": "Two Caddy versions installed independently; selected version served real HTTP; persistence and close cleanup passed; all seven routes at three native window sizes passed."
+  },
+  "evidence": [
+    "catalog-url-verification-0.3.0.json",
+    "cached-archive-verification-0.3.0.json",
+    "runtime-version-verification-0.3.0.json",
+    "native-package-verification-0.3.0.json",
+    "native-verification-0.3.0.json",
+    "ui-review-0.3.0.md"
+  ],
+  "limits": [
+    "Full download/extraction/runtime checks sampled representative releases; not all 108 releases were executed.",
+    "No database initialization or graceful database shutdown; native Stop/Restart/exit force-terminate owned processes.",
+    "No automatic per-project executable switching, global PATH management, automatic catalog refresh or uninstall.",
+    "MySQL, PostgreSQL, Redis and MongoDB are not in this catalog.",
+    "Unsigned portable Windows x64 executable requiring WebView2; not an installer."
+  ]
+}

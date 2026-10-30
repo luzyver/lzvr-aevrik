@@ -1,0 +1,14 @@
+[package]
+name = "aevrik"
+version = "0.1.0-beta-1"
+edition = "2024"
+default-run = "aevrik"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+aevrik-engine = { path = "../crates/aevrik-engine" }
+tauri = { version = "2", features = [] }
+serde = { version = "1", features = ["derive"] }
+rfd = "0.15"

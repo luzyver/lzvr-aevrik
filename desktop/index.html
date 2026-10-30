@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Aevrik</title></head>
+<body><a class="skip-link" href="#main">Skip to workspace</a>
+<div class="app-window"><header class="titlebar" data-tauri-drag-region>
+<div class="window-title" data-tauri-drag-region><img src="../assets/mark.svg" width="20" height="20" alt=""><strong>Aevrik</strong><span>Local environment</span></div>
+<span class="preview-label" data-tauri-drag-region>0.1.0-beta-1 · Desktop</span><div class="caption-controls" aria-label="Window controls">
+<button data-window="minimize" aria-label="Minimize"><svg viewBox="0 0 12 12"><path d="M1 6.5h10"/></svg></button>
+<button data-window="maximize" aria-label="Maximize or restore"><svg viewBox="0 0 12 12"><path d="M1.5 1.5h9v9h-9z"/></svg></button>
+<button class="caption-close" data-window="close" aria-label="Close"><svg viewBox="0 0 12 12"><path d="m1.5 1.5 9 9m0-9-9 9"/></svg></button></div></header>
+<div class="window-content"><aside class="sidebar" aria-label="Main navigation">
+<button class="nav-search" data-action="search" aria-label="Search resources" title="Search resources (Ctrl K)"><span data-icon="search"></span><span>Search</span><kbd>Ctrl K</kbd></button><nav id="navigation"></nav>
+<div class="sidebar-bottom"><div class="machine-label"><span data-icon="monitor"></span><span>This computer<small>Windows · Local engine</small></span></div><button class="nav-item" data-nav="settings" aria-label="Settings" title="Settings"><span data-icon="settings"></span><span>Settings</span></button></div></aside>
+<div class="shell"><div class="workspace-bar"><span><span data-icon="monitor"></span>This computer<span class="slash">/</span><strong id="breadcrumb">Workspace</strong></span><button class="icon-button" data-action="theme" aria-label="Change appearance" title="Change appearance"><span data-icon="sun"></span></button></div>
+<div id="connection-error" class="connection-error" role="alert" hidden></div><main id="main" tabindex="-1"><div class="empty">Connecting to the desktop engine…</div></main></div></div>
+<footer class="statusbar"><span id="service-count">Connecting…</span><span class="status-context">Local metadata<span class="status-divider"></span>Session output</span><span class="status-end" id="engine-status">Engine starting</span></footer></div>
+<dialog id="dialog" aria-labelledby="dialog-title"></dialog><div id="toast" class="toast" role="status" aria-live="polite"></div><script type="module" src="./main.ts"></script></body></html>

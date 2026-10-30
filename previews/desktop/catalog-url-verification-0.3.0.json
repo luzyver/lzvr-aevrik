@@ -1,0 +1,866 @@
+[
+  {
+    "id": "caddy",
+    "version": "2.11.7",
+    "url": "https://github.com/caddyserver/caddy/releases/download/v2.11.7/caddy_2.11.7_windows_amd64.zip",
+    "status": "passed",
+    "archiveBytes": 18479498,
+    "digest": "0a1edc0b799512051c57071ce0e798d3f2cf67dc98171366f1d2b326072e3b06"
+  },
+  {
+    "id": "caddy-2.11.6",
+    "version": "2.11.6",
+    "url": "https://github.com/caddyserver/caddy/releases/download/v2.11.6/caddy_2.11.6_windows_amd64.zip",
+    "status": "passed",
+    "archiveBytes": 18451523,
+    "digest": "07429393375227eb669e449764c5245eaac8fc69fc68b2f867717af794cc1153"
+  },
+  {
+    "id": "caddy-2.11.4",
+    "version": "2.11.4",
+    "url": "https://github.com/caddyserver/caddy/releases/download/v2.11.4/caddy_2.11.4_windows_amd64.zip",
+    "status": "passed",
+    "archiveBytes": 17559418,
+    "digest": "1708333f79e274c7697285afe6d592ab39314e0b131e9ec6bea08ad27df62ebf"
+  },
+  {
+    "id": "caddy-2.11.3",
+    "version": "2.11.3",
+    "url": "https://github.com/caddyserver/caddy/releases/download/v2.11.3/caddy_2.11.3_windows_amd64.zip",
+    "status": "passed",
+    "archiveBytes": 17489189,
+    "digest": "94ba71226d30a07d8eca3f971e88222fafb13f8bc46f391ed01afd6780f9c030"
+  },
+  {
+    "id": "caddy-2.11.2",
+    "version": "2.11.2",
+    "url": "https://github.com/caddyserver/caddy/releases/download/v2.11.2/caddy_2.11.2_windows_amd64.zip",
+    "status": "passed",
+    "archiveBytes": 17258333,
+    "digest": "2902d2a278597e4983d70ed6d694fcab36b29b0b7d109771c59d7da7147afad8"
+  },
+  {
+    "id": "caddy-2.11.1",
+    "version": "2.11.1",
+    "url": "https://github.com/caddyserver/caddy/releases/download/v2.11.1/caddy_2.11.1_windows_amd64.zip",
+    "status": "passed",
+    "archiveBytes": 17229980,
+    "digest": "de55cc5c227fb03d5d69fca6adf0d71e90fdcfab84c1a314598f25f3bba83fd2"
+  },
+  {
+    "id": "nginx-1.31.8",
+    "version": "1.31.8",
+    "url": "https://nginx.org/download/nginx-1.31.8.zip",
+    "status": "passed",
+    "archiveBytes": 2794487,
+    "digest": "fbb1501009be34655cc238d460714cf20391b639013f4c73859813d7938783fd"
+  },
+  {
+    "id": "nginx-1.30.6",
+    "version": "1.30.6",
+    "url": "https://nginx.org/download/nginx-1.30.6.zip",
+    "status": "passed",
+    "archiveBytes": 2773293,
+    "digest": "c6ee35edb0a861063323f709192ae50d1eefaf2ea7d00678bd2b22d8542dc61e"
+  },
+  {
+    "id": "nginx-1.28.3",
+    "version": "1.28.3",
+    "url": "https://nginx.org/download/nginx-1.28.3.zip",
+    "status": "passed",
+    "archiveBytes": 2743427,
+    "digest": "aad7bf75d669ece7671688bfdf35f1093d6a30d2e62469405f4d55d8d82d5fd3"
+  },
+  {
+    "id": "nginx-1.26.3",
+    "version": "1.26.3",
+    "url": "https://nginx.org/download/nginx-1.26.3.zip",
+    "status": "passed",
+    "archiveBytes": 2095246,
+    "digest": "39ca13277b361910f9e463a7e958e11566f7ede8a6f0df08a21b659ca92f3662"
+  },
+  {
+    "id": "nginx-1.24.0",
+    "version": "1.24.0",
+    "url": "https://nginx.org/download/nginx-1.24.0.zip",
+    "status": "passed",
+    "archiveBytes": 1759722,
+    "digest": "69a36bfd2a61d7a736fafd392708bd0fb6cf15d741f8028fe6d8bb5ebd670eb9"
+  },
+  {
+    "id": "php-8.5.12-1",
+    "version": "8.5.12-1",
+    "url": "https://windows.php.net/downloads/releases/php-8.5.12-1-nts-Win32-vs17-x64.zip",
+    "status": "passed",
+    "archiveBytes": 36310917,
+    "digest": "2a36a2edcb7a5b9252f638fd5e4cf84d7f6e066092654220dc0b63e5cf4e9723"
+  },
+  {
+    "id": "php84",
+    "version": "8.4.27-1",
+    "url": "https://windows.php.net/downloads/releases/php-8.4.27-1-nts-Win32-vs17-x64.zip",
+    "status": "passed",
+    "archiveBytes": 35296081,
+    "digest": "dbae154a0a89791f36c3d48e68bae797878333e7d6cb5721e74617de59b63ab7"
+  },
+  {
+    "id": "php-8.3.36-1",
+    "version": "8.3.36-1",
+    "url": "https://windows.php.net/downloads/releases/php-8.3.36-1-nts-Win32-vs16-x64.zip",
+    "status": "passed",
+    "archiveBytes": 34179998,
+    "digest": "1a097d52b7a68622cdc723073b61cc70caf79c941218ff65b2d8441dbc6b10d4"
+  },
+  {
+    "id": "php-8.2.35-1",
+    "version": "8.2.35-1",
+    "url": "https://windows.php.net/downloads/releases/php-8.2.35-1-nts-Win32-vs16-x64.zip",
+    "status": "passed",
+    "archiveBytes": 33780725,
+    "digest": "ebe75134c03869826cb1714d31fd5eb96afefa6d9fd35d786971c03020e7bce2"
+  },
+  {
+    "id": "php-8.1.34",
+    "version": "8.1.34",
+    "url": "https://windows.php.net/downloads/releases/php-8.1.34-nts-Win32-vs16-x64.zip",
+    "status": "passed",
+    "archiveBytes": 30822368,
+    "digest": "9cfe246cb144076c16f5913a3ef88a474c3dd7e60f0f0c8bb95faf68674016cc"
+  },
+  {
+    "id": "php-8.0.30",
+    "version": "8.0.30",
+    "url": "https://windows.php.net/downloads/releases/php-8.0.30-nts-Win32-vs16-x64.zip",
+    "status": "passed",
+    "archiveBytes": 26766957,
+    "digest": "dfb70498ffa2c617f2f655a155564697e3c9cca41709938fd1a5997d1d5b0785"
+  },
+  {
+    "id": "php-7.4.33",
+    "version": "7.4.33",
+    "url": "https://windows.php.net/downloads/releases/php-7.4.33-nts-Win32-vc15-x64.zip",
+    "status": "passed",
+    "archiveBytes": 26132214,
+    "digest": "14ae3250d4447c8ccfc4c45a70d90adfbcd61e728d85f0be56a7ddf8f9c8aace"
+  },
+  {
+    "id": "php-7.3.33",
+    "version": "7.3.33",
+    "url": "https://windows.php.net/downloads/releases/archives/php-7.3.33-nts-Win32-vc15-x64.zip",
+    "status": "passed",
+    "archiveBytes": 25625477,
+    "digest": "5eaf3cad80e678623f222a42c99bcefcc60eea359d407fb51e805afdb3b13e5e"
+  },
+  {
+    "id": "php-7.2.34",
+    "version": "7.2.34",
+    "url": "https://windows.php.net/downloads/releases/archives/php-7.2.34-nts-Win32-vc15-x64.zip",
+    "status": "passed",
+    "archiveBytes": 26121534,
+    "digest": "3c673eab656e26fd6bc3ad27fe71169ad888b04e21d63d3c6b3151d5ed216563"
+  },
+  {
+    "id": "php-7.1.33",
+    "version": "7.1.33",
+    "url": "https://windows.php.net/downloads/releases/archives/php-7.1.33-nts-Win32-vc14-x64.zip",
+    "status": "passed",
+    "archiveBytes": 24268222,
+    "digest": "071438be5bbaee8b34894ddba7852b6040991a3c853ab8141efcb1b6655bbbef"
+  },
+  {
+    "id": "php-7.0.33",
+    "version": "7.0.33",
+    "url": "https://windows.php.net/downloads/releases/archives/php-7.0.33-nts-Win32-vc14-x64.zip",
+    "status": "passed",
+    "archiveBytes": 24425705,
+    "digest": "bba39bde5b0bd50efadc11e2716c7528669945f9d1397d707486e401e67e89fb"
+  },
+  {
+    "id": "php-5.6.40",
+    "version": "5.6.40",
+    "url": "https://windows.php.net/downloads/releases/archives/php-5.6.40-nts-Win32-vc11-x64.zip",
+    "status": "passed",
+    "archiveBytes": 23032238,
+    "digest": "3d7668280fa4b16f70705539ba1e4ea17eef344c81e82881cbeca26fb7f181f1"
+  },
+  {
+    "id": "node-26.13.0",
+    "version": "26.13.0",
+    "url": "https://nodejs.org/dist/v26.13.0/node-v26.13.0-win-x64.zip",
+    "status": "passed",
+    "archiveBytes": 41157375,
+    "digest": "dcc60d59a0746999f99064a01c020445d54d84228c691cdbf25b49ac3b59150a"
+  },
+  {
+    "id": "node-26.12.1",
+    "version": "26.12.1",
+    "url": "https://nodejs.org/dist/v26.12.1/node-v26.12.1-win-x64.zip",
+    "status": "passed",
+    "archiveBytes": 41901456,
+    "digest": "b3efd5c70cba3308ed46e7e699a9b8aac075bbc6b027fcb39c84c31acc25e2b4"
+  },
+  {
+    "id": "node-26.12.0",
+    "version": "26.12.0",
+    "url": "https://nodejs.org/dist/v26.12.0/node-v26.12.0-win-x64.zip",
+    "status": "passed",
+    "archiveBytes": 41895610,
+    "digest": "50efaf01a08c520b4bbe499c09a8c5a5c370002c419c0d9da2c6815d3066a453"
+  },
+  {
+    "id": "node24",
+    "version": "24.22.2",
+    "url": "https://nodejs.org/dist/v24.22.2/node-v24.22.2-win-x64.zip",
+    "status": "passed",
+    "archiveBytes": 37754834,
+    "digest": "ca1bff5d8ead13c9f2ea404a176db46bd430704d5b5113734049fa365e7799e2"
+  },
+  {
+    "id": "node-24.22.1",
+    "version": "24.22.1",
+    "url": "https://nodejs.org/dist/v24.22.1/node-v24.22.1-win-x64.zip",
+    "status": "passed",
+    "archiveBytes": 37748064,
+    "digest": "d2046d28c2c3dcd211ac5145c0bf30e2047ef9dfb306693c8c6e2eccd8b95fa5"
+  },
+  {
+    "id": "node-24.22.0",
+    "version": "24.22.0",
+    "url": "https://nodejs.org/dist/v24.22.0/node-v24.22.0-win-x64.zip",
+    "status": "passed",
+    "archiveBytes": 37733703,
+    "digest": "f9683a19877e12a9b167305c8db71040d812876359de21f0d2e97c3f321f80c3"
+  },
+  {
+    "id": "node-22.23.4",
+    "version": "22.23.4",
+    "url": "https://nodejs.org/dist/v22.23.4/node-v22.23.4-win-x64.zip",
+    "status": "passed",
+    "archiveBytes": 35604229,
+    "digest": "cbc74b5e0982c9dbb41525fd8fb5dcd32fbee237863f7829072f4639a1ce5f20"
+  },
+  {
+    "id": "node-22.23.3",
+    "version": "22.23.3",
+    "url": "https://nodejs.org/dist/v22.23.3/node-v22.23.3-win-x64.zip",
+    "status": "passed",
+    "archiveBytes": 35574076,
+    "digest": "2b0ff57b049cda1bbcea2240eec20467018713c1efe1f7360c2681859b90ed71"
+  },
+  {
+    "id": "node-22.23.2",
+    "version": "22.23.2",
+    "url": "https://nodejs.org/dist/v22.23.2/node-v22.23.2-win-x64.zip",
+    "status": "passed",
+    "archiveBytes": 35683585,
+    "digest": "1177b4137ba5adaa56354ae40f1080c7450e8ae09cecb47da459d1c52ac99f97"
+  },
+  {
+    "id": "node-20.20.2",
+    "version": "20.20.2",
+    "url": "https://nodejs.org/dist/v20.20.2/node-v20.20.2-win-x64.zip",
+    "status": "passed",
+    "archiveBytes": 30283903,
+    "digest": "dc3700fdd57a63eedb8fd7e3c7baaa32e6a740a1b904167ff4204bc68ed8bf77"
+  },
+  {
+    "id": "node-20.20.1",
+    "version": "20.20.1",
+    "url": "https://nodejs.org/dist/v20.20.1/node-v20.20.1-win-x64.zip",
+    "status": "passed",
+    "archiveBytes": 30283692,
+    "digest": "499e886ed617abb37d5e3a2b87a3f737e3c673b146361fb5ee70d08d7fdf6d2b"
+  },
+  {
+    "id": "node-20.20.0",
+    "version": "20.20.0",
+    "url": "https://nodejs.org/dist/v20.20.0/node-v20.20.0-win-x64.zip",
+    "status": "passed",
+    "archiveBytes": 29902899,
+    "digest": "32f24e1405b113d4e01ad2585c92024df673b6156ef6f43a5469a75bf52c0a5a"
+  },
+  {
+    "id": "node-18.20.8",
+    "version": "18.20.8",
+    "url": "https://nodejs.org/dist/v18.20.8/node-v18.20.8-win-x64.zip",
+    "status": "passed",
+    "archiveBytes": 28782590,
+    "digest": "1a1e40260a6facba83636e4cd0ba01eb5bd1386896824b36645afba44857384a"
+  },
+  {
+    "id": "node-18.20.7",
+    "version": "18.20.7",
+    "url": "https://nodejs.org/dist/v18.20.7/node-v18.20.7-win-x64.zip",
+    "status": "passed",
+    "archiveBytes": 28776363,
+    "digest": "6c65355f921a76168610fffbc06005a16194cca9110ec306c4f036a2eaaeb651"
+  },
+  {
+    "id": "node-18.20.6",
+    "version": "18.20.6",
+    "url": "https://nodejs.org/dist/v18.20.6/node-v18.20.6-win-x64.zip",
+    "status": "passed",
+    "archiveBytes": 28777405,
+    "digest": "611a152838d67e05ddde02fbf5abc7f40bccd80a7e68fdaeae8745f729acff59"
+  },
+  {
+    "id": "node-16.20.2",
+    "version": "16.20.2",
+    "url": "https://nodejs.org/dist/v16.20.2/node-v16.20.2-win-x64.zip",
+    "status": "passed",
+    "archiveBytes": 26923830,
+    "digest": "f8bb35f6c08dc7bf14ac753509c06ed1a7ebf5b390cd3fbdc8f8c1aedd020ec3"
+  },
+  {
+    "id": "node-16.20.1",
+    "version": "16.20.1",
+    "url": "https://nodejs.org/dist/v16.20.1/node-v16.20.1-win-x64.zip",
+    "status": "passed",
+    "archiveBytes": 26922933,
+    "digest": "2a7fde996c57a969f0498742f99385a520eb14aac864e0eff9c32e3f3633ff0a"
+  },
+  {
+    "id": "node-16.20.0",
+    "version": "16.20.0",
+    "url": "https://nodejs.org/dist/v16.20.0/node-v16.20.0-win-x64.zip",
+    "status": "passed",
+    "archiveBytes": 26923360,
+    "digest": "1ad6e19300860bafdd9f18fd4ac65c32e4d396c56591c861c0d1bdcc55fe9c19"
+  },
+  {
+    "id": "node-14.21.3",
+    "version": "14.21.3",
+    "url": "https://nodejs.org/dist/v14.21.3/node-v14.21.3-win-x64.zip",
+    "status": "passed",
+    "archiveBytes": 29088388,
+    "digest": "47cfb919bb86ab681369636a9cb925e2bd61991aad1638b2e38e61ec956796a6"
+  },
+  {
+    "id": "node-14.21.2",
+    "version": "14.21.2",
+    "url": "https://nodejs.org/dist/v14.21.2/node-v14.21.2-win-x64.zip",
+    "status": "passed",
+    "archiveBytes": 29732149,
+    "digest": "3a53cd029a050b979fd1a112e2ada1a5ba56cfa90ae5e135752bf29d44f1a8eb"
+  },
+  {
+    "id": "node-14.21.1",
+    "version": "14.21.1",
+    "url": "https://nodejs.org/dist/v14.21.1/node-v14.21.1-win-x64.zip",
+    "status": "passed",
+    "archiveBytes": 29719379,
+    "digest": "d9c868ad27ad0fee1d62d70cab56e779efe68a706393177fd282012773d79a7c"
+  },
+  {
+    "id": "node-12.22.12",
+    "version": "12.22.12",
+    "url": "https://nodejs.org/dist/v12.22.12/node-v12.22.12-win-x64.zip",
+    "status": "passed",
+    "archiveBytes": 18681823,
+    "digest": "09639bac66d4dc4dd52179968209413ad4b7360e917dcbe8834052a4b936a087"
+  },
+  {
+    "id": "node-12.22.11",
+    "version": "12.22.11",
+    "url": "https://nodejs.org/dist/v12.22.11/node-v12.22.11-win-x64.zip",
+    "status": "passed",
+    "archiveBytes": 18681293,
+    "digest": "26e083c0e1d694de449a67bd57d27b777e09529550cf5e4dc6a5967b8cfa70e6"
+  },
+  {
+    "id": "node-12.22.10",
+    "version": "12.22.10",
+    "url": "https://nodejs.org/dist/v12.22.10/node-v12.22.10-win-x64.zip",
+    "status": "passed",
+    "archiveBytes": 18681352,
+    "digest": "6713a1a21051fe7a6b8b8a2f059bdc2de6541724c6010d08319354b843c1a991"
+  },
+  {
+    "id": "python-3.15.2",
+    "version": "3.15.2",
+    "url": "https://api.nuget.org/v3-flatcontainer/python/3.15.2/python.3.15.2.nupkg",
+    "status": "passed",
+    "archiveBytes": 16672834,
+    "digest": "294f5ed7ab97148fcbb57b8c06ba428f6d282c2bbaa266dbe3137284497998f0"
+  },
+  {
+    "id": "python-3.14.10",
+    "version": "3.14.10",
+    "url": "https://api.nuget.org/v3-flatcontainer/python/3.14.10/python.3.14.10.nupkg",
+    "status": "passed",
+    "archiveBytes": 15589216,
+    "digest": "f54ba67c9951c3d773ea47d2bb095150c037c399f0423a968bcda22809241784"
+  },
+  {
+    "id": "python-3.13.17",
+    "version": "3.13.17",
+    "url": "https://api.nuget.org/v3-flatcontainer/python/3.13.17/python.3.13.17.nupkg",
+    "status": "passed",
+    "archiveBytes": 14826465,
+    "digest": "dce409744b088f94c6e37ba41f8100c384c27e029e843237364c602d30d475e5"
+  },
+  {
+    "id": "python-3.12.10",
+    "version": "3.12.10",
+    "url": "https://api.nuget.org/v3-flatcontainer/python/3.12.10/python.3.12.10.nupkg",
+    "status": "passed",
+    "archiveBytes": 14515433,
+    "digest": "0eb85c2dfccccf1b17352de4c397f69194035b7d37149eacc16f1147d93de3b8"
+  },
+  {
+    "id": "python-3.11.9",
+    "version": "3.11.9",
+    "url": "https://api.nuget.org/v3-flatcontainer/python/3.11.9/python.3.11.9.nupkg",
+    "status": "passed",
+    "archiveBytes": 17478009,
+    "digest": "9283876d58c017e0e846f95b490da3bca0fc0a6ee1134b2870677cfb7eec3c67"
+  },
+  {
+    "id": "python-3.10.11",
+    "version": "3.10.11",
+    "url": "https://api.nuget.org/v3-flatcontainer/python/3.10.11/python.3.10.11.nupkg",
+    "status": "passed",
+    "archiveBytes": 16283939,
+    "digest": "7c6f99b160a36a7e09492dfcff2b0a3a60bb5229ca44cdcc3ecb32871a6144d0"
+  },
+  {
+    "id": "python-3.9.13",
+    "version": "3.9.13",
+    "url": "https://api.nuget.org/v3-flatcontainer/python/3.9.13/python.3.9.13.nupkg",
+    "status": "passed",
+    "archiveBytes": 15830425,
+    "digest": "df29f99c9cf508eda80e878e2795c50ec94431db8d5396a5e455381af593daf4"
+  },
+  {
+    "id": "python-3.8.10",
+    "version": "3.8.10",
+    "url": "https://api.nuget.org/v3-flatcontainer/python/3.8.10/python.3.8.10.nupkg",
+    "status": "passed",
+    "archiveBytes": 14219645,
+    "digest": "c63a2fc8fc62612b5abd391fda99ae1d90bad42ed8a9e99b1bd81c7ffdb4fefa"
+  },
+  {
+    "id": "go-1.27.3",
+    "version": "1.27.3",
+    "url": "https://go.dev/dl/go1.27.3.windows-amd64.zip",
+    "status": "passed",
+    "archiveBytes": 79010309,
+    "digest": "f26081f438319757f8a1b46d7d0b2c5ec7583d4038e485e0aa725cfde7885fff"
+  },
+  {
+    "id": "go-1.27.2",
+    "version": "1.27.2",
+    "url": "https://go.dev/dl/go1.27.2.windows-amd64.zip",
+    "status": "passed",
+    "archiveBytes": 79008081,
+    "digest": "1314008898bd40df77af4b014f777f08873dbdfbcd3d92308728ee03304fe04f"
+  },
+  {
+    "id": "go-1.26.10",
+    "version": "1.26.10",
+    "url": "https://go.dev/dl/go1.26.10.windows-amd64.zip",
+    "status": "passed",
+    "archiveBytes": 75004774,
+    "digest": "7ecd2d7260e82c59bcbd7f1077a07cee2dea607295b858df67195a1e4e09629b"
+  },
+  {
+    "id": "go-1.26.9",
+    "version": "1.26.9",
+    "url": "https://go.dev/dl/go1.26.9.windows-amd64.zip",
+    "status": "passed",
+    "archiveBytes": 75002909,
+    "digest": "d722201a9c0c086d1610e111c48203009af690892ed708072bd5ae20160e7a59"
+  },
+  {
+    "id": "go-1.25.14",
+    "version": "1.25.14",
+    "url": "https://go.dev/dl/go1.25.14.windows-amd64.zip",
+    "status": "passed",
+    "archiveBytes": 67591780,
+    "digest": "119044a92b3987c341cd6aebb256676dd4780d292f7b4e72a3e9976677841697"
+  },
+  {
+    "id": "go-1.25.13",
+    "version": "1.25.13",
+    "url": "https://go.dev/dl/go1.25.13.windows-amd64.zip",
+    "status": "passed",
+    "archiveBytes": 67590465,
+    "digest": "54a6bbffada82938ac4ae66e354b2e9c04ebdceff96f8d0455406c723b5ed1fc"
+  },
+  {
+    "id": "go-1.24.13",
+    "version": "1.24.13",
+    "url": "https://go.dev/dl/go1.24.13.windows-amd64.zip",
+    "status": "passed",
+    "archiveBytes": 87295983,
+    "digest": "40b16bc8f00540a2cb02dff4de72b73e966fdd8d65f95e33d8e4080b48a2459a"
+  },
+  {
+    "id": "go-1.24.12",
+    "version": "1.24.12",
+    "url": "https://go.dev/dl/go1.24.12.windows-amd64.zip",
+    "status": "passed",
+    "archiveBytes": 87294602,
+    "digest": "20e4bb6417117150d486181b16eaea4f1a9e7d8a2407a77da65d2b4e28dca53d"
+  },
+  {
+    "id": "go-1.23.12",
+    "version": "1.23.12",
+    "url": "https://go.dev/dl/go1.23.12.windows-amd64.zip",
+    "status": "passed",
+    "archiveBytes": 81978626,
+    "digest": "07c35866cdd864b81bb6f1cfbf25ac7f87ddc3a976ede1bf5112acbb12dfe6dc"
+  },
+  {
+    "id": "go-1.23.11",
+    "version": "1.23.11",
+    "url": "https://go.dev/dl/go1.23.11.windows-amd64.zip",
+    "status": "passed",
+    "archiveBytes": 81965322,
+    "digest": "1dbcf0b4183066550964b22890fe119b0b867b51f12c1eea4445c71494d98cbb"
+  },
+  {
+    "id": "go-1.22.12",
+    "version": "1.22.12",
+    "url": "https://go.dev/dl/go1.22.12.windows-amd64.zip",
+    "status": "passed",
+    "archiveBytes": 76279251,
+    "digest": "2ceda04074eac51f4b0b85a9fcca38bcd49daee24bed9ea1f29958a8e22673a6"
+  },
+  {
+    "id": "go-1.22.11",
+    "version": "1.22.11",
+    "url": "https://go.dev/dl/go1.22.11.windows-amd64.zip",
+    "status": "passed",
+    "archiveBytes": 76278847,
+    "digest": "4542e3967b2595286885dd83bae417b8ecfd058af4a7544fe4b138eb8a93a5e7"
+  },
+  {
+    "id": "go-1.21.13",
+    "version": "1.21.13",
+    "url": "https://go.dev/dl/go1.21.13.windows-amd64.zip",
+    "status": "passed",
+    "archiveBytes": 73791242,
+    "digest": "924655193634bfcdf7ec7a34589e0d73458741998a59e4155a929ce85f81af2d"
+  },
+  {
+    "id": "go-1.21.12",
+    "version": "1.21.12",
+    "url": "https://go.dev/dl/go1.21.12.windows-amd64.zip",
+    "status": "passed",
+    "archiveBytes": 73790830,
+    "digest": "d0f6b3c5a5d5a319ede7af4acf63f287c2319a01e612a0588f5165648dc5b337"
+  },
+  {
+    "id": "go-1.20.14",
+    "version": "1.20.14",
+    "url": "https://go.dev/dl/go1.20.14.windows-amd64.zip",
+    "status": "passed",
+    "archiveBytes": 114273182,
+    "digest": "0e0d0190406ead891d94ecf00f961bb5cfa15ddd47499d2649f12eee80aee110"
+  },
+  {
+    "id": "go-1.20.13",
+    "version": "1.20.13",
+    "url": "https://go.dev/dl/go1.20.13.windows-amd64.zip",
+    "status": "passed",
+    "archiveBytes": 114343212,
+    "digest": "264c7b4fa240107690db938a3ebcdb729b0af131cfb35092219aa286d8b80c0c"
+  },
+  {
+    "id": "java-25.0.5-8",
+    "version": "25.0.5+8",
+    "url": "https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25.0.5%2B8/OpenJDK25U-jdk_x64_windows_hotspot_25.0.5_8.zip",
+    "status": "passed",
+    "archiveBytes": 141285173,
+    "digest": "636bdc13dc649ddc7d5921c5c7d23cca6e44fd19d662b45cc9c02135a6c96c42"
+  },
+  {
+    "id": "java-21.0.13-9",
+    "version": "21.0.13+9",
+    "url": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.13%2B9/OpenJDK21U-jdk_x64_windows_hotspot_21.0.13_9.zip",
+    "status": "passed",
+    "archiveBytes": 205421281,
+    "digest": "a4dbaa05fca4bd89d84584e58c459bd732efebb1722af80ab13c6516832004f9"
+  },
+  {
+    "id": "java-17.0.20.1-1",
+    "version": "17.0.20.1+1",
+    "url": "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.20.1%2B1/OpenJDK17U-jdk_x64_windows_hotspot_17.0.20.1_1.zip",
+    "status": "passed",
+    "archiveBytes": 190817615,
+    "digest": "e53a79c3c3d86865bd7e787903884331068e71321714ffd44f145785affc7cb0"
+  },
+  {
+    "id": "java-11.0.32.1-1",
+    "version": "11.0.32.1+1",
+    "url": "https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.32.1%2B1/OpenJDK11U-jdk_x64_windows_hotspot_11.0.32.1_1.zip",
+    "status": "passed",
+    "archiveBytes": 199461714,
+    "digest": "d5008f02174c1ad21c10407cbf104815cb390ec4c263d53946e8d0507d7a77f9"
+  },
+  {
+    "id": "java-8u504-b01",
+    "version": "8u504-b01",
+    "url": "https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u504-b01/OpenJDK8U-jdk_x64_windows_hotspot_8u504b01.zip",
+    "status": "passed",
+    "archiveBytes": 106457258,
+    "digest": "ea43d46ede95b51e44a12c66711706cddc762e0a766c54bccea18954e902b2aa"
+  },
+  {
+    "id": "bun-1.4.4",
+    "version": "1.4.4",
+    "url": "https://github.com/oven-sh/bun/releases/download/bun-v1.4.4/bun-windows-x64-baseline.zip",
+    "status": "passed",
+    "archiveBytes": 54731686,
+    "digest": "0f20ce6674d4f2dbcc8c5d59fdf99f7ba45f8c3b367e0f5781cbfa30a1c78d99"
+  },
+  {
+    "id": "bun-1.4.3",
+    "version": "1.4.3",
+    "url": "https://github.com/oven-sh/bun/releases/download/bun-v1.4.3/bun-windows-x64-baseline.zip",
+    "status": "passed",
+    "archiveBytes": 44639910,
+    "digest": "d7a7d3eb216614544aab0cde2d8d9f2e4e87839bf5a30a1cd11d077f02d84e0c"
+  },
+  {
+    "id": "bun-1.4.2",
+    "version": "1.4.2",
+    "url": "https://github.com/oven-sh/bun/releases/download/bun-v1.4.2/bun-windows-x64-baseline.zip",
+    "status": "passed",
+    "archiveBytes": 39807490,
+    "digest": "78c221c2376f79731ccf4e4af0b3bb46d81fefa3296c5abee09ad8a1b21e68c6"
+  },
+  {
+    "id": "bun-1.4.1",
+    "version": "1.4.1",
+    "url": "https://github.com/oven-sh/bun/releases/download/bun-v1.4.1/bun-windows-x64-baseline.zip",
+    "status": "passed",
+    "archiveBytes": 39811787,
+    "digest": "2d1871e72b28165a8574a9c91de867cbe499f55b8c75facf4fb9e42888eddba6"
+  },
+  {
+    "id": "bun-1.4.0",
+    "version": "1.4.0",
+    "url": "https://github.com/oven-sh/bun/releases/download/bun-v1.4.0/bun-windows-x64-baseline.zip",
+    "status": "passed",
+    "archiveBytes": 40060227,
+    "digest": "b929c54a9badb104a16dedd23aab6152c86793ae653d4e6b13983ffd0c882a66"
+  },
+  {
+    "id": "bun-1.3.14",
+    "version": "1.3.14",
+    "url": "https://github.com/oven-sh/bun/releases/download/bun-v1.3.14/bun-windows-x64-baseline.zip",
+    "status": "passed",
+    "archiveBytes": 38023440,
+    "digest": "538f9c846355d9e847b2671bc00c47da4229a0befb24df3282b739770f3b475f"
+  },
+  {
+    "id": "deno-2.9.8",
+    "version": "2.9.8",
+    "url": "https://github.com/denoland/deno/releases/download/v2.9.8/deno-x86_64-pc-windows-msvc.zip",
+    "status": "passed",
+    "archiveBytes": 42917472,
+    "digest": "cba84b26e0df5ae7f74fc66b86a95b866872a86292ebd84fa1e959927edd93bf"
+  },
+  {
+    "id": "deno-2.9.7",
+    "version": "2.9.7",
+    "url": "https://github.com/denoland/deno/releases/download/v2.9.7/deno-x86_64-pc-windows-msvc.zip",
+    "status": "passed",
+    "archiveBytes": 42630221,
+    "digest": "a0c3101b4158d1dfb7d6a78a7bf0f3de80c96bb423c152beec8beb22786f2238"
+  },
+  {
+    "id": "deno-2.9.6",
+    "version": "2.9.6",
+    "url": "https://github.com/denoland/deno/releases/download/v2.9.6/deno-x86_64-pc-windows-msvc.zip",
+    "status": "passed",
+    "archiveBytes": 42601047,
+    "digest": "15e5300b0ba3c3695a7621d90160a746ec9e710228cee639afa9d580f6e3cd11"
+  },
+  {
+    "id": "deno-2.9.5",
+    "version": "2.9.5",
+    "url": "https://github.com/denoland/deno/releases/download/v2.9.5/deno-x86_64-pc-windows-msvc.zip",
+    "status": "passed",
+    "archiveBytes": 42691248,
+    "digest": "171efab55ac6b9881fd53ee4c20f8bf3bb1340ffc618483746909014db12216a"
+  },
+  {
+    "id": "deno-2.9.4",
+    "version": "2.9.4",
+    "url": "https://github.com/denoland/deno/releases/download/v2.9.4/deno-x86_64-pc-windows-msvc.zip",
+    "status": "passed",
+    "archiveBytes": 42599274,
+    "digest": "68ed08b05c56cf887e9aa509947dc3f468f7e12f47a13e5c1abd51d46d1453ef"
+  },
+  {
+    "id": "deno-2.9.3",
+    "version": "2.9.3",
+    "url": "https://github.com/denoland/deno/releases/download/v2.9.3/deno-x86_64-pc-windows-msvc.zip",
+    "status": "passed",
+    "archiveBytes": 42726295,
+    "digest": "60343461ac5fe3a31f4ef12667f2946bb852e20655c8610aeb7e751e87f7df3a"
+  },
+  {
+    "id": "mariadb-12.2.2",
+    "version": "12.2.2",
+    "url": "https://archive.mariadb.org/mariadb-12.2.2/winx64-packages/mariadb-12.2.2-winx64.zip",
+    "status": "passed",
+    "archiveBytes": 98412434,
+    "digest": "b34bb91f0dd4bd184f420288a12aace2b5fcb20734f2b880075c36150d4641c6"
+  },
+  {
+    "id": "mariadb-12.2.1",
+    "version": "12.2.1",
+    "url": "https://archive.mariadb.org/mariadb-12.2.1/winx64-packages/mariadb-12.2.1-winx64.zip",
+    "status": "passed",
+    "archiveBytes": 97810755,
+    "digest": "fb314b6425edf08217033d5005d48bf218ff01018a3610aa993504c7ce1ded9c"
+  },
+  {
+    "id": "mariadb-12.1.2",
+    "version": "12.1.2",
+    "url": "https://archive.mariadb.org/mariadb-12.1.2/winx64-packages/mariadb-12.1.2-winx64.zip",
+    "status": "passed",
+    "archiveBytes": 97415578,
+    "digest": "b3d11ae1edf0d00abeefb811f663df5a036ee237fc2df399f822a9b1f65537d8"
+  },
+  {
+    "id": "mariadb-12.1.1",
+    "version": "12.1.1",
+    "url": "https://archive.mariadb.org/mariadb-12.1.1/winx64-packages/mariadb-12.1.1-winx64.zip",
+    "status": "passed",
+    "archiveBytes": 95327325,
+    "digest": "8eca5dfb2b132aad7a7b425bd2f25dab5bdc9eb0d5359cc132edeccd0507b2d4"
+  },
+  {
+    "id": "mariadb-12.0.2",
+    "version": "12.0.2",
+    "url": "https://archive.mariadb.org/mariadb-12.0.2/winx64-packages/mariadb-12.0.2-winx64.zip",
+    "status": "passed",
+    "archiveBytes": 94747208,
+    "digest": "7303f9d0f777ad903dede402ad3061097d216f3e2ab6e8499ad7aa192eb4080e"
+  },
+  {
+    "id": "mariadb-12.0.1",
+    "version": "12.0.1",
+    "url": "https://archive.mariadb.org/mariadb-12.0.1/winx64-packages/mariadb-12.0.1-winx64.zip",
+    "status": "passed",
+    "archiveBytes": 94637696,
+    "digest": "d4e12e856892d9b82efea6f60915a2ef6fb37f52ba905be20391b7f176d20092"
+  },
+  {
+    "id": "mariadb118",
+    "version": "11.8.9",
+    "url": "https://archive.mariadb.org/mariadb-11.8.9/winx64-packages/mariadb-11.8.9-winx64.zip",
+    "status": "passed",
+    "archiveBytes": 97016251,
+    "digest": "830c46727d9278eae212ae3eca44eeb9e71b2a68704e95f344a64fba7b1963f5"
+  },
+  {
+    "id": "mariadb-11.8.8",
+    "version": "11.8.8",
+    "url": "https://archive.mariadb.org/mariadb-11.8.8/winx64-packages/mariadb-11.8.8-winx64.zip",
+    "status": "passed",
+    "archiveBytes": 96738552,
+    "digest": "20871a79964e1819ddaad9247b676b9d08c958c345e5e3d4748242b2b2965ff1"
+  },
+  {
+    "id": "mariadb-11.4.13",
+    "version": "11.4.13",
+    "url": "https://archive.mariadb.org/mariadb-11.4.13/winx64-packages/mariadb-11.4.13-winx64.zip",
+    "status": "passed",
+    "archiveBytes": 95024126,
+    "digest": "d62986d433eeebfde218560b276103831604a61e929e87f1a17f5aebd80257e2"
+  },
+  {
+    "id": "mariadb-11.4.12",
+    "version": "11.4.12",
+    "url": "https://archive.mariadb.org/mariadb-11.4.12/winx64-packages/mariadb-11.4.12-winx64.zip",
+    "status": "passed",
+    "archiveBytes": 94906278,
+    "digest": "4db7f8003d4a64ac8042b771c6d34ed04c7ffae8cf52775275b72f2bd4dd17a9"
+  },
+  {
+    "id": "mariadb-10.11.19",
+    "version": "10.11.19",
+    "url": "https://archive.mariadb.org/mariadb-10.11.19/winx64-packages/mariadb-10.11.19-winx64.zip",
+    "status": "passed",
+    "archiveBytes": 93557290,
+    "digest": "398ea30e5036010bbebe01d2b1804280424dcc2626e36d8e95155c04d25a0490"
+  },
+  {
+    "id": "mariadb-10.11.18",
+    "version": "10.11.18",
+    "url": "https://archive.mariadb.org/mariadb-10.11.18/winx64-packages/mariadb-10.11.18-winx64.zip",
+    "status": "passed",
+    "archiveBytes": 93293639,
+    "digest": "1e36bb0834718e56fd53e150978b55429e5da921a97c07c16b41086c0c61099c"
+  },
+  {
+    "id": "mariadb-10.6.28",
+    "version": "10.6.28",
+    "url": "https://archive.mariadb.org/mariadb-10.6.28/winx64-packages/mariadb-10.6.28-winx64.zip",
+    "status": "passed",
+    "archiveBytes": 87852101,
+    "digest": "a4e5cd01587d1662728f0cf0d8bb3d1aaedc6861b272cec18f504ab4ba8b2f72"
+  },
+  {
+    "id": "mariadb-10.6.27",
+    "version": "10.6.27",
+    "url": "https://archive.mariadb.org/mariadb-10.6.27/winx64-packages/mariadb-10.6.27-winx64.zip",
+    "status": "passed",
+    "archiveBytes": 87898518,
+    "digest": "cc18bc6a0d42df6990ed91d1d7695e893b15168779272df43adf45dd75705a50"
+  },
+  {
+    "id": "mailpit-1.32.0",
+    "version": "1.32.0",
+    "url": "https://github.com/axllent/mailpit/releases/download/v1.32.0/mailpit-windows-amd64.zip",
+    "status": "passed",
+    "archiveBytes": 10632291,
+    "digest": "16915767a6c95dca569336e8f561f91cf355e9a33c57b91deedcc10a4bba7fd4"
+  },
+  {
+    "id": "mailpit-1.31.6",
+    "version": "1.31.6",
+    "url": "https://github.com/axllent/mailpit/releases/download/v1.31.6/mailpit-windows-amd64.zip",
+    "status": "passed",
+    "archiveBytes": 10640632,
+    "digest": "5d5ad094bfb3bac9004f9d1105d2335fea9f8952c09951df73ae0a280e34d3b1"
+  },
+  {
+    "id": "mailpit-1.31.5",
+    "version": "1.31.5",
+    "url": "https://github.com/axllent/mailpit/releases/download/v1.31.5/mailpit-windows-amd64.zip",
+    "status": "passed",
+    "archiveBytes": 10639460,
+    "digest": "9637e21c02b33185fe69268ba05317152a5d8ac7877115e8a70e29b7e199e8dc"
+  },
+  {
+    "id": "mailpit-1.31.4",
+    "version": "1.31.4",
+    "url": "https://github.com/axllent/mailpit/releases/download/v1.31.4/mailpit-windows-amd64.zip",
+    "status": "passed",
+    "archiveBytes": 10593353,
+    "digest": "0dd6ec909a6f5b2b66682b22d82abce97ab793e30766bf2f642b691e70a4a16b"
+  },
+  {
+    "id": "mailpit-1.31.3",
+    "version": "1.31.3",
+    "url": "https://github.com/axllent/mailpit/releases/download/v1.31.3/mailpit-windows-amd64.zip",
+    "status": "passed",
+    "archiveBytes": 10492621,
+    "digest": "863e9502d4e0f14a78c0f91c5091797b1c7b7b7e3fc7e5eab62e5770ce44b76e"
+  },
+  {
+    "id": "mailpit-1.31.2",
+    "version": "1.31.2",
+    "url": "https://github.com/axllent/mailpit/releases/download/v1.31.2/mailpit-windows-amd64.zip",
+    "status": "passed",
+    "archiveBytes": 10479883,
+    "digest": "42c20e5c3254125ea7489847811f10d70e39de573fe41d03a61412c87913e995"
+  }
+]
