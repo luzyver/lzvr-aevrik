@@ -15,7 +15,7 @@ import {dialog,openForm,registration} from './forms';
 import {catalog,PackageController} from './packages';
 import {installDialog,uninstallDialog,removeServiceDialog,defaultDialog,defaultPlans} from './package-dialogs';
 import {storage,loadStorage,openDataFolderDialog} from './storage';
-import {checkRuntimeUpdates,checkAppUpdate,appUpdates} from './updates';
+import {checkRuntimeUpdates,checkAppUpdate,installAppUpdate,appUpdates} from './updates';
 
 const backend=new Backend(invoke);
 const refreshStorage=()=>loadStorage(backend,()=>{if(state.page==='settings'&&!dialog.open)render();});
@@ -104,6 +104,7 @@ document.addEventListener('click',async event=>{
   const action=target.dataset.action;
   if(action==='check-runtime-updates')await checkRuntimeUpdates(backend,()=>packages.refresh(),()=>{if(state.page==='packages'&&!dialog.open)render();});
   if(action==='check-app-update')await checkAppUpdate(backend,()=>{if(state.page==='settings'&&!dialog.open)render();});
+  if(action==='install-app-update')await installAppUpdate(backend,()=>{if(state.page==='settings'&&!dialog.open)render();});
   if(action==='open-app-release'&&appUpdates.result)await backend.openReleasePage(appUpdates.result.tag);
   if(action==='reload-storage')await refreshStorage();
   if(action==='change-data-folder')openDataFolderDialog();

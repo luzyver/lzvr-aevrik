@@ -2,7 +2,10 @@ use aevrik_engine::packages::{DefaultPlan, PackageManager, PackageView, Scope};
 use std::sync::Arc;
 use tauri::State;
 
-pub struct PackageState(pub Arc<PackageManager>);
+pub struct PackageState(
+    pub Arc<PackageManager>,
+    pub Arc<crate::operations::Operations>,
+);
 
 #[tauri::command]
 pub async fn preview_runtime_default(
@@ -29,7 +32,9 @@ pub async fn apply_runtime_default(
     fingerprint: String,
 ) -> Result<(), String> {
     let manager = Arc::clone(&state.0);
+    let operations = Arc::clone(&state.1);
     tauri::async_runtime::spawn_blocking(move || {
+        let _operation = operations.enter()?;
         manager
             .apply_default(&id, removing, scope, &fingerprint)
             .map_err(|e| e.to_string())
@@ -53,7 +58,9 @@ pub async fn install_package(
     destination: Option<String>,
 ) -> Result<(), String> {
     let manager = Arc::clone(&state.0);
+    let operations = Arc::clone(&state.1);
     tauri::async_runtime::spawn_blocking(move || {
+        let _operation = operations.enter()?;
         manager
             .install_at(&id, destination.as_deref().map(std::path::Path::new))
             .map_err(|e| e.to_string())
@@ -82,8 +89,10 @@ pub async fn uninstall_package(
     id: String,
 ) -> Result<(), String> {
     let manager = Arc::clone(&state.0);
+    let operations = Arc::clone(&state.1);
     let engine = Arc::clone(&engine.0);
     tauri::async_runtime::spawn_blocking(move || {
+        let _operation = operations.enter()?;
         // Serialize against service registration/start until removal finishes.
         let engine = engine.lock().map_err(|_| "Engine state is unavailable.")?;
         let protected = engine

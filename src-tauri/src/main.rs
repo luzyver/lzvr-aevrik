@@ -1,5 +1,8 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+mod app_install;
 mod commands;
+mod installer;
+mod operations;
 mod packages;
 mod startup;
 mod storage;
@@ -8,7 +11,19 @@ use commands::AppState;
 use tauri::Manager;
 
 fn main() {
+    let arguments: Vec<_> = std::env::args_os().skip(1).collect();
+    if arguments
+        .first()
+        .is_some_and(|arg| arg == "--configure-data-directory")
+    {
+        let silent = arguments.len() == 3 && arguments[2] == "--silent";
+        if arguments.len() != 2 && !silent {
+            std::process::exit(2);
+        }
+        std::process::exit(installer::run(std::path::Path::new(&arguments[1]), silent));
+    }
     let app = tauri::Builder::default()
+        .manage(app_install::InstallState::default())
         .setup(startup::initialize)
         .invoke_handler(tauri::generate_handler![
             startup::setup_info,
@@ -18,6 +33,7 @@ fn main() {
             storage::set_data_directory,
             updates::refresh_catalog,
             updates::check_app_update,
+            app_install::install_app_update,
             updates::open_release_page,
             commands::snapshot,
             commands::add_project,

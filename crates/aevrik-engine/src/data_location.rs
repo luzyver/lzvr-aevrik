@@ -91,6 +91,37 @@ pub fn save_location(config: &Path, directory: &Path) -> Result<()> {
     Ok(())
 }
 
+/// Setup and upgrades share the same preference lock as the desktop bootstrap.
+/// An existing selection wins, even if Setup was given a different directory.
+pub fn configure_installation(
+    preferred: &Path,
+    legacy: &Path,
+    config: &Path,
+    application: &Path,
+    selected: &Path,
+) -> Result<()> {
+    let parent = config
+        .parent()
+        .ok_or_else(|| invalid("Preference directory is unavailable."))?;
+    fs::create_dir_all(parent)?;
+    let lock = fs::OpenOptions::new()
+        .read(true)
+        .write(true)
+        .create(true)
+        .truncate(false)
+        .open(parent.join(".location.lock"))?;
+    lock.try_lock()
+        .map_err(|_| invalid("Close Aevrik before configuring its data folder."))?;
+    if let Some(existing) = resolve_location(preferred, legacy, config, None)? {
+        if !config.exists() {
+            save_location(config, &existing)?;
+        }
+        return Ok(());
+    }
+    let selected = validate_destination(selected, application)?;
+    save_location(config, &selected)
+}
+
 pub fn validate_destination(directory: &Path, application: &Path) -> Result<PathBuf> {
     absolute(directory)?;
     let app = fs::canonicalize(application)?;

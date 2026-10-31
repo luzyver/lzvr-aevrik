@@ -16,6 +16,7 @@ export class Backend {
   packages(): Promise<RuntimePackage[]> {return this.invoke('list_packages');}
   refreshCatalog():Promise<CatalogUpdate> {return this.invoke('refresh_catalog');}
   checkAppUpdate():Promise<AppUpdate> {return this.invoke('check_app_update');}
+  installAppUpdate(commit:string):Promise<void> {return this.invoke('install_app_update',{commit});}
   openReleasePage(tag:string):Promise<void> {return this.invoke('open_release_page',{tag});}
   installRoot():Promise<string> {return this.invoke('package_install_root');}
   installPackage(id:string,destination?:string): Promise<void> {return this.invoke('install_package',destination===undefined?{id}:{id,destination});}

@@ -35,8 +35,12 @@ fn open_workspace(
         // Persist only after the chosen workspace can actually be opened.
         bootstrap.remember(&directory)?;
         app.manage(storage);
-        app.manage(AppState(Arc::new(Mutex::new(engine))));
-        app.manage(PackageState(Arc::new(packages)));
+        let operations = Arc::new(crate::operations::Operations::default());
+        app.manage(AppState(
+            Arc::new(Mutex::new(engine)),
+            Arc::clone(&operations),
+        ));
+        app.manage(PackageState(Arc::new(packages), operations));
     }
     // Retain initialized state and its lock if WebView creation fails. A retry
     // recreates the window, never removes state referenced by IPC handlers.

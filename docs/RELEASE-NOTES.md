@@ -4,9 +4,10 @@
 - Uninstall a specific managed version with explicit confirmation. Referenced runtimes and junction/symlink trees are protected. Remove stopped service registrations without deleting their files.
 - Expand to 19 products and 179 pinned releases, including .NET SDK, .NET Runtime, ASP.NET Core Runtime, Zig and Nim. Nim requires a separate C compiler.
 - Check for runtime catalog updates and install newer versions into a chosen folder without replacing existing versions or switching services.
-- Check Aevrik releases in Settings and open the download page for manual installation.
+- Download and install Aevrik updates from Settings with size and SHA-256 verification. Setup reopens Aevrik after installation and keeps the selected data folder.
+- Choose the data folder during Windows Setup. Upgrades reuse saved locations; portable copies retain first-launch selection.
 - Stream downloads to disk with SHA-256/SHA-512 validation, a 2 GiB download limit and an 8 GiB extraction limit.
 - Adopt `id.luzyver.aevrik.desktop`; retain existing legacy metadata and runtime paths in place.
 - Build EXE/ZIP, run native smoke tests and publish tagged releases on GitHub-hosted Windows runners.
 
-Portable unsigned Windows x64 executable; WebView2 is required. Database initialization, graceful shutdown, automatic per-project switching, DNS/HTTPS and automatic app updates remain unavailable. Stop/Restart/exit terminate the owned process tree. Keep database data outside runtime installation folders.
+Unsigned Windows x64 Setup and portable downloads; WebView2 is required. Application updates are started explicitly from Settings. Database initialization, graceful shutdown, automatic per-project switching and DNS/HTTPS remain unavailable. Stop/Restart/exit terminate the owned process tree. Keep database data outside runtime installation folders.

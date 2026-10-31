@@ -1,6 +1,6 @@
 # Windows installation and data folders
 
-**Goal:** Setup → choose application folder → install; choose the data folder independently.
+**Goal:** Setup → choose data folder → choose application folder → install; upgrades retain the saved data folder.
 
 **Architecture:** Use Tauri's NSIS bundle for installation and removal. Store the selected data path in a small per-user location file, outside the selected data folder. Rust resolves the path before opening SQLite or starting the runtime manager. Settings schedules a folder switch for the next launch; existing files are never moved or deleted by a switch.
 
@@ -20,11 +20,21 @@
 
 ## Using Setup
 
-Download `Aevrik-<channel-or-version>-windows-x64-setup.exe` (for example `Aevrik-dev-windows-x64-setup.exe`). Open it normally, choose the application directory and install. `D:\Aevrik` is a suitable choice when that drive is available and writable. Setup installs for the current Windows user, creates shortcuts and an entry in **Settings → Apps → Installed apps**. It downloads WebView2 if the runtime is missing. The standalone EXE and ZIP are still portable; they do not show the Setup wizard.
+Download `Aevrik-<channel-or-version>-windows-x64-setup.exe` (for example `Aevrik-dev-windows-x64-setup.exe`). Open it normally, choose the data directory on the first page, then choose the application directory and install. For example, use `D:\AevrikData` for data and `D:\Aevrik` for the application. Setup installs for the current Windows user, creates shortcuts and an entry in **Settings → Apps → Installed apps**. It downloads WebView2 if the runtime is missing. The standalone EXE and ZIP are still portable; they retain the application's first-launch data picker.
 
-The bundle uses the [standard Tauri NSIS installer](https://v2.tauri.app/distribute/windows-installer/), including its directory-selection page. Normal installation is interactive; `/S` is reserved for silent installs and automated checks.
+The bundle extends the [standard Tauri NSIS installer](https://v2.tauri.app/distribute/windows-installer/) through `installer/data-folder.nsh`. Setup saves the selected location through the installed application's headless `--configure-data-directory` entry point; it does not create a database or WebView. Cancelling before installation saves no preference. Upgrades skip the data page and preserve existing preferences, including legacy workspaces. Invalid or inaccessible saved locations cause an error rather than replacement with an empty workspace.
 
-On first launch, Aevrik opens **Choose your data folder**. Type a path or use **Browse…**, then select **Open Aevrik**. **Use default folder** restores the Windows-profile path; **Exit** closes setup without creating a workspace. Use a separate directory such as `D:\AevrikData`. Invalid paths show an inline error so you can correct the selection. Existing Aevrik installations retain their prior data folder and skip this screen. **Settings → Data folder → Change folder** schedules another folder for the next launch; the current folder stays active until exit. **Keep current folder** cancels a pending change.
+Silent installs accept `/S /DATA="D:\AevrikData" /D=D:\Aevrik`; `/D` must be last and unquoted. Without `/DATA`, a fresh silent install uses the normal Windows-profile data location. An existing preference always wins over `/DATA`.
+
+Setup forwards silent mode to the configuration process. Configuration failures return a nonzero exit code without a dialog for `/S`; interactive installations show the error.
+
+## Updating from Settings
+
+Choose **Check for updates**, then **Download & install update**. Stop running services and finish runtime operations first. Aevrik rechecks the published build, downloads the Windows Setup artifact, and verifies its exact size and SHA-256 against the release's `build-info.json` over HTTPS. Changed rolling releases, missing metadata, interrupted downloads and checksum failures leave the running application in place and show a retryable error.
+
+After verification, Aevrik launches Setup in passive update mode for the current application directory, exits, and asks Setup to reopen it after installation. The data preference and external workspace remain in place. A temporary installer is retained in the Windows temp directory for the handoff. The downloads remain unsigned; checksum verification does not replace publisher code signing. Portable copies can open the release page and install Setup first.
+
+Portable copies without a saved workspace open **Choose your data folder** on first launch. Type a path or use **Browse…**, then select **Open Aevrik**. **Use default folder** restores the Windows-profile path; **Exit** closes setup without creating a workspace. Use a separate directory such as `D:\AevrikData`. Invalid paths show an inline error so you can correct the selection. Installed copies use the folder saved by Setup and go straight to the workspace. **Settings → Data folder → Change folder** schedules another folder for the next launch; the current folder stays active until exit. **Keep current folder** cancels a pending change.
 
 The first-launch screen uses a separate WebView cache under `%LOCALAPPDATA%\id.luzyver.aevrik.desktop\setup-webview`. It does not initialize the default workspace. After confirmation, the main window's WebView cache, metadata and default runtimes use the selected data folder.
 

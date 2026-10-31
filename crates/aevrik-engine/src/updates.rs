@@ -1,5 +1,7 @@
-//! Read-only release checks. Download URLs are fixed to the project repository.
+//! Release checks and verified Setup downloads, restricted to the project repository.
+mod download;
 use crate::packages::{PackageError, PackageResult};
+pub use download::{DownloadedInstaller, download_app_update};
 use serde::{Deserialize, Serialize};
 use std::{io::Read, time::Duration};
 
@@ -34,12 +36,12 @@ pub fn release_page(tag: &str) -> PackageResult<String> {
     Ok(format!("{REPO}/releases/tag/{tag}"))
 }
 
-pub(crate) fn fetch_json(url: &str, limit: usize) -> PackageResult<Vec<u8>> {
-    let client = reqwest::blocking::Client::builder()
+fn client(timeout: Duration) -> PackageResult<reqwest::blocking::Client> {
+    Ok(reqwest::blocking::Client::builder()
         .user_agent("Aevrik-Update-Check")
         .https_only(true)
         .connect_timeout(Duration::from_secs(10))
-        .timeout(Duration::from_secs(30))
+        .timeout(timeout)
         .redirect(reqwest::redirect::Policy::custom(|attempt| {
             if attempt.previous().len() >= 5 {
                 return attempt.error("Too many redirects");
@@ -54,8 +56,11 @@ pub(crate) fn fetch_json(url: &str, limit: usize) -> PackageResult<Vec<u8>> {
                 _ => attempt.error("Unexpected update server redirect"),
             }
         }))
-        .build()?;
-    let response = client
+        .build()?)
+}
+
+pub(crate) fn fetch_json(url: &str, limit: usize) -> PackageResult<Vec<u8>> {
+    let response = client(Duration::from_secs(30))?
         .get(url)
         .header(reqwest::header::ACCEPT, "application/json")
         .send()?;
@@ -92,6 +97,8 @@ struct BuildInfo {
     channel: String,
     commit: String,
     built_at: Option<u64>,
+    #[serde(default)]
+    artifacts: Vec<download::Artifact>,
 }
 
 #[derive(Serialize)]
@@ -156,6 +163,15 @@ pub fn check_app(
     commit: &str,
     built_at: u64,
 ) -> PackageResult<AppUpdate> {
+    check_release(channel, current, commit, built_at).map(|(update, _)| update)
+}
+
+fn check_release(
+    channel: &str,
+    current: &str,
+    commit: &str,
+    built_at: u64,
+) -> PackageResult<(AppUpdate, BuildInfo)> {
     release_download_base(channel)?;
     let endpoint = if channel == "stable" {
         format!("{API}/latest")
@@ -193,25 +209,26 @@ pub fn check_app(
     }
     let status = compare(channel, current, commit, built_at, &info)?;
     let message = match status {
-        "available" => {
-            "A newer build is available. Open the release page to download Windows Setup. Installation is manual."
-        }
+        "available" => "A newer build is available. Download and install it from Aevrik.",
         "current" => "You are using the published build for this channel.",
         "ahead" => "Your build is newer than the published release. No downgrade is offered.",
         _ => {
             "This release lacks enough build information to compare. You can inspect its release page."
         }
     };
-    Ok(AppUpdate {
-        channel: channel.into(),
-        current_version: current.into(),
-        latest_version: info.version,
-        current_commit: commit.into(),
-        latest_commit: info.commit,
-        tag: release.tag_name,
-        status: status.into(),
-        message: message.into(),
-    })
+    Ok((
+        AppUpdate {
+            channel: channel.into(),
+            current_version: current.into(),
+            latest_version: info.version.clone(),
+            current_commit: commit.into(),
+            latest_commit: info.commit.clone(),
+            tag: release.tag_name,
+            status: status.into(),
+            message: message.into(),
+        },
+        info,
+    ))
 }
 
 #[cfg(test)]
@@ -223,6 +240,47 @@ mod tests {
             channel: "dev".into(),
             commit: sha.into(),
             built_at: time,
+            artifacts: Vec::new(),
+        }
+    }
+    #[test]
+    fn installer_metadata_rejects_missing_duplicate_unsafe_and_oversize_artifacts() {
+        let mut remote = info("0.1.0-beta-1", "new", Some(200));
+        assert!(download::installer_artifact("dev", &remote).is_err());
+        let artifact = || download::Artifact {
+            name: "Aevrik-dev-windows-x64-setup.exe".into(),
+            bytes: 3,
+            sha256: "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad".into(),
+        };
+        remote.artifacts = vec![artifact()];
+        assert!(download::installer_artifact("dev", &remote).is_ok());
+        assert!(download::installer_artifact("beta", &remote).is_err());
+        remote.artifacts.push(artifact());
+        assert!(download::installer_artifact("dev", &remote).is_err());
+        remote.artifacts = vec![artifact()];
+        remote.artifacts[0].bytes = u64::MAX;
+        assert!(download::installer_artifact("dev", &remote).is_err());
+        remote.artifacts[0].bytes = 3;
+        remote.artifacts[0].sha256 = "invalid".into();
+        assert!(download::installer_artifact("dev", &remote).is_err());
+        remote.artifacts = vec![artifact()];
+        remote.artifacts[0].bytes = 0;
+        assert!(download::installer_artifact("dev", &remote).is_err());
+        remote.version = "../../other".into();
+        assert!(download::installer_artifact("stable", &remote).is_err());
+    }
+    #[test]
+    fn installer_bytes_must_match_size_and_hash_before_launch() {
+        let artifact = download::Artifact {
+            name: "setup.exe".into(),
+            bytes: 3,
+            sha256: "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad".into(),
+        };
+        let mut output = Vec::new();
+        download::copy_verified(&b"abc"[..], &mut output, &artifact).unwrap();
+        assert_eq!(output, b"abc");
+        for bytes in [&b"ab"[..], &b"abcd"[..], &b"abd"[..]] {
+            assert!(download::copy_verified(bytes, &mut Vec::new(), &artifact).is_err());
         }
     }
     #[test]

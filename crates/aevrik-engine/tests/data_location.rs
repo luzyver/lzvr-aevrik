@@ -4,6 +4,65 @@ use aevrik_engine::data_location::{
 use std::{fs, path::Path};
 
 #[test]
+fn installer_selection_is_used_on_first_launch_and_never_overwrites_saved_choice() {
+    use aevrik_engine::data_location::configure_installation;
+    let root = tempfile::tempdir().unwrap();
+    let app = root.path().join("app");
+    fs::create_dir(&app).unwrap();
+    let preferred = root.path().join("profile");
+    let legacy = root.path().join("legacy");
+    let config = preferred.join("data-location.json");
+    let selected = root.path().join("Data with spaces 日本語");
+    configure_installation(&preferred, &legacy, &config, &app, &selected).unwrap();
+    let before = fs::read(&config).unwrap();
+    assert_eq!(
+        resolve_location(&preferred, &legacy, &config, None).unwrap(),
+        Some(fs::canonicalize(&selected).unwrap())
+    );
+    configure_installation(
+        &preferred,
+        &legacy,
+        &config,
+        &app,
+        &root.path().join("other"),
+    )
+    .unwrap();
+    assert_eq!(fs::read(&config).unwrap(), before);
+    assert!(!root.path().join("other").exists());
+    fs::remove_dir_all(&selected).unwrap();
+    assert!(configure_installation(&preferred, &legacy, &config, &app, &preferred).is_err());
+    assert_eq!(fs::read(&config).unwrap(), before);
+}
+
+#[test]
+fn installer_rejects_invalid_or_locked_selection_and_preserves_legacy_workspace() {
+    use aevrik_engine::data_location::configure_installation;
+    let root = tempfile::tempdir().unwrap();
+    let app = root.path().join("app");
+    fs::create_dir(&app).unwrap();
+    let preferred = root.path().join("profile");
+    let legacy = root.path().join("legacy");
+    let config = preferred.join("data-location.json");
+    assert!(configure_installation(&preferred, &legacy, &config, &app, &app).is_err());
+    assert!(!config.exists());
+    let lock = fs::File::create(preferred.join(".location.lock")).unwrap();
+    lock.try_lock().unwrap();
+    assert!(
+        configure_installation(&preferred, &legacy, &config, &app, &root.path().join("new"))
+            .is_err()
+    );
+    drop(lock);
+    fs::create_dir(&legacy).unwrap();
+    fs::write(legacy.join("aevrik.sqlite"), b"preserved").unwrap();
+    configure_installation(&preferred, &legacy, &config, &app, &root.path().join("new")).unwrap();
+    assert_eq!(read_location(&config).unwrap(), Some(legacy.clone()));
+    assert_eq!(
+        fs::read(legacy.join("aevrik.sqlite")).unwrap(),
+        b"preserved"
+    );
+}
+
+#[test]
 fn selection_survives_relaunch_without_changing_previous_data() {
     let root = tempfile::tempdir().unwrap();
     let app = root.path().join("application");

@@ -9,6 +9,38 @@ from pywinauto import Application
 from check_native import free_port, endpoint, OUT
 
 
+def check_installed_startup(executable, expected):
+    """Setup has already selected data; launch must go directly to the workspace."""
+    if os.environ.get('GITHUB_ACTIONS') != 'true':
+        raise RuntimeError('Run this test only on an isolated GitHub Windows runner.')
+    port=free_port()
+    env=os.environ.copy()
+    env.pop('AEVRIK_DATA_DIR',None)
+    env.pop('WEBVIEW2_USER_DATA_FOLDER',None)
+    env['WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS']=f'--remote-debugging-port={port}'
+    process=subprocess.Popen([str(executable)],env=env,cwd=executable.parent)
+    try:
+        with sync_playwright() as p:
+            browser=p.chromium.connect_over_cdp(endpoint(port,process))
+            try:
+                deadline=time.monotonic()+20
+                page=None
+                while page is None and time.monotonic()<deadline:
+                    page=next((page for context in browser.contexts for page in context.pages),None)
+                    if page is None: time.sleep(.1)
+                assert page is not None,'Installed app did not open a workspace'
+                expect(page.locator('#engine-status')).to_have_text('Engine connected',timeout=20000)
+                info=page.evaluate("window.__TAURI_INTERNALS__.invoke('storage_info')")
+                assert Path(info['current']).resolve()==expected.resolve()
+                expect(page.locator('#setup-open')).to_have_count(0)
+                page.locator('[data-window="close"]').click()
+                process.wait(timeout=20)
+            finally:
+                browser.close()
+    finally:
+        if process.poll() is None: process.terminate();process.wait(timeout=10)
+
+
 def check(executable, scratch):
     if os.environ.get('GITHUB_ACTIONS') != 'true':
         raise RuntimeError('Run this test only on an isolated GitHub Windows runner.')

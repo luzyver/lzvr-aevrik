@@ -8,7 +8,9 @@ const CHANNEL: &str = env!("AEVRIK_CHANNEL");
 #[tauri::command]
 pub async fn refresh_catalog(state: State<'_, PackageState>) -> Result<CatalogUpdate, String> {
     let manager = Arc::clone(&state.0);
+    let operations = Arc::clone(&state.1);
     tauri::async_runtime::spawn_blocking(move || {
+        let _operation = operations.enter()?;
         manager.refresh_catalog(CHANNEL).map_err(|e| e.to_string())
     })
     .await

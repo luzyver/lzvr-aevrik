@@ -2,7 +2,10 @@ use aevrik_engine::{Engine, ProjectInput, ServiceInput, Snapshot};
 use std::sync::{Arc, Mutex};
 use tauri::State;
 
-pub struct AppState(pub Arc<Mutex<Engine>>);
+pub struct AppState(
+    pub Arc<Mutex<Engine>>,
+    pub Arc<crate::operations::Operations>,
+);
 
 #[tauri::command]
 pub async fn remove_service(state: State<'_, AppState>, id: String) -> Result<(), String> {
@@ -17,7 +20,9 @@ async fn with_engine<T: Send + 'static>(
     operation: impl FnOnce(&mut Engine) -> Result<T, String> + Send + 'static,
 ) -> Result<T, String> {
     let engine = Arc::clone(&state.0);
+    let operations = Arc::clone(&state.1);
     tauri::async_runtime::spawn_blocking(move || {
+        let _operation = operations.enter()?;
         let mut engine = engine.lock().map_err(|_| "Engine state is unavailable.")?;
         operation(&mut engine)
     })

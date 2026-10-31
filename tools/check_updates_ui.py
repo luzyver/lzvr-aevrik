@@ -17,7 +17,13 @@ window.__TAURI_INTERNALS__.invoke=async(command,args)=>{
  }
  if(command==='check_app_update'){
   if(window.failApp)throw 'GitHub rate limit. Try again later.';
-  return {channel:'dev',currentVersion:'0.1.0-beta-1',latestVersion:'0.1.0-beta-1',currentCommit:'1234567old',latestCommit:'abcdefgnew',tag:'dev',status:'available',message:'A newer build is available. Installation is manual.'};
+  return {channel:'dev',currentVersion:'0.1.0-beta-1',latestVersion:'0.1.0-beta-1',currentCommit:'1234567old',latestCommit:'abcdefgnew',tag:'dev',status:window.appStatus||'available',message:'A newer build is available.'};
+ }
+ if(command==='install_app_update'){
+  window.updateCalls.push({command,...args});
+  await new Promise(r=>setTimeout(r,500));
+  if(window.failInstall)throw 'Installer checksum mismatch. Try again.';
+  return;
  }
  if(command==='open_release_page'){window.updateCalls.push(args);return;}
  return previous(command,args);
@@ -60,6 +66,20 @@ def run():
   expect(page.locator('#app-update-status')).to_contain_text('newer build')
   page.locator('[data-action="open-app-release"]').click()
   assert page.evaluate('window.updateCalls.at(-1)')=={'tag':'dev'}
+  install=page.locator('[data-action="install-app-update"]')
+  expect(install).to_have_text('Download & install update')
+  page.evaluate('window.failInstall=true')
+  install.click()
+  expect(install).to_be_disabled()
+  expect(page.locator('[data-action="check-app-update"]')).to_be_disabled()
+  # Even a second dispatched action must not start another IPC request.
+  page.evaluate("document.querySelector('[data-action=install-app-update]').dispatchEvent(new MouseEvent('click',{bubbles:true}))")
+  assert page.evaluate("window.updateCalls.filter(call=>call.command==='install_app_update').length")==1
+  expect(page.locator('#app-update-status')).to_contain_text('Downloading')
+  expect(page.locator('#app-update-status')).to_contain_text('checksum mismatch')
+  expect(install).to_be_enabled()
+  page.evaluate('window.failInstall=false')
+  page.locator('[data-action="check-app-update"]').click()
   page.locator('#app-update-section').scroll_into_view_if_needed()
   page.screenshot(path=str(OUT/'app-updates-800.png'))
   page.set_viewport_size({'width':1280,'height':820})
@@ -67,6 +87,16 @@ def run():
   page.locator('#app-update-section').scroll_into_view_if_needed()
   page.screenshot(path=str(OUT/'app-updates-light.png'))
   expect(page.locator('#app-update-status')).to_contain_text('newer build')
+  for status in ['current','ahead','unknown']:
+   page.evaluate('status=>window.appStatus=status',status)
+   page.locator('[data-action="check-app-update"]').click()
+   expect(install).to_have_count(0)
+  expect(page.locator('[data-action="open-app-release"]')).to_be_visible()
+  page.evaluate('window.appStatus="available"')
+  page.locator('[data-action="check-app-update"]').click()
+  install.click()
+  expect(page.locator('#app-update-status')).to_contain_text('Opening Windows Setup')
+  assert page.evaluate('window.updateCalls.at(-1)')=={'command':'install_app_update','commit':'abcdefgnew'}
   assert not errors,errors
   browser.close()
  print('Runtime/app update UI contracts passed')
