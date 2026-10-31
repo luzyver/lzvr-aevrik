@@ -59,6 +59,8 @@ impl PackageManager {
             .into_iter()
             .find(|p| p.id == id)
             .ok_or_else(|| invalid("Unknown catalog package."))?;
+        let _windows_lock = super::defaults::PathChangeLock::acquire()?;
+        let _defaults_lock = self.package_lock("runtime-defaults")?;
         let _lock = self.package_lock(id)?;
         let root = self.package_root(id)?;
         let directory = root.join(&package.id).join(&package.version);
@@ -95,6 +97,7 @@ impl PackageManager {
             ));
         }
         inspect_tree(&directory)?;
+        super::defaults::DefaultsSnapshot::read()?.protect(&canonical_dir)?;
         // Only the exact marker-owned version is removed, never its root, sibling versions or external data.
         fs::remove_dir_all(&canonical_dir)?;
         self.forget_location(id)?;

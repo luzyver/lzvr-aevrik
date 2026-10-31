@@ -4,6 +4,7 @@ export interface RuntimePackage {
  status:'available'|'downloading'|'verifying'|'installed'|'failed';
  bytes:number;total:number|null;error:string|null;path:string|null;
  installDirectory?:string|null;
+ terminalDefault?:{supported:boolean;active:boolean;onPath:boolean};
 }
 export const catalog:{items:RuntimePackage[];loaded:boolean;error:string;category:string;pending:Set<string>;selected:Record<string,string>}={
  items:[],loaded:false,error:'',category:'All',pending:new Set(),selected:{}

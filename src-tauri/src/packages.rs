@@ -1,8 +1,42 @@
-use aevrik_engine::packages::{PackageManager, PackageView};
+use aevrik_engine::packages::{DefaultPlan, PackageManager, PackageView, Scope};
 use std::sync::Arc;
 use tauri::State;
 
 pub struct PackageState(pub Arc<PackageManager>);
+
+#[tauri::command]
+pub async fn preview_runtime_default(
+    state: State<'_, PackageState>,
+    id: String,
+    removing: bool,
+) -> Result<DefaultPlan, String> {
+    let manager = Arc::clone(&state.0);
+    tauri::async_runtime::spawn_blocking(move || {
+        manager
+            .preview_default(&id, removing)
+            .map_err(|e| e.to_string())
+    })
+    .await
+    .map_err(|e| e.to_string())?
+}
+
+#[tauri::command]
+pub async fn apply_runtime_default(
+    state: State<'_, PackageState>,
+    id: String,
+    removing: bool,
+    scope: Scope,
+    fingerprint: String,
+) -> Result<(), String> {
+    let manager = Arc::clone(&state.0);
+    tauri::async_runtime::spawn_blocking(move || {
+        manager
+            .apply_default(&id, removing, scope, &fingerprint)
+            .map_err(|e| e.to_string())
+    })
+    .await
+    .map_err(|e| e.to_string())?
+}
 
 #[tauri::command]
 pub async fn list_packages(state: State<'_, PackageState>) -> Result<Vec<PackageView>, String> {

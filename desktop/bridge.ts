@@ -5,6 +5,7 @@ export interface LogEntry {timestamp:number;service:string;level:string;message:
 export interface Snapshot {projects:Project[];services:Service[];logs:LogEntry[];theme:string}
 export interface StorageInfo {current:string;next:string|null;application:string;overridden:boolean}
 export interface CatalogUpdate {added:number;total:number}
+export interface DefaultPlan {scope:'user'|'machine';removing:boolean;executable:string;currentExecutable:string|null;directories:string[];fingerprint:string}
 export interface AppUpdate {channel:string;currentVersion:string;latestVersion:string;currentCommit:string;latestCommit:string;tag:string;status:'available'|'current'|'ahead'|'unknown';message:string}
 export class Backend {
   private invoke: Invoke;
@@ -19,6 +20,8 @@ export class Backend {
   installRoot():Promise<string> {return this.invoke('package_install_root');}
   installPackage(id:string,destination?:string): Promise<void> {return this.invoke('install_package',destination===undefined?{id}:{id,destination});}
   uninstallPackage(id:string):Promise<void> {return this.invoke('uninstall_package',{id});}
+  previewDefault(id:string,removing:boolean):Promise<DefaultPlan> {return this.invoke('preview_runtime_default',{id,removing});}
+  applyDefault(id:string,plan:DefaultPlan):Promise<void> {return this.invoke('apply_runtime_default',{id,scope:plan.scope,removing:plan.removing,fingerprint:plan.fingerprint});}
   async service(id:string,action:'start'|'stop'|'restart'):Promise<Snapshot> {
     await this.invoke('control_service',{id,action});
     return this.snapshot();

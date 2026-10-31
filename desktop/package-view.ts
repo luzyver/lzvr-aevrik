@@ -13,17 +13,20 @@ function row(group:PackageGroup) {
  const installed=all.filter(v=>v.status==='installed').length;
  const update=availableUpdate(all);
  const otherActive=all.filter(v=>v.id!==p.id&&(catalog.pending.has(v.id)||['downloading','verifying'].includes(v.status)));
- const control=p.status==='installed'?`<button class="button" data-configure="${esc(p.id)}" ${busy?'disabled':''}>Configure service</button><button class="button danger" data-uninstall="${esc(p.id)}" ${busy?'disabled':''}>Uninstall</button>`:
+ const terminal=p.terminalDefault;
+ const defaultControl=terminal?.supported?`${!terminal.active?`<button class="button" data-default="${esc(p.id)}" ${busy?'disabled':''}>Set as default</button>`:''}${terminal.onPath?`<button class="button" data-clear-default="${esc(p.id)}" ${busy?'disabled':''}>Remove from PATH</button>`:''}`:'';
+ const control=p.status==='installed'?`${defaultControl}<button class="button" data-configure="${esc(p.id)}" ${busy?'disabled':''}>Configure service</button><button class="button danger" data-uninstall="${esc(p.id)}" ${busy||terminal?.onPath?'disabled':''} ${terminal?.onPath?'title="Remove this version from PATH before uninstalling."':''}>Uninstall</button>`:
   `<button class="button ${busy?'':'primary'}" data-install="${esc(p.id)}" ${busy?'disabled':''}>${busy?'Installing…':p.status==='failed'?'Retry':'Install'}</button>`;
  return `<article class="package-row" data-family="${esc(family)}" data-package="${esc(p.id)}"><span class="resource-icon">${icon(p.category==='Database'?'database':p.category==='Web server'?'server':'package')}</span>
  <div class="package-info"><div class="package-name"><h2>${esc(p.name)}</h2><span class="package-kind">${esc(p.category)}</span><span class="version-count">${all.length} versions${installed?` · ${installed} installed`:''}</span></div>
  <p>${esc(p.description)}</p>
- <div class="package-version-line"><label class="package-version">Version <select data-package-version="${esc(family)}" aria-label="${esc(p.name)} version">${versions.map(v=>`<option value="${esc(v.id)}" ${v.id===p.id?'selected':''}>${esc(v.version)}${v.channel?' · '+esc(v.channel):''}${v.status==='installed'?' · Installed':''}</option>`).join('')}</select></label><span class="package-meta">Windows ${esc(p.architecture??'x64')} · ${esc(p.source)}</span></div>
+ <div class="package-version-line"><label class="package-version">Version <select data-package-version="${esc(family)}" aria-label="${esc(p.name)} version">${versions.map(v=>`<option value="${esc(v.id)}" ${v.id===p.id?'selected':''}>${esc(v.version)}${v.channel?' · '+esc(v.channel):''}${v.terminalDefault?.active?' · Default':v.status==='installed'?' · Installed':''}</option>`).join('')}</select></label><span class="package-meta">Windows ${esc(p.architecture??'x64')} · ${esc(p.source)}</span></div>
  ${p.path?`<code class="runtime-path">${esc(p.path)}</code>`:''}
+ ${terminal?.onPath?`<p class="default-hint">${terminal.active?'Selected for new terminals.':'On PATH; another runtime takes priority.'} Remove from PATH to enable uninstall.</p>`:''}
  ${busy?`<div class="package-progress"><progress aria-label="${esc(p.name)} ${esc(p.version)} installation" ${downloading&&p.total?`value="${p.bytes}" max="${p.total}"`:''}></progress><span>${esc(downloading?'Downloading · '+progress:progress)}</span></div>`:''}
  ${otherActive.length?`<p class="other-install">Also installing: ${otherActive.map(v=>esc(v.version)).join(', ')}</p>`:''}
  ${p.error?`<p class="package-error" role="alert">${esc(p.error)}</p>`:''}</div>
- <div class="package-actions"><span class="package-status">${p.status==='installed'?'Installed':p.status==='failed'?'Installation failed':busy?'In progress':'Ready to install'}</span>${control}${update?`<button class="button" data-update-package="${esc(update.id)}" ${catalog.pending.has(update.id)||['downloading','verifying'].includes(update.status)?'disabled':''}>Install update ${esc(update.version)}</button>`:''}</div></article>`;
+ <div class="package-actions"><span class="package-status">${p.status==='installed'?(terminal?.active?'Terminal default':'Installed'):p.status==='failed'?'Installation failed':busy?'In progress':'Ready to install'}</span>${control}${update?`<button class="button" data-update-package="${esc(update.id)}" ${catalog.pending.has(update.id)||['downloading','verifying'].includes(update.status)?'disabled':''}>Install update ${esc(update.version)}</button>`:''}</div></article>`;
 }
 export function packagesView() {
  const filtered=groups(state.query);

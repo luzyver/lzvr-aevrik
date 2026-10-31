@@ -29,6 +29,10 @@ main>.workspace-log{flex:0 0 clamp(96px,23%,168px);margin-top:12px}
 @media(max-width:1050px){.split-view{grid-template-columns:minmax(0,1fr) 250px}main{padding:18px 16px 0}.sidebar{width:170px}.status-context{display:none!important}}
 @media(max-width:960px){.sidebar{width:57px}}
 .catalog-update-bar {display:flex;align-items:center;gap:12px;padding:12px 0;flex-shrink:0;}
+.default-summary{margin:16px 0;font-size:12px;line-height:1.6}.default-summary dt{color:var(--muted);margin-top:12px}.default-summary dd{margin:4px 0 0;overflow-wrap:anywhere}.default-summary code{font-size:11px}
+#package-default{display:flex;flex-direction:column;max-height:calc(100dvh - 48px)}#package-default .dialog-body{overflow:auto;min-height:0}#package-default .dialog-header,#package-default .dialog-footer{flex-shrink:0}#package-default .dialog-header h2{font-size:18px}
+#package-default>.form-error{padding:12px 24px;margin:0;flex-shrink:0;max-height:100px;overflow:auto;line-height:1.6}
+.package-info>.default-hint{font-size:11px;color:var(--accent);margin-top:12px}
 .catalog-update-bar p {margin:0;line-height:1.5;font-size:12px;overflow-wrap:anywhere;}
 .catalog-update-bar .button {flex-shrink:0;}
 .update-error {color:var(--danger);}

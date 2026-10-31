@@ -5,7 +5,9 @@ mod catalog_update;
 #[cfg(test)]
 mod catalog_update_tests;
 pub use catalog_update::CatalogUpdate;
+mod defaults;
 mod download;
+pub use defaults::{DefaultPlan, DefaultStatus, Scope};
 mod locations;
 mod removal;
 #[cfg(test)]
@@ -52,6 +54,7 @@ pub struct PackageView {
     error: Option<String>,
     path: Option<String>,
     install_directory: Option<String>,
+    terminal_default: DefaultStatus,
 }
 pub struct PackageManager {
     root: PathBuf,
@@ -67,6 +70,7 @@ impl PackageManager {
     }
     pub fn list(&self) -> PackageResult<Vec<PackageView>> {
         let roots = self.package_roots()?;
+        let defaults = defaults::DefaultsSnapshot::read()?;
         let progress = self
             .progress
             .lock()
@@ -79,6 +83,7 @@ impl PackageManager {
                 let path = archive::installed(root, &package);
                 let current = progress.get(&package.id).cloned().unwrap_or_default();
                 PackageView {
+                    terminal_default: defaults.status(&package.family, path.as_deref()),
                     install_directory: path.as_ref().map(|_| {
                         root.join(&package.id)
                             .join(&package.version)

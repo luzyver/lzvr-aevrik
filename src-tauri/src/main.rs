@@ -29,6 +29,8 @@ fn main() {
             commands::pick_path,
             commands::remove_service,
             packages::list_packages,
+            packages::preview_runtime_default,
+            packages::apply_runtime_default,
             packages::install_package,
             packages::uninstall_package,
             packages::package_install_root

@@ -13,7 +13,7 @@ import {render} from './views';
 import {hydrate,toast,esc} from './ui';
 import {dialog,openForm,registration} from './forms';
 import {catalog,PackageController} from './packages';
-import {installDialog,uninstallDialog,removeServiceDialog} from './package-dialogs';
+import {installDialog,uninstallDialog,removeServiceDialog,defaultDialog,defaultPlans} from './package-dialogs';
 import {storage,loadStorage,openDataFolderDialog} from './storage';
 import {checkRuntimeUpdates,checkAppUpdate,appUpdates} from './updates';
 
@@ -24,6 +24,8 @@ document.querySelector<HTMLImageElement>('.window-title img')!.src=markUrl;
 let polling=false;
 let lastSnapshot='';
 let propertiesDirty=false;
+let defaultPreviewPending=false;
+dialog.addEventListener('cancel',event=>{if(dialog.querySelector('[data-submitting="true"]'))event.preventDefault();});
 const connection=document.querySelector<HTMLDivElement>('#connection-error')!;
 function failure(error:unknown) {return error instanceof Error?error.message:String(error);}
 function connected() {connection.hidden=true;}
@@ -76,6 +78,14 @@ document.addEventListener('click',async event=>{
    if(item&&!dialog.open){const root=await backend.installRoot();if(!dialog.open)installDialog(item,root);}
   }
   if(target.dataset.uninstall){const item=catalog.items.find(p=>p.id===target.dataset.uninstall);if(item)uninstallDialog(item);}
+  if((target.dataset.default||target.dataset.clearDefault)&&!defaultPreviewPending&&!dialog.open){
+   const item=catalog.items.find(p=>p.id===(target.dataset.default||target.dataset.clearDefault));
+   if(item){
+    defaultPreviewPending=true;target.setAttribute('disabled','');
+    try {const plan=await backend.previewDefault(item.id,!!target.dataset.clearDefault);if(!dialog.open)defaultDialog(item,plan);}
+    finally {defaultPreviewPending=false;target.removeAttribute('disabled');}
+   }
+  }
   if(target.dataset.configure){
    const item=catalog.items.find(p=>p.id===target.dataset.configure);
    if(item?.path){
@@ -131,12 +141,26 @@ document.addEventListener('change',event=>{
 });
 document.addEventListener('submit',async event=>{
  const form=event.target as HTMLFormElement;
- if(!['registration','project-properties','package-install','package-uninstall','service-remove','data-location'].includes(form.id))return;
+ if(!['registration','project-properties','package-install','package-uninstall','package-default','service-remove','data-location'].includes(form.id))return;
  event.preventDefault();
- if(state.busy)return;
+ if(state.busy||form.dataset.submitting==='true')return;
  const submit=form.querySelector<HTMLButtonElement>('[type="submit"]')!;submit.disabled=true;
  try {
-  if(form.id==='data-location') {
+  if(form.id==='package-default') {
+   const plan=defaultPlans.get(form);
+   if(!plan)throw new Error('Close this dialog and select the runtime again.');
+   form.dataset.submitting='true';form.setAttribute('aria-busy','true');
+   form.querySelectorAll<HTMLButtonElement>('button').forEach(b=>b.disabled=true);
+   const error=form.querySelector('#form-error');if(error)error.textContent='';
+   try {
+    await backend.applyDefault(form.dataset.id!,plan);
+    await packages.refresh();dialog.close();render();
+    toast(plan.removing?'PATH entry removed. Restart your terminal or editor.':'Terminal default saved. Restart your terminal or editor.');
+   } finally {
+    delete form.dataset.submitting;form.removeAttribute('aria-busy');
+    form.querySelectorAll<HTMLButtonElement>('button').forEach(b=>b.disabled=false);
+   }
+  } else if(form.id==='data-location') {
    storage.info=await backend.setDataDirectory(String(new FormData(form).get('directory')??'').trim());
    dialog.close();render();toast(storage.info.next?'Data folder saved. Close and reopen Aevrik to apply it.':'Current data folder retained.');
    document.querySelector('#storage-next')?.scrollIntoView({block:'nearest'});
