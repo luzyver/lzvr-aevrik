@@ -1,53 +1,35 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 mod commands;
 mod packages;
+mod storage;
 use aevrik_engine::Engine;
 use commands::AppState;
 use std::sync::{Arc, Mutex};
 use tauri::Manager;
-struct AppDataLock {
-    _file: std::fs::File,
-}
 
 fn main() {
     let app = tauri::Builder::default()
         .setup(|app| {
-            let directory = match std::env::var_os("AEVRIK_DATA_DIR") {
-                Some(value) => {
-                    let path = std::path::PathBuf::from(value);
-                    if !path.is_absolute() {
-                        return Err("AEVRIK_DATA_DIR must be an absolute directory.".into());
-                    }
-                    path
-                }
-                None => {
-                    let preferred = app.path().app_data_dir()?;
-                    let legacy = preferred
-                        .parent()
-                        .ok_or("Application data parent is unavailable.")?
-                        .join("dev.aevrik.desktop");
-                    aevrik_engine::data_directory(&preferred, &legacy)
-                }
+            let Some((storage, directory)) = storage::initialize(app)? else {
+                app.handle().exit(0);
+                return Ok(());
             };
-            std::fs::create_dir_all(&directory)?;
-            let lock = std::fs::OpenOptions::new()
-                .read(true)
-                .write(true)
-                .create(true)
-                .truncate(false)
-                .open(directory.join(".aevrik.lock"))?;
-            lock.try_lock().map_err(
-                |_| "Another Aevrik instance is using this data folder. Close it first.",
-            )?;
-            app.manage(AppDataLock { _file: lock });
+            app.manage(storage);
             let path = directory.join("aevrik.sqlite");
             app.manage(AppState(Arc::new(Mutex::new(Engine::open(&path)?))));
             app.manage(packages::PackageState(Arc::new(
                 aevrik_engine::packages::PackageManager::new(directory.join("runtimes"))?,
             )));
+            tauri::WebviewWindowBuilder::from_config(app, &app.config().app.windows[0])?
+                .data_directory(
+                    std::path::PathBuf::from(storage::display(&directory)).join("webview"),
+                )
+                .build()?;
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
+            storage::storage_info,
+            storage::set_data_directory,
             commands::snapshot,
             commands::add_project,
             commands::register_service,

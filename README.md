@@ -4,11 +4,11 @@ Aevrik is a Windows desktop application built with Rust + Tauri 2, with a graphi
 
 Version 0.1.0-beta-1 adds selectable runtime folders, guarded uninstall and a larger catalog to the runtime installer and foreground process manager. See the remaining limitations below. The source is prepared for hosted builds; old local EXE/ZIP artifacts have been removed during cleanup.
 
-Current development branch: `dev`. Successful pushes update one rolling GitHub prerelease with tag `dev`, replacing its EXE/ZIP assets. The application version remains `0.1.0-beta-1`; numbered milestone tags follow `v0.1.0-beta-1`, `v0.1.0-beta-2`, and so on. `master` is reserved for the later stable phase.
+Development flows from feature/fix branches to `dev`, then `beta`, then the default branch `master`. Successful pushes to `dev` and `beta` update their own rolling GitHub prereleases with matching tags and replace their EXE/ZIP assets. Feature/fix branch pushes do not trigger CI; pull requests do. Pushes to `master` automatically plan a stable version from Conventional Commits, build/test it, then create its tag and release. The first stable version is `0.1.0`; later `fix`/`perf`, `feat`, and breaking changes increment patch, minor, and major respectively. Maintenance-only commits do not publish a new version. The development source remains `0.1.0-beta-1`; CI stamps stable build versions without committing generated changes. Numbered beta milestones remain available separately.
 
 ## Run the desktop application
 
-Download the EXE or ZIP from a successful GitHub Actions run or tagged GitHub Release. The workflow builds and tests on a Windows runner, so no release compilation is needed on your laptop. See [GitHub build and release](docs/GITHUB-RELEASE.md). This workspace has no Git remote yet; hosted verification has not run.
+Download the **`-setup.exe`** from a successful GitHub Actions run or GitHub Release for the installation wizard. It lets you choose the application folder, such as `D:\Aevrik`, and registers an uninstaller in Windows Settings. The separate EXE/ZIP remain portable downloads. The workflow builds and tests on a Windows runner, so no release compilation is needed on your laptop. See [GitHub build and release](docs/GITHUB-RELEASE.md) for channels and verification boundaries.
 
 Development prerequisites:
 - Rust **1.99.1**, target `x86_64-pc-windows-msvc`, installed with rustup. The repository pins this version.
@@ -25,10 +25,12 @@ npm ci
 npm run desktop:dev
 ```
 
-The hosted build produces an unsigned portable executable and ZIP. The target computer needs WebView2, but does not need Rust or Node.js.
+The hosted build produces an unsigned Setup EXE plus portable EXE/ZIP. Setup installs WebView2 if needed; portable users need it installed already. Rust and Node.js are not needed to run either distribution. See [installation and data folders](docs/INSTALLATION.md).
 
 ## What works
 
+- Windows Setup with a selectable application folder and a registered uninstaller.
+- First-launch data-folder selection and **Settings → Data folder → Change folder**; changes apply on the next launch.
 - Actual native window minimize, maximize, drag and close.
 - Fixed desktop chrome and workspace; lists, properties and output scroll independently.
 - An offline-visible catalog of 14 products and 140 selectable versions: Caddy, nginx, PHP, Node.js, Python, Go, Java (Temurin), Bun, Deno, MariaDB, MongoDB, DuckDB, SQLite and Mailpit, with HTTPS downloads, pinned SHA-256 verification, progress and retry.
@@ -61,21 +63,23 @@ An expected port is an availability preflight on 127.0.0.1; it does not configur
 
 ## Storage
 
-Application identifier: `id.luzyver.aevrik.desktop`. Fresh metadata: `%APPDATA%\id.luzyver.aevrik.desktop\aevrik.sqlite`.
+Application identifier: `id.luzyver.aevrik.desktop`. On a fresh launch, choose a data folder or accept `%APPDATA%\id.luzyver.aevrik.desktop`. For example, use `D:\Aevrik` for the application and `D:\AevrikData` for data. SQLite metadata, browser cache and the initial runtime folder use the selected data location. A small `data-location.json` preference stays in the Windows application-config folder so Aevrik can find it after relaunch.
+
+**Settings → Data folder → Change folder** schedules a switch for the next launch. The UI shows both the current folder and any pending selection, with **Keep current folder** to undo it. This switches workspaces; it does not migrate existing databases, projects or installed runtimes. Choose the old folder to reopen its registrations. An unavailable saved drive produces an error instead of silently opening an empty workspace.
 
 When the new location has no database but `%APPDATA%\dev.aevrik.desktop` contains the old database, Aevrik keeps using that legacy directory in place. Close older Aevrik windows before opening 0.1.0-beta-1. Existing runtime and project paths remain valid; nothing is copied or silently moved.
 
-The initial runtime folder is `<metadata-directory>\runtimes`. Each installation can use a different absolute folder, including `D:\Aevrik\runtimes`, with files under `<chosen-folder>\<package-id>\<version>`. A small index records the last choice and every installed version's location. The executable itself can also be kept on D:. Choosing a runtime folder does not move metadata or existing versions.
+The initial runtime folder is `<metadata-directory>\runtimes`. Each installation can use a different absolute folder, including `D:\AevrikData\runtimes`, with files under `<chosen-folder>\<package-id>\<version>`. A small index records the last choice and every installed version's location. The executable itself can also be kept on D:. Choosing a runtime folder does not move metadata or existing versions.
 
 No global PATH entries, system services or externally managed runtimes are changed. Installed packages remain available after reopening. Interrupted downloads can be retried; a forced exit can leave a `.download-*` or `.install-*` temporary file/folder, never an Installed entry.
 
 **Uninstall deletes everything inside the selected version folder.** Keep databases and personal configuration outside runtime folders. Removal is blocked for service/project references, mismatched ownership markers, nested managed installations, symlinks and junctions. Stop the service and use **Remove registration** first; this preserves files and unlinks projects.
 
-For an isolated or portable metadata directory, set `AEVRIK_DATA_DIR` to an absolute directory before launch. The application creates that directory. Service registrations persist, but processes do not start automatically after reopening. Logs are session-only. The app needs no administrator privileges for its implemented features.
+For an isolated or portable metadata directory, set `AEVRIK_DATA_DIR` to an absolute directory before launch. The application creates that directory. The override takes precedence over the saved preference and disables folder changes in Settings for that session. Service registrations persist, but processes do not start automatically after reopening. Logs are session-only. The app needs no administrator privileges for its implemented features.
 
 ## Not implemented yet
 
-Automatic runtime updates and catalog refresh, cancel/resume, service-registration editing, automatic per-project configuration, DNS/hosts/proxy routing, HTTPS certificates, database initialization/administration, graceful service shutdown, system tray, start with Windows, installers, signing and automatic app updates. MySQL, PostgreSQL and Redis are not bundled. Corresponding native pages describe availability instead of simulating success.
+Automatic runtime updates and catalog refresh, cancel/resume, service-registration editing, automatic per-project configuration, DNS/hosts/proxy routing, HTTPS certificates, database initialization/administration, graceful service shutdown, system tray, start with Windows, signing and automatic app updates. MySQL, PostgreSQL and Redis are not bundled. Corresponding native pages describe availability instead of simulating success.
 
 ## Frontend development
 
@@ -103,6 +107,8 @@ cargo clippy --workspace --all-targets --all-features -- -D warnings
 ```
 
 With Python Playwright and Chromium installed, run `python tools/run_ui_checks.py` for all frontend contract, layout, catalog and version-selector checks. These intentionally mock IPC and start their own Vite server if needed.
+
+The workflow also runs `check_installer.py` to verify the visible folder picker, installation to a custom folder, real data-folder changes across cold restarts, and uninstall preserving external data. These hosted checks have not run for this change yet.
 
 The workflow runs `check_native.py` and `check_native_packages.py` against its freshly built 0.1.0-beta-1 executable, including two Caddy versions, a chosen folder, HTTP startup, viewport checks, persistence and guarded uninstall. Do not run the updated native test against the older 0.3 executable. Tag builds also fully download and query the versions of MongoDB, DuckDB and SQLite through `check_catalog_additions.py`; this does not start a database server.
 

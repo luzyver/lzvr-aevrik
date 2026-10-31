@@ -14,8 +14,10 @@ import {hydrate,toast,esc} from './ui';
 import {dialog,openForm,registration} from './forms';
 import {catalog,PackageController} from './packages';
 import {installDialog,uninstallDialog,removeServiceDialog} from './package-dialogs';
+import {storage,loadStorage,openDataFolderDialog} from './storage';
 
 const backend=new Backend(invoke);
+const refreshStorage=()=>loadStorage(backend,()=>{if(state.page==='settings'&&!dialog.open)render();});
 const packages=new PackageController(backend,()=>{if(state.page==='packages'&&!dialog.open)render();});
 document.querySelector<HTMLImageElement>('.window-title img')!.src=markUrl;
 let polling=false;
@@ -67,6 +69,7 @@ document.addEventListener('click',async event=>{
   }
   if(target.dataset.selectService){state.selectedService=target.dataset.selectService;render();}
   if(target.dataset.nav==='packages')void packages.refresh();
+  if(target.dataset.nav==='settings')void refreshStorage();
   if(target.dataset.install){
    const item=catalog.items.find(p=>p.id===target.dataset.install);
    if(item&&!dialog.open){const root=await backend.installRoot();if(!dialog.open)installDialog(item,root);}
@@ -88,6 +91,13 @@ document.addEventListener('click',async event=>{
    } finally {target.removeAttribute('disabled');}
   }
   const action=target.dataset.action;
+  if(action==='reload-storage')await refreshStorage();
+  if(action==='change-data-folder')openDataFolderDialog();
+  if(action==='cancel-data-change'&&storage.info){
+   target.setAttribute('disabled','');
+   try {storage.info=await backend.setDataDirectory(storage.info.current);render();}
+   finally {target.removeAttribute('disabled');}
+  }
   if(action==='remove-service'){const service=state.snapshot.services.find(s=>s.id===target.dataset.id);if(service)removeServiceDialog(service);}
   if(action==='browse-packages'){state.page='packages';state.query='';render();void packages.refresh();}
   if(action==='reload-packages')await packages.refresh();
@@ -117,12 +127,16 @@ document.addEventListener('change',event=>{
 });
 document.addEventListener('submit',async event=>{
  const form=event.target as HTMLFormElement;
- if(!['registration','project-properties','package-install','package-uninstall','service-remove'].includes(form.id))return;
+ if(!['registration','project-properties','package-install','package-uninstall','service-remove','data-location'].includes(form.id))return;
  event.preventDefault();
  if(state.busy)return;
  const submit=form.querySelector<HTMLButtonElement>('[type="submit"]')!;submit.disabled=true;
  try {
-  if(form.id==='package-install') {
+  if(form.id==='data-location') {
+   storage.info=await backend.setDataDirectory(String(new FormData(form).get('directory')??'').trim());
+   dialog.close();render();toast(storage.info.next?'Data folder saved. Close and reopen Aevrik to apply it.':'Current data folder retained.');
+   document.querySelector('#storage-next')?.scrollIntoView({block:'nearest'});
+  } else if(form.id==='package-install') {
    const destination=String(new FormData(form).get('destination')??'').trim();
    dialog.close();
    try {await packages.install(form.dataset.id!,destination);toast('Package installed. Configure a service when you are ready.');}

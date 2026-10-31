@@ -12,6 +12,7 @@ window.fixture={projects:[],services:[],logs:[],theme:'dark'};
 window.__TAURI_INTERNALS__={invoke:async(command,args={})=>{
  const s=window.fixture;
  if(command==='snapshot')return structuredClone(s);
+ if(command==='storage_info')return {current:'C:\\AevrikData',next:null,application:'C:\\Aevrik',overridden:false};
  if(command==='list_packages')return [];
  if(command==='package_install_root')return 'C:\\Aevrik\\runtimes';
  if(command==='register_service'){

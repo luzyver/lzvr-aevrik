@@ -7,6 +7,8 @@
 .detail-pane{padding:16px}.detail-path{padding:12px}.project-name small{overflow-wrap:anywhere}.service-select strong{overflow-wrap:anywhere;max-width:180px}.log-lines{white-space:pre-wrap;overflow-wrap:anywhere}
 .toast{bottom:44px}.dialog-body{padding-top:4px}form .dialog-footer{position:sticky;bottom:0}
 .button.danger{color:var(--danger)}.dialog-body>.detail-path{margin:12px 0;overflow-wrap:anywhere}.dialog-body code{overflow-wrap:anywhere}
+.storage-row{align-items:flex-start}.storage-row>.button{flex-shrink:0}.storage-pending{margin-top:16px;padding:16px;background:var(--subtle);border-radius:4px}.storage-pending>.button{margin-top:8px}
+.dialog-body>.form-error{color:var(--danger)}
 html,body{width:100%;height:100%;overflow:clip;overscroll-behavior:none}
 main{display:flex;flex-direction:column;overflow:hidden;padding-bottom:16px;gap:0}
 main>.page-header,main>.toolbar,main>.page-footnote{flex-shrink:0}

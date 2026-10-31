@@ -1,4 +1,5 @@
 //! Local metadata and owned child-process management, independent of Tauri.
+pub mod data_location;
 mod error;
 mod job;
 mod logs;

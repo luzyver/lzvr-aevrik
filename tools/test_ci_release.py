@@ -19,6 +19,9 @@ class ReleaseTests(unittest.TestCase):
         for name in ['src-tauri/Cargo.toml','crates/aevrik-engine/Cargo.toml']:
             (self.root/name).write_text('[package]\nversion="0.1.0-beta-1"\n')
         (self.root/'target/release/aevrik.exe').write_bytes(b'MZ controlled packaging fixture')
+        self.bundle = self.root/'target/release/bundle/nsis'
+        self.bundle.mkdir(parents=True)
+        (self.bundle/'Aevrik_0.1.0-beta-1_x64-setup.exe').write_bytes(b'MZ setup fixture')
         (self.root/'docs/RELEASE-NOTES.md').write_text('Fixture release notes')
         (self.root/'docs/PORTABLE-README.txt').write_text('Fixture portable instructions')
 
@@ -48,13 +51,65 @@ class ReleaseTests(unittest.TestCase):
         self.assertEqual(result['version'],'0.1.0-beta-1')
         self.assertEqual(result['channel'],'dev')
         self.assertEqual((out/'Aevrik-dev-windows-x64.exe').read_bytes(),replacement)
-        self.assertEqual(len(list(out.glob('*.exe'))),1)
+        self.assertEqual(len(list(out.glob('*.exe'))),2)
         with zipfile.ZipFile(out/'Aevrik-dev-windows-x64.zip') as archive:
             self.assertEqual(archive.read('Aevrik-dev-windows-x64.exe'),replacement)
         for artifact in result['artifacts']:
             digest=hashlib.sha256((out/artifact['name']).read_bytes()).hexdigest()
             self.assertEqual(artifact['sha256'],digest)
             self.assertIn(f"{digest}  {artifact['name']}",(out/'SHA256SUMS.txt').read_text())
+
+    def test_beta_build_replaces_its_assets_without_touching_dev(self):
+        out=self.root/'release'
+        package_release(self.root,out,channel='dev')
+        dev_bytes=(out/'Aevrik-dev-windows-x64.exe').read_bytes()
+        package_release(self.root,out,channel='beta')
+        replacement=b'MZ newer beta build'
+        (self.root/'target/release/aevrik.exe').write_bytes(replacement)
+        result=package_release(self.root,out,channel='beta')
+        self.assertEqual(result['version'],'0.1.0-beta-1')
+        self.assertEqual(result['channel'],'beta')
+        self.assertEqual((out/'Aevrik-beta-windows-x64.exe').read_bytes(),replacement)
+        self.assertEqual((out/'Aevrik-dev-windows-x64.exe').read_bytes(),dev_bytes)
+        with zipfile.ZipFile(out/'Aevrik-beta-windows-x64.zip') as archive:
+            self.assertEqual(archive.read('Aevrik-beta-windows-x64.exe'),replacement)
+        self.assertEqual({a['name'] for a in result['artifacts']},
+                         {'Aevrik-beta-windows-x64.exe','Aevrik-beta-windows-x64.zip','Aevrik-beta-windows-x64-setup.exe'})
+        for artifact in result['artifacts']:
+            digest=hashlib.sha256((out/artifact['name']).read_bytes()).hexdigest()
+            self.assertEqual(artifact['sha256'],digest)
+            self.assertIn(f"{digest}  {artifact['name']}",(out/'SHA256SUMS.txt').read_text())
+
+    def test_unknown_channel_is_rejected(self):
+        with self.assertRaises(ValueError):
+            package_release(self.root,self.root/'release',channel='feature')
+
+    def test_checksums_use_unix_line_endings_for_publication_runner(self):
+        out=self.root/'release'
+        package_release(self.root,out,channel='beta')
+        checksums=(out/'SHA256SUMS.txt').read_bytes()
+        self.assertNotIn(b'\r',checksums)
+        self.assertEqual(checksums.count(b'\n'),3)
+
+    def test_setup_is_packaged_and_hashed_separately_from_portable(self):
+        out = self.root/'release'
+        result = package_release(self.root, out, channel='dev')
+        setup = out/'Aevrik-dev-windows-x64-setup.exe'
+        self.assertEqual(setup.read_bytes(), b'MZ setup fixture')
+        metadata = next(item for item in result['artifacts'] if item['name'] == setup.name)
+        self.assertEqual(metadata['sha256'], hashlib.sha256(b'MZ setup fixture').hexdigest())
+        with zipfile.ZipFile(out/'Aevrik-dev-windows-x64.zip') as archive:
+            self.assertNotIn(setup.name, archive.namelist())
+
+    def test_packaging_rejects_missing_or_ambiguous_installer(self):
+        setup = self.bundle/'Aevrik_0.1.0-beta-1_x64-setup.exe'
+        setup.unlink()
+        with self.assertRaisesRegex(ValueError, 'installer'):
+            package_release(self.root, self.root/'release')
+        setup.write_bytes(b'MZ setup')
+        (self.bundle/'stale-setup.exe').write_bytes(b'MZ old')
+        with self.assertRaisesRegex(ValueError, 'installer'):
+            package_release(self.root, self.root/'release')
 
 
 if __name__ == '__main__': unittest.main()

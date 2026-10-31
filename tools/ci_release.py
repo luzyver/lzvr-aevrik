@@ -30,26 +30,31 @@ def validate_version(root, tag=None):
 
 
 def package_release(root, output, tag=None, channel='versioned'):
-    if channel not in ['versioned', 'dev']:
+    if channel not in ['versioned', 'dev', 'beta']:
         raise ValueError('Unknown release channel.')
     version = validate_version(root, tag)
     executable = root/'target/release/aevrik.exe'
     if not executable.is_file(): raise ValueError('Build the release executable on the Windows runner first.')
+    installers = list((root/'target/release/bundle/nsis').glob('*-setup.exe'))
+    if len(installers) != 1 or installers[0].name != f'Aevrik_{version}_x64-setup.exe':
+        raise ValueError('Build exactly one NSIS installer matching the current version on the Windows runner first.')
     output.mkdir(parents=True, exist_ok=True)
-    name = f"Aevrik-{'dev' if channel == 'dev' else version}-windows-x64"
+    name = f"Aevrik-{version if channel == 'versioned' else channel}-windows-x64"
     shutil.copy2(executable, output/(name+'.exe'))
+    shutil.copy2(installers[0], output/(name+'-setup.exe'))
     shutil.copy2(root/'docs/RELEASE-NOTES.md', output/'RELEASE-NOTES.md')
     with zipfile.ZipFile(output/(name+'.zip'), 'w', zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
         archive.write(output/(name+'.exe'), name+'.exe')
         archive.write(root/'docs/PORTABLE-README.txt', 'README.txt')
     artifacts = []
-    for suffix in ['.exe', '.zip']:
+    for suffix in ['.exe', '.zip', '-setup.exe']:
         path = output/(name+suffix)
         with path.open('rb') as file: digest = hashlib.file_digest(file, 'sha256').hexdigest()
         artifacts.append({'name':path.name, 'bytes':path.stat().st_size, 'sha256':digest})
     result = {'version':version, 'channel':channel, 'identifier':'id.luzyver.aevrik.desktop', 'commit':os.environ.get('GITHUB_SHA'), 'runId':os.environ.get('GITHUB_RUN_ID'), 'artifacts':artifacts}
     (output/'build-info.json').write_text(json.dumps(result, indent=2)+'\n', encoding='utf-8')
-    (output/'SHA256SUMS.txt').write_text(''.join(f"{a['sha256']}  {a['name']}\n" for a in artifacts), encoding='utf-8')
+    # Windows builds publish on Linux, where CRLF can become part of filenames.
+    (output/'SHA256SUMS.txt').write_text(''.join(f"{a['sha256']}  {a['name']}\n" for a in artifacts), encoding='utf-8', newline='\n')
     return result
 
 
@@ -57,7 +62,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--check', action='store_true')
     parser.add_argument('--tag')
-    parser.add_argument('--channel', choices=['versioned', 'dev'], default='versioned')
+    parser.add_argument('--channel', choices=['versioned', 'dev', 'beta'], default='versioned')
     parser.add_argument('--output', type=Path, default=ROOT/'release')
     args = parser.parse_args()
     print(validate_version(ROOT, args.tag) if args.check else json.dumps(package_release(ROOT, args.output, args.tag, args.channel), indent=2))
