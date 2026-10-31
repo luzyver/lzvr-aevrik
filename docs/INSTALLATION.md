@@ -24,7 +24,9 @@ Download `Aevrik-<channel-or-version>-windows-x64-setup.exe` (for example `Aevri
 
 The bundle uses the [standard Tauri NSIS installer](https://v2.tauri.app/distribute/windows-installer/), including its directory-selection page. Normal installation is interactive; `/S` is reserved for silent installs and automated checks.
 
-On first launch, Aevrik asks whether to choose a data folder, use the Windows-profile default or cancel. Use a separate directory such as `D:\AevrikData`. Existing Aevrik installations retain their prior data folder. **Settings → Data folder → Change folder** schedules another folder for the next launch; the current folder stays active until exit. **Keep current folder** cancels a pending change.
+On first launch, Aevrik opens **Choose your data folder**. Type a path or use **Browse…**, then select **Open Aevrik**. **Use default folder** restores the Windows-profile path; **Exit** closes setup without creating a workspace. Use a separate directory such as `D:\AevrikData`. Invalid paths show an inline error so you can correct the selection. Existing Aevrik installations retain their prior data folder and skip this screen. **Settings → Data folder → Change folder** schedules another folder for the next launch; the current folder stays active until exit. **Keep current folder** cancels a pending change.
+
+The first-launch screen uses a separate WebView cache under `%LOCALAPPDATA%\id.luzyver.aevrik.desktop\setup-webview`. It does not initialize the default workspace. After confirmation, the main window's WebView cache, metadata and default runtimes use the selected data folder.
 
 The selected folder holds `aevrik.sqlite`, `runtimes` and `webview`. Previously selected per-runtime destinations remain specific to their workspace. Database-server data and project files stay wherever their launch settings put them. A small `%APPDATA%\id.luzyver.aevrik.desktop\data-location.json` file remembers the selected workspace; installing the application on another drive does not relocate this pointer file.
 

@@ -1,0 +1,16 @@
+{
+  "scope": "First-launch data-folder setup",
+  "local": {
+    "pythonTests": 41,
+    "nodeTests": 7,
+    "browserScripts": 8,
+    "typescriptAndVite": "passed",
+    "rustfmt": "passed",
+    "diffWhitespace": "passed",
+    "capturesInspected": ["first-launch-light.png", "first-launch-dark-compact.png", "first-launch-error.png"],
+    "setupChecks": ["storage-info retry", "folder-picker cancellation", "custom folder", "validation error and retry", "default reset", "exit", "submission busy guard", "no workspace polling before confirmation", "logo loads"]
+  },
+  "hostedPending": ["Rust compilation and clippy", "Native first-launch cancellation and validation", "Setup-to-workspace WebView handoff", "Cold restart, stored choice and existing workspace preservation"],
+  "limits": ["Browser checks mock IPC", "No local native build or execution"],
+  "commitOrPushPerformed": false
+}

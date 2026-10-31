@@ -19,9 +19,17 @@ pub struct StorageInfo {
 pub struct StorageState {
     info: Mutex<StorageInfo>,
     config: PathBuf,
-    // Both handles stay open until the process exits.
-    _preference_lock: Option<fs::File>,
+    // This handle stays open until the process exits.
     _data_lock: fs::File,
+}
+
+impl StorageState {
+    pub fn current_directory(&self) -> Result<PathBuf, String> {
+        self.info
+            .lock()
+            .map(|info| PathBuf::from(&info.current))
+            .map_err(|_| "Storage settings are unavailable.".into())
+    }
 }
 
 pub(crate) fn display(path: &Path) -> String {
@@ -44,42 +52,46 @@ fn lock(directory: &Path, name: &str) -> Result<fs::File, Box<dyn std::error::Er
     Ok(file)
 }
 
-fn choose_first_folder(preferred: &Path, application: &Path) -> Option<PathBuf> {
-    loop {
-        let choice = rfd::MessageDialog::new()
-            .set_title("Choose where Aevrik stores your data")
-            .set_description(format!(
-                "Data contains your settings, service registrations and default runtime downloads. It is separate from the application.\n\nDefault: {}\n\nYes: choose a folder (for example D:\\AevrikData).\nNo: use the default folder.\nCancel: close Aevrik.", display(preferred)))
-            .set_buttons(rfd::MessageButtons::YesNoCancel).show();
-        let directory = match choice {
-            rfd::MessageDialogResult::Yes => {
-                let Some(path) = rfd::FileDialog::new()
-                    .set_title("Select an empty folder or an existing Aevrik data folder")
-                    .pick_folder()
-                else {
-                    continue;
-                };
-                path
-            }
-            rfd::MessageDialogResult::No => preferred.to_owned(),
-            _ => return None,
+// Preference locking is retained while setup is open and after activation.
+pub struct StorageBootstrap {
+    pub preferred: PathBuf,
+    pub application: PathBuf,
+    pub config: PathBuf,
+    overridden: bool,
+    _preference_lock: Option<fs::File>,
+}
+
+impl StorageBootstrap {
+    pub fn activate(
+        &self,
+        directory: &Path,
+    ) -> Result<(StorageState, PathBuf), Box<dyn std::error::Error>> {
+        let data_lock = lock(directory, ".aevrik.lock")?;
+        let directory = fs::canonicalize(directory)?;
+        let state = StorageState {
+            info: Mutex::new(StorageInfo {
+                current: display(&directory),
+                next: None,
+                application: display(&self.application),
+                overridden: self.overridden,
+            }),
+            config: self.config.clone(),
+            _data_lock: data_lock,
         };
-        match validate_destination(&directory, application) {
-            Ok(path) => return Some(path),
-            Err(error) => {
-                rfd::MessageDialog::new()
-                    .set_title("Choose another data folder")
-                    .set_description(error.to_string())
-                    .set_level(rfd::MessageLevel::Error)
-                    .show();
-            }
+        Ok((state, directory))
+    }
+
+    pub fn remember(&self, directory: &Path) -> Result<(), Box<dyn std::error::Error>> {
+        if !self.overridden {
+            save_location(&self.config, directory)?;
         }
+        Ok(())
     }
 }
 
-pub fn initialize(
+pub fn prepare(
     app: &tauri::App,
-) -> Result<Option<(StorageState, PathBuf)>, Box<dyn std::error::Error>> {
+) -> Result<(StorageBootstrap, Option<PathBuf>), Box<dyn std::error::Error>> {
     let preferred = app.path().app_data_dir()?;
     let legacy = preferred
         .parent()
@@ -97,31 +109,17 @@ pub fn initialize(
     } else {
         None
     };
-    let directory = match resolve_location(&preferred, &legacy, &config, override_path.as_deref())?
-    {
-        Some(path) => path,
-        None => match choose_first_folder(&preferred, &application) {
-            Some(path) => path,
-            None => return Ok(None),
-        },
-    };
-    let data_lock = lock(&directory, ".aevrik.lock")?;
-    let directory = fs::canonicalize(directory)?;
-    if override_path.is_none() {
-        save_location(&config, &directory)?;
-    }
-    let state = StorageState {
-        info: Mutex::new(StorageInfo {
-            current: display(&directory),
-            next: None,
-            application: display(&application),
+    let directory = resolve_location(&preferred, &legacy, &config, override_path.as_deref())?;
+    Ok((
+        StorageBootstrap {
+            preferred,
+            application,
+            config,
             overridden: override_path.is_some(),
-        }),
-        config,
-        _preference_lock: preference_lock,
-        _data_lock: data_lock,
-    };
-    Ok(Some((state, directory)))
+            _preference_lock: preference_lock,
+        },
+        directory,
+    ))
 }
 
 #[tauri::command]

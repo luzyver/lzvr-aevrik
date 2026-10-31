@@ -15,7 +15,7 @@ try:
    if process.poll() is not None:raise RuntimeError('Vite failed to start')
    time.sleep(.1)
   else:raise RuntimeError('Vite did not become ready')
- for name in sys.argv[1:] or ['check_desktop_ui.py','check_scroll.py','check_packages_ui.py','check_multiversion_ui.py','check_storage_ui.py','check_data_location_ui.py','check_updates_ui.py']:
+ for name in sys.argv[1:] or ['check_desktop_ui.py','check_scroll.py','check_packages_ui.py','check_multiversion_ui.py','check_storage_ui.py','check_data_location_ui.py','check_updates_ui.py','check_onboarding_ui.py']:
   subprocess.run([sys.executable,str(ROOT/'tools'/name)],cwd=ROOT,check=True)
 finally:
  if process:process.terminate();process.wait(timeout=10)

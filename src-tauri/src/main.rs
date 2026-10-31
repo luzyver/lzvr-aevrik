@@ -1,34 +1,19 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 mod commands;
 mod packages;
+mod startup;
 mod storage;
 mod updates;
-use aevrik_engine::Engine;
 use commands::AppState;
-use std::sync::{Arc, Mutex};
 use tauri::Manager;
 
 fn main() {
     let app = tauri::Builder::default()
-        .setup(|app| {
-            let Some((storage, directory)) = storage::initialize(app)? else {
-                app.handle().exit(0);
-                return Ok(());
-            };
-            app.manage(storage);
-            let path = directory.join("aevrik.sqlite");
-            app.manage(AppState(Arc::new(Mutex::new(Engine::open(&path)?))));
-            app.manage(packages::PackageState(Arc::new(
-                aevrik_engine::packages::PackageManager::new(directory.join("runtimes"))?,
-            )));
-            tauri::WebviewWindowBuilder::from_config(app, &app.config().app.windows[0])?
-                .data_directory(
-                    std::path::PathBuf::from(storage::display(&directory)).join("webview"),
-                )
-                .build()?;
-            Ok(())
-        })
+        .setup(startup::initialize)
         .invoke_handler(tauri::generate_handler![
+            startup::setup_info,
+            startup::complete_setup,
+            startup::exit_setup,
             storage::storage_info,
             storage::set_data_directory,
             updates::refresh_catalog,

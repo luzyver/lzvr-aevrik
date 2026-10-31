@@ -1,0 +1,6 @@
+{
+  "identifier": "setup-window",
+  "description": "Local first-launch setup window with native caption controls.",
+  "windows": ["setup"],
+  "permissions": ["core:default"]
+}

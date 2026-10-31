@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Aevrik — Choose your data folder</title></head>
+<body class="setup-page">
+<main class="setup-content">
+  <header class="setup-heading"><img src="../assets/mark.svg" width="32" height="32" alt=""><h1>Choose your data folder</h1></header>
+  <p class="setup-intro">Keep your local environments where you want them. Aevrik stores settings, service registrations and default runtime downloads here.</p>
+  <form id="setup-form">
+    <label for="setup-directory">Data folder</label>
+    <div class="setup-picker"><input id="setup-directory" name="directory" required disabled autocomplete="off" spellcheck="false" aria-describedby="setup-help setup-error"><button class="button" type="button" id="setup-browse" disabled>Browse…</button></div>
+    <button class="text-button" type="button" id="setup-default" disabled>Use default folder</button>
+    <p class="setup-help" id="setup-help">Choose an empty folder, such as D:\AevrikData, or an existing Aevrik data folder to reopen it.</p>
+    <div class="setup-location"><strong>Separate from your application</strong><p>Keep this folder outside the application folder:</p><code id="setup-application">Loading…</code></div>
+    <p id="setup-error" role="alert" hidden></p>
+    <button class="button" type="button" id="setup-retry" hidden>Try again</button>
+    <p id="setup-status" role="status">Loading storage settings…</p>
+  </form>
+</main>
+<footer class="setup-footer"><p>You can change this later in Settings.</p><div><button class="button" id="setup-exit" type="button">Exit</button><button class="button primary" form="setup-form" type="submit" id="setup-open" disabled>Open Aevrik</button></div></footer>
+<script type="module" src="./onboarding.ts"></script>
+</body></html>

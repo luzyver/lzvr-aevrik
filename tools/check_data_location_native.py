@@ -21,25 +21,9 @@ def check(executable, scratch):
     override = scratch/'Override data'
     source.mkdir()
     profile.mkdir(parents=True, exist_ok=True)
-    # A fresh launch offers the folder decision before creating its database.
-    first_env=os.environ.copy()
-    first_env.pop('AEVRIK_DATA_DIR',None)
-    first_env.pop('WEBVIEW2_USER_DATA_FOLDER',None)
-    first=subprocess.Popen([str(executable)],env=first_env,cwd=scratch)
-    try:
-        native=Application(backend='win32').connect(process=first.pid,timeout=30)
-        prompt=native.window(title='Choose where Aevrik stores your data')
-        prompt.wait('visible',timeout=30)
-        prompt.capture_as_image().save(str(OUT/'first-launch-data-folder.png'))
-        prompt.child_window(control_id=2,class_name='Button').click()
-        first.wait(timeout=20)
-        assert not config.exists() and not (profile/'aevrik.sqlite').exists()
-    finally:
-        if first.poll() is None: first.terminate();first.wait(timeout=10)
-    config.write_text(json.dumps({'version':1,'directory':str(source)}), encoding='utf-8')
     processes=[]
     with sync_playwright() as p:
-        def launch(overridden=None):
+        def launch(overridden=None, setup=False):
             port=free_port()
             env=os.environ.copy()
             env.pop('AEVRIK_DATA_DIR',None)
@@ -53,9 +37,16 @@ def check(executable, scratch):
             processes.append(process)
             browser=p.chromium.connect_over_cdp(endpoint(port,process))
             deadline=time.monotonic()+20
-            while not browser.contexts[0].pages and time.monotonic()<deadline: time.sleep(.1)
-            page=browser.contexts[0].pages[0]
-            expect(page.locator('#engine-status')).to_have_text('Engine connected',timeout=20000)
+            page=None
+            while page is None and time.monotonic()<deadline:
+                page=next((page for context in browser.contexts for page in context.pages),None)
+                if page is None: time.sleep(.1)
+            if page is None: raise TimeoutError('Aevrik did not create a WebView page')
+            if setup:
+                expect(page.get_by_role('heading',name='Choose your data folder')).to_be_visible(timeout=20000)
+                expect(page.locator('#setup-open')).to_be_enabled()
+            else:
+                expect(page.locator('#engine-status')).to_have_text('Engine connected',timeout=20000)
             return process,browser,page
 
         def close(process,browser,page):
@@ -66,6 +57,39 @@ def check(executable, scratch):
         def info(page): return page.evaluate("window.__TAURI_INTERNALS__.invoke('storage_info')")
         def same(left,right): return os.path.normcase(str(left))==os.path.normcase(str(right))
         try:
+            # A fresh launch has no engine/database until the user confirms.
+            process,browser,page=launch(setup=True)
+            assert not config.exists() and not (profile/'aevrik.sqlite').exists()
+            assert not (profile/'runtimes').exists()
+            page.screenshot(path=str(OUT/'first-launch-data-folder.png'))
+            page.get_by_role('button',name='Exit',exact=True).click()
+            process.wait(timeout=20)
+            browser.close()
+            assert not config.exists() and not (profile/'aevrik.sqlite').exists()
+
+            process,browser,page=launch(setup=True)
+            field=page.get_by_label('Data folder',exact=True)
+            field.fill(str(executable.parent))
+            page.get_by_role('button',name='Open Aevrik',exact=True).click()
+            expect(page.locator('#setup-error')).to_contain_text('separate')
+            assert not config.exists() and not (profile/'aevrik.sqlite').exists()
+            field.fill(str(source))
+            page.get_by_role('button',name='Open Aevrik',exact=True).click()
+            # Setup and main use different WebView profiles. Inspect the native
+            # handoff here; reconnect CDP after a cold restart for actual IPC.
+            native=Application(backend='win32').connect(process=process.pid,timeout=30)
+            main=native.window(title='Aevrik')
+            main.wait('exists',timeout=30)
+            native.window(title='Aevrik — Choose your data folder').wait_not('exists',timeout=30)
+            assert process.poll() is None
+            saved=json.loads(config.read_text(encoding='utf-8'))
+            assert same(saved['directory'].removeprefix('\\\\?\\'),source)
+            assert (source/'aevrik.sqlite').is_file() and (source/'runtimes').is_dir()
+            assert not (profile/'aevrik.sqlite').exists()
+            main.close()
+            process.wait(timeout=20)
+            browser.close()
+
             process,browser,page=launch()
             assert same(info(page)['current'],source)
             page.evaluate("path=>window.__TAURI_INTERNALS__.invoke('add_project',{input:{name:'Preserved project',path,domain:'preserved.test',runtime:'',serviceId:null}})",str(source))
@@ -98,4 +122,4 @@ def check(executable, scratch):
                 if process.poll() is None: process.terminate();process.wait(timeout=10)
             # Only this test's preference file; never remove a user's profile tree.
             config.unlink(missing_ok=True)
-    print('Native data-folder switch, cold restarts, preserved metadata, runtime/cache roots and environment override passed.')
+    print('Native first-launch setup, exit, validation, selection, data-folder switch, cold restarts, preserved metadata, runtime/cache roots and environment override passed.')
