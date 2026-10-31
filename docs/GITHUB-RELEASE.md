@@ -3,7 +3,7 @@
 Workflow: [windows-release.yml](../.github/workflows/windows-release.yml).
 
 Source version: **0.1.0-beta-1**. Application identifier: **id.luzyver.aevrik.desktop**.
-No hosted run has happened yet: this workspace has no Git remote configured. Old local build artifacts, including the 0.3.0 binaries, were removed during cleanup. A 0.1.0-beta-1 executable is produced only after the workflow passes.
+The first hosted run compiled the executable but failed the native package test's Windows path comparison; the test correction awaits a new run. Old local build artifacts, including the 0.3.0 binaries, were removed during cleanup. A downloadable release is published only after the workflow passes.
 
 ## First build
 
@@ -11,7 +11,9 @@ No hosted run has happened yet: this workspace has no Git remote configured. Old
 2. Push `dev`, or open **Actions → Windows build and release → Run workflow** and select `dev`. Manual runs become available once the workflow exists on the default branch. `master` is also supported for the later stable phase.
 3. Download **aevrik-windows-x64** from the successful run. It contains the portable EXE, ZIP, SHA-256 checksums, release notes and build metadata. **windows-verification** contains test evidence.
 
-The Windows runner installs the pinned Rust toolchain, Node 24, Python 3.13 and test tooling. It checks the frontend, Rust, packaging and native application before uploading distributable files. Its Cargo cache contains dependency sources only. No long-lived GitHub secret or signing certificate is required; the EXE is unsigned.
+The Windows runner installs the pinned Rust toolchain, Node 24, Python 3.13 and test tooling. It checks the frontend, Rust, packaging and native application before uploading distributable files. No long-lived GitHub secret or signing certificate is required; the EXE is unsigned.
+
+The pinned [Rust Cache action](https://github.com/Swatinem/rust-cache) caches Cargo dependencies and their compiled artifacts under the workspace's `target` directory, covering both test and release profiles. Its cache key accounts for the Rust toolchain, Cargo manifests, lockfile and compiler environment. Cache saving remains enabled when a later test fails. Application crates are rebuilt, and all verification steps still run. The first run fills the new cache; subsequent runs can reuse it. Toolchain/dependency changes, cache eviction and download/upload time affect the benefit; no hosted speedup has been measured yet.
 
 Manual inputs can check all package URLs or perform full downloads of the three newly added products. Full package smoke includes a large MongoDB archive and runs automatically for release tags.
 
@@ -45,7 +47,7 @@ git push origin v0.1.0-beta-1
 
 The workflow rejects numbered tags that do not match the version in package.json, package-lock.json, both Cargo manifests and tauri.conf.json. A successful tag run publishes **Aevrik v0.1.0-beta-1**, attaching the EXE, ZIP, checksums and build metadata. PR and `master` branch builds upload artifacts without publishing a release; push/manual builds on `dev` update the rolling release. Artifact retention is 14 days; verification retention is 7 days. Published versioned release assets remain until removed; `dev` assets are replaced on successful updates.
 
-The build job has read-only repository access. Only publication jobs receive `contents: write`, using the automatic `GITHUB_TOKEN`. Repository policy must permit that permission and the pinned official actions. If a release with a numbered version tag already exists, publication fails rather than replacing its assets; only `dev` is overwritten.
+The build job has read-only repository access. Only publication jobs receive `contents: write`, using the automatic `GITHUB_TOKEN`. Repository policy must permit that permission, the pinned official actions and `Swatinem/rust-cache`. If a release with a numbered version tag already exists, publication fails rather than replacing its assets; only `dev` is overwritten.
 
 ## Verification boundaries
 

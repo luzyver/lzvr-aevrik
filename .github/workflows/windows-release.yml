@@ -46,13 +46,15 @@ jobs:
         run: |
           $toolchain = (Select-String -LiteralPath rust-toolchain.toml -Pattern '^channel = "([^"]+)"').Matches.Groups[1].Value
           rustup toolchain install $toolchain --profile minimal --component rustfmt --component clippy
-      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      - name: Cache compiled Rust dependencies
+        uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
         with:
-          path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-          key: windows-cargo-${{ hashFiles('Cargo.lock', 'rust-toolchain.toml') }}
-          restore-keys: windows-cargo-
+          key: windows-2022-x64
+          workspaces: ". -> target"
+          cache-targets: true
+          cache-bin: false
+          # Retain compiled dependencies even if a later native test fails.
+          cache-on-failure: true
       - name: Validate release version and application identifier
         env:
           BUILD_REF: ${{ github.ref }}

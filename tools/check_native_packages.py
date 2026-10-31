@@ -53,7 +53,11 @@ def run(exe):
    packages=page.evaluate("window.__TAURI_INTERNALS__.invoke('list_packages')")
    installed=next(x for x in packages if x['id']=='caddy')
    assert Path(installed['path']).is_file()
-   assert Path(installed['path']).resolve().is_relative_to(runtimes.resolve())
+   release=next(p for p in manifest if p['id']=='caddy')
+   expected_path=runtimes/release['id']/release['version']/release['executable']
+   # Rust canonicalizes Windows paths with a \\?\ prefix. Compare file identity,
+   # not lexical ancestry, and require the exact selected release location.
+   assert Path(installed['path']).samefile(expected_path), {'actual':installed['path'],'expected':str(expected_path)}
    checks.append('Real Caddy download, SHA-256 verification, extraction and Installed state; navigation responsive during install')
    older=next(p for p in manifest if p.get('family')=='caddy' and p['id']!='caddy')
    page.locator('[data-package-version="caddy"]').select_option(older['id'])
