@@ -50,3 +50,59 @@ def java():
         release=metadata(url)[0];archive=release['binary']['package'];name=release['release_name']
         result.append(entry('java','Java (Temurin)',name.removeprefix('jdk-').removeprefix('jdk'),'Language','OpenJDK toolchain from Eclipse Adoptium. JAVA_HOME and global PATH are unchanged.',archive['link'],name+'/bin/java.exe',archive['checksum'],url,channel='LTS'))
     return result
+
+
+def dotnet(channels=('8.0','9.0','10.0')):
+    result=[]
+    asset_names={'sdk':'dotnet-sdk-win-x64.zip',
+                 'runtime':'dotnet-runtime-win-x64.zip',
+                 'aspnetcore-runtime':'aspnetcore-runtime-win-x64.zip'}
+    products=[('sdk','dotnet-sdk','.NET SDK','Build C#, F# and Visual Basic applications. Includes the .NET runtime.'),
+              ('runtime','dotnet-runtime','.NET Runtime','Run .NET console applications. Install the SDK to build applications.'),
+              ('aspnetcore-runtime','aspnet-runtime','ASP.NET Core Runtime','Run ASP.NET Core applications. Configure the application DLL and working directory.')]
+    for channel in channels:
+        url=f'https://builds.dotnet.microsoft.com/dotnet/release-metadata/{channel}/releases.json'
+        releases=metadata(url)['releases']
+        for key,family,name,description in products:
+            seen=set()
+            for release in releases:
+                product=release.get(key,{})
+                version=product.get('version','')
+                if not re.fullmatch(r'\d+\.\d+\.\d+',version) or version in seen:continue
+                # Runtime files also contain apphost/targeting packs with the same RID.
+                archive=next((f for f in product.get('files',[])
+                    if f.get('rid')=='win-x64' and f.get('name')==asset_names[key]
+                    and f['url'].endswith('.zip')),None)
+                if not archive:continue
+                result.append(entry(family,name,version,'Language',description+' Global PATH is unchanged.',archive['url'],'dotnet.exe',source_url=url,sha512=archive['hash']))
+                seen.add(version)
+                if len(seen)>=3:break
+    return result
+
+
+def zig():
+    url='https://ziglang.org/download/index.json';result=[]
+    for version,release in sorted(metadata(url).items(),key=lambda item:version_key(item[0]),reverse=True):
+        if not re.fullmatch(r'\d+\.\d+\.\d+',version):continue
+        archive=release.get('x86_64-windows')
+        if not archive or not archive['tarball'].endswith('.zip'):continue
+        directory=archive['tarball'].rsplit('/',1)[-1][:-4]
+        result.append(entry('zig','Zig',version,'Language','Zig compiler and toolchain. Use the executable path; global PATH is unchanged.',archive['tarball'],directory+'/zig.exe',archive['shasum'],url))
+        if len(result)>=6:break
+    return result
+
+
+def nim():
+    url='https://nim-lang.org/install.html'
+    from urllib.parse import urljoin
+    links=re.findall(r'href="([^"]*nim-\d+\.\d+\.\d+(?:-windows)?_x64\.zip)"',fetch(url).decode())
+    versions={re.search(r'nim-(\d+\.\d+\.\d+)',link).group(1):urljoin(url,link) for link in links}
+    result=[]
+    for version in sorted(versions,key=version_key,reverse=True)[:6]:
+        archive=f'https://nim-lang.org/download/nim-{version}_x64.zip'
+        checksum=archive+'.sha256'
+        sha=re.search(r'\b[a-fA-F0-9]{64}\b',fetch(checksum).decode())
+        if not sha:raise ValueError(f'Missing Nim checksum: {version}')
+        result.append(entry('nim','Nim',version,'Language','Nim compiler. A separate C compiler is required; finish.exe and global PATH changes are not run automatically.',archive,f'nim-{version}/bin/nim.exe',sha.group(),checksum))
+    if not result:raise ValueError('Nim download page contains no stable Windows x64 archives')
+    return result

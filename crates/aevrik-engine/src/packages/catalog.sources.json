@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-30T21:58:51.773930+00:00",
+  "generatedAt": "2026-10-31T08:09:52.199178+00:00",
   "entries": [
     {
       "id": "caddy",
@@ -623,6 +623,240 @@
       "id": "deno-2.9.3",
       "version": "2.9.3",
       "url": "https://api.github.com/repos/denoland/deno/releases?per_page=12",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "dotnet-sdk-10.0.403",
+      "version": "10.0.403",
+      "url": "https://builds.dotnet.microsoft.com/dotnet/release-metadata/10.0/releases.json",
+      "digestMethod": "publisher-sha512"
+    },
+    {
+      "id": "dotnet-sdk-10.0.402",
+      "version": "10.0.402",
+      "url": "https://builds.dotnet.microsoft.com/dotnet/release-metadata/10.0/releases.json",
+      "digestMethod": "publisher-sha512"
+    },
+    {
+      "id": "dotnet-sdk-10.0.401",
+      "version": "10.0.401",
+      "url": "https://builds.dotnet.microsoft.com/dotnet/release-metadata/10.0/releases.json",
+      "digestMethod": "publisher-sha512"
+    },
+    {
+      "id": "dotnet-sdk-9.0.320",
+      "version": "9.0.320",
+      "url": "https://builds.dotnet.microsoft.com/dotnet/release-metadata/9.0/releases.json",
+      "digestMethod": "publisher-sha512"
+    },
+    {
+      "id": "dotnet-sdk-9.0.319",
+      "version": "9.0.319",
+      "url": "https://builds.dotnet.microsoft.com/dotnet/release-metadata/9.0/releases.json",
+      "digestMethod": "publisher-sha512"
+    },
+    {
+      "id": "dotnet-sdk-9.0.318",
+      "version": "9.0.318",
+      "url": "https://builds.dotnet.microsoft.com/dotnet/release-metadata/9.0/releases.json",
+      "digestMethod": "publisher-sha512"
+    },
+    {
+      "id": "dotnet-sdk-8.0.427",
+      "version": "8.0.427",
+      "url": "https://builds.dotnet.microsoft.com/dotnet/release-metadata/8.0/releases.json",
+      "digestMethod": "publisher-sha512"
+    },
+    {
+      "id": "dotnet-sdk-8.0.426",
+      "version": "8.0.426",
+      "url": "https://builds.dotnet.microsoft.com/dotnet/release-metadata/8.0/releases.json",
+      "digestMethod": "publisher-sha512"
+    },
+    {
+      "id": "dotnet-sdk-8.0.425",
+      "version": "8.0.425",
+      "url": "https://builds.dotnet.microsoft.com/dotnet/release-metadata/8.0/releases.json",
+      "digestMethod": "publisher-sha512"
+    },
+    {
+      "id": "dotnet-runtime-10.0.14",
+      "version": "10.0.14",
+      "url": "https://builds.dotnet.microsoft.com/dotnet/release-metadata/10.0/releases.json",
+      "digestMethod": "publisher-sha512"
+    },
+    {
+      "id": "dotnet-runtime-10.0.13",
+      "version": "10.0.13",
+      "url": "https://builds.dotnet.microsoft.com/dotnet/release-metadata/10.0/releases.json",
+      "digestMethod": "publisher-sha512"
+    },
+    {
+      "id": "dotnet-runtime-10.0.12",
+      "version": "10.0.12",
+      "url": "https://builds.dotnet.microsoft.com/dotnet/release-metadata/10.0/releases.json",
+      "digestMethod": "publisher-sha512"
+    },
+    {
+      "id": "dotnet-runtime-9.0.22",
+      "version": "9.0.22",
+      "url": "https://builds.dotnet.microsoft.com/dotnet/release-metadata/9.0/releases.json",
+      "digestMethod": "publisher-sha512"
+    },
+    {
+      "id": "dotnet-runtime-9.0.21",
+      "version": "9.0.21",
+      "url": "https://builds.dotnet.microsoft.com/dotnet/release-metadata/9.0/releases.json",
+      "digestMethod": "publisher-sha512"
+    },
+    {
+      "id": "dotnet-runtime-9.0.20",
+      "version": "9.0.20",
+      "url": "https://builds.dotnet.microsoft.com/dotnet/release-metadata/9.0/releases.json",
+      "digestMethod": "publisher-sha512"
+    },
+    {
+      "id": "dotnet-runtime-8.0.33",
+      "version": "8.0.33",
+      "url": "https://builds.dotnet.microsoft.com/dotnet/release-metadata/8.0/releases.json",
+      "digestMethod": "publisher-sha512"
+    },
+    {
+      "id": "dotnet-runtime-8.0.32",
+      "version": "8.0.32",
+      "url": "https://builds.dotnet.microsoft.com/dotnet/release-metadata/8.0/releases.json",
+      "digestMethod": "publisher-sha512"
+    },
+    {
+      "id": "dotnet-runtime-8.0.31",
+      "version": "8.0.31",
+      "url": "https://builds.dotnet.microsoft.com/dotnet/release-metadata/8.0/releases.json",
+      "digestMethod": "publisher-sha512"
+    },
+    {
+      "id": "aspnet-runtime-10.0.14",
+      "version": "10.0.14",
+      "url": "https://builds.dotnet.microsoft.com/dotnet/release-metadata/10.0/releases.json",
+      "digestMethod": "publisher-sha512"
+    },
+    {
+      "id": "aspnet-runtime-10.0.13",
+      "version": "10.0.13",
+      "url": "https://builds.dotnet.microsoft.com/dotnet/release-metadata/10.0/releases.json",
+      "digestMethod": "publisher-sha512"
+    },
+    {
+      "id": "aspnet-runtime-10.0.12",
+      "version": "10.0.12",
+      "url": "https://builds.dotnet.microsoft.com/dotnet/release-metadata/10.0/releases.json",
+      "digestMethod": "publisher-sha512"
+    },
+    {
+      "id": "aspnet-runtime-9.0.22",
+      "version": "9.0.22",
+      "url": "https://builds.dotnet.microsoft.com/dotnet/release-metadata/9.0/releases.json",
+      "digestMethod": "publisher-sha512"
+    },
+    {
+      "id": "aspnet-runtime-9.0.21",
+      "version": "9.0.21",
+      "url": "https://builds.dotnet.microsoft.com/dotnet/release-metadata/9.0/releases.json",
+      "digestMethod": "publisher-sha512"
+    },
+    {
+      "id": "aspnet-runtime-9.0.20",
+      "version": "9.0.20",
+      "url": "https://builds.dotnet.microsoft.com/dotnet/release-metadata/9.0/releases.json",
+      "digestMethod": "publisher-sha512"
+    },
+    {
+      "id": "aspnet-runtime-8.0.33",
+      "version": "8.0.33",
+      "url": "https://builds.dotnet.microsoft.com/dotnet/release-metadata/8.0/releases.json",
+      "digestMethod": "publisher-sha512"
+    },
+    {
+      "id": "aspnet-runtime-8.0.32",
+      "version": "8.0.32",
+      "url": "https://builds.dotnet.microsoft.com/dotnet/release-metadata/8.0/releases.json",
+      "digestMethod": "publisher-sha512"
+    },
+    {
+      "id": "aspnet-runtime-8.0.31",
+      "version": "8.0.31",
+      "url": "https://builds.dotnet.microsoft.com/dotnet/release-metadata/8.0/releases.json",
+      "digestMethod": "publisher-sha512"
+    },
+    {
+      "id": "zig-0.17.0",
+      "version": "0.17.0",
+      "url": "https://ziglang.org/download/index.json",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "zig-0.16.0",
+      "version": "0.16.0",
+      "url": "https://ziglang.org/download/index.json",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "zig-0.15.2",
+      "version": "0.15.2",
+      "url": "https://ziglang.org/download/index.json",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "zig-0.15.1",
+      "version": "0.15.1",
+      "url": "https://ziglang.org/download/index.json",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "zig-0.14.1",
+      "version": "0.14.1",
+      "url": "https://ziglang.org/download/index.json",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "zig-0.14.0",
+      "version": "0.14.0",
+      "url": "https://ziglang.org/download/index.json",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "nim-2.4.0",
+      "version": "2.4.0",
+      "url": "https://nim-lang.org/download/nim-2.4.0_x64.zip.sha256",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "nim-2.2.14",
+      "version": "2.2.14",
+      "url": "https://nim-lang.org/download/nim-2.2.14_x64.zip.sha256",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "nim-2.2.12",
+      "version": "2.2.12",
+      "url": "https://nim-lang.org/download/nim-2.2.12_x64.zip.sha256",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "nim-2.2.10",
+      "version": "2.2.10",
+      "url": "https://nim-lang.org/download/nim-2.2.10_x64.zip.sha256",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "nim-2.2.8",
+      "version": "2.2.8",
+      "url": "https://nim-lang.org/download/nim-2.2.8_x64.zip.sha256",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "nim-2.2.6",
+      "version": "2.2.6",
+      "url": "https://nim-lang.org/download/nim-2.2.6_x64.zip.sha256",
       "digestMethod": "publisher-sha256"
     },
     {

@@ -2,6 +2,7 @@
 mod commands;
 mod packages;
 mod storage;
+mod updates;
 use aevrik_engine::Engine;
 use commands::AppState;
 use std::sync::{Arc, Mutex};
@@ -30,6 +31,9 @@ fn main() {
         .invoke_handler(tauri::generate_handler![
             storage::storage_info,
             storage::set_data_directory,
+            updates::refresh_catalog,
+            updates::check_app_update,
+            updates::open_release_page,
             commands::snapshot,
             commands::add_project,
             commands::register_service,

@@ -211,6 +211,9 @@ class StablePublishTests(unittest.TestCase):
         (self.root/'docs').mkdir()
         (self.root/'docs/RELEASE-NOTES.md').write_text('Release fixture')
         (self.root/'docs/PORTABLE-README.txt').write_text('Portable fixture')
+        source=self.root/'crates/aevrik-engine/src/packages'
+        source.mkdir(parents=True)
+        (source/'catalog.json').write_text('[]')
         self.out = self.root/'release'
         with patch.dict('os.environ', {'GITHUB_SHA': 'built'}):
             package_release(self.root, self.out)

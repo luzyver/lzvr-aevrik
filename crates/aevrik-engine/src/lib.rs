@@ -8,6 +8,7 @@ mod process;
 mod service_removal;
 mod storage;
 mod store;
+pub mod updates;
 mod validation;
 pub use error::{Error, Result};
 pub use model::*;

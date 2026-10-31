@@ -47,11 +47,13 @@ def package_release(root, output, tag=None, channel='versioned'):
         archive.write(output/(name+'.exe'), name+'.exe')
         archive.write(root/'docs/PORTABLE-README.txt', 'README.txt')
     artifacts = []
-    for suffix in ['.exe', '.zip', '-setup.exe']:
-        path = output/(name+suffix)
+    catalog=json.loads((root/'crates/aevrik-engine/src/packages/catalog.json').read_text(encoding='utf-8'))
+    (output/'runtime-catalog.json').write_text(json.dumps({'schemaVersion':1,'packages':catalog},separators=(',',':'))+'\n',encoding='utf-8')
+    for filename in [name+'.exe', name+'.zip', name+'-setup.exe', 'runtime-catalog.json']:
+        path = output/filename
         with path.open('rb') as file: digest = hashlib.file_digest(file, 'sha256').hexdigest()
         artifacts.append({'name':path.name, 'bytes':path.stat().st_size, 'sha256':digest})
-    result = {'version':version, 'channel':channel, 'identifier':'id.luzyver.aevrik.desktop', 'commit':os.environ.get('GITHUB_SHA'), 'runId':os.environ.get('GITHUB_RUN_ID'), 'artifacts':artifacts}
+    result = {'version':version, 'channel':channel, 'identifier':'id.luzyver.aevrik.desktop', 'commit':os.environ.get('GITHUB_SHA'), 'runId':os.environ.get('GITHUB_RUN_ID'), 'builtAt':int(os.environ.get('AEVRIK_BUILT_AT','0')), 'artifacts':artifacts}
     (output/'build-info.json').write_text(json.dumps(result, indent=2)+'\n', encoding='utf-8')
     # Windows builds publish on Linux, where CRLF can become part of filenames.
     (output/'SHA256SUMS.txt').write_text(''.join(f"{a['sha256']}  {a['name']}\n" for a in artifacts), encoding='utf-8', newline='\n')

@@ -28,3 +28,11 @@ main>.workspace-log{flex:0 0 clamp(96px,23%,168px);margin-top:12px}
 @media(max-width:960px){.package-row{padding:16px;grid-template-columns:28px minmax(0,1fr) 130px;gap:10px}.package-name{gap:8px}.catalog-toolbar .search-field{width:220px}.package-progress{flex-wrap:wrap}}
 @media(max-width:1050px){.split-view{grid-template-columns:minmax(0,1fr) 250px}main{padding:18px 16px 0}.sidebar{width:170px}.status-context{display:none!important}}
 @media(max-width:960px){.sidebar{width:57px}}
+.catalog-update-bar {display:flex;align-items:center;gap:12px;padding:12px 0;flex-shrink:0;}
+.catalog-update-bar p {margin:0;line-height:1.5;font-size:12px;overflow-wrap:anywhere;}
+.catalog-update-bar .button {flex-shrink:0;}
+.update-error {color:var(--danger);}
+.update-actions {display:flex;flex-wrap:wrap;gap:8px;flex-shrink:0;}
+.app-update-row {align-items:flex-start;flex-wrap:wrap;gap:12px;}
+.app-update-row > div:first-child {flex:1 1 280px;min-width:0;}
+@media(max-width:900px) {.catalog-update-bar {align-items:flex-start;}.update-actions {flex-wrap:wrap;}}

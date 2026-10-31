@@ -1,6 +1,6 @@
 # Runtime catalog, version 0.1.0-beta-1
 
-The bundled catalog contains **14 products and 140 selectable releases**. It is available offline; installing requires HTTPS access to the official publisher. This is a pinned selection, not every historical release or automatic upstream discovery.
+The bundled catalog contains **19 products and 179 selectable releases**. It is available offline; installing requires HTTPS access to the official publisher. This is a pinned selection, not every historical release. Check for updates retrieves the curated catalog from the published Aevrik release for the current channel.
 
 | Product | Releases | Release lines |
 | --- | ---: | --- |
@@ -13,6 +13,11 @@ The bundled catalog contains **14 products and 140 selectable releases**. It is 
 | Java (Temurin) | 5 | 25, 21, 17, 11, 8u504-b01 |
 | Bun | 6 | 1.4, 1.3 |
 | Deno | 6 | 2.9 |
+| .NET SDK | 9 | 8.0, 9.0, 10.0 |
+| .NET Runtime | 9 | 8.0, 9.0, 10.0 |
+| ASP.NET Core Runtime | 9 | 8.0, 9.0, 10.0 |
+| Zig | 6 | Six recent stable Windows ZIP releases |
+| Nim | 6 | Six recent stable Windows ZIP releases |
 | MariaDB | 14 | 12.2, 12.1, 12.0, 11.8, 11.4, 10.11, 10.6 |
 | MongoDB | 8 | 9.0, 8.3, 8.0, 7.0 |
 | DuckDB | 6 | 1.5, 1.4 (Windows ZIP releases) |
@@ -21,7 +26,17 @@ The bundled catalog contains **14 products and 140 selectable releases**. It is 
 
 All builds target Windows x64 except nginx, whose official Windows build is x86 and runs on x64 Windows. Older PHP/Node/Python/Go branches are provided for compatibility; their presence does not imply upstream support. Python uses the official CPython NuGet distribution, with pip. Java uses Eclipse Temurin JDKs; Bun uses the baseline x64 build.
 
-Exact URLs, digests, architecture and expected executables are in `crates/aevrik-engine/src/packages/catalog.json`. The adjacent `catalog.sources.json` records provenance per release. Publisher SHA-256 metadata is preferred; where unavailable, the catalog pins a SHA-256 computed from the official HTTPS archive. A checksum pin is not a verified publisher signature.
+Exact URLs, digests, architecture and expected executables are in `crates/aevrik-engine/src/packages/catalog.json`. The adjacent `catalog.sources.json` records provenance per release. Microsoft packages use publisher SHA-512; other entries use SHA-256. Where publisher metadata is unavailable, SHA-256 is computed from the official HTTPS archive. A checksum pin is not a verified publisher signature.
+
+.NET SDK includes its runtime; choose it to build C#/F#/Visual Basic projects. The standalone .NET and ASP.NET runtimes run existing applications. Nim requires a separately installed C compiler. Aevrik does not run Nim's `finish.exe` or change global PATH. Rust and Ruby need additional installer/dependency support and are not listed as managed packages.
+
+## Update checks
+
+**Runtimes → Check for updates** downloads `runtime-catalog.json` from the existing `dev`, `beta`, or latest stable GitHub release. No upstream requests are made on a timer. Known releases are retained even if an older feed omits them; changed download identities are rejected. Valid additions are written atomically to `<data>/runtimes/.catalog.json`, remaining available offline. Download failure leaves the saved catalog untouched. This feed is trusted through the fixed repository's HTTPS release endpoint, not a separate signing system.
+
+An **Install update** button appears when a product has an installed version and a newer stable catalog entry. It opens the usual installation-folder dialog. Existing services and projects are not switched; configure the new executable and link the project when ready. Database migrations are not performed.
+
+**Settings → Aevrik updates** compares stable versions numerically and rolling builds by commit and build time. It opens the release page for manual Setup download/installation. Local builds without a compiled channel cannot check releases. Releases predating this feed show an unavailable-feed error until a new release is published.
 
 ## Install and use
 
@@ -38,7 +53,7 @@ Caddy needs a Caddyfile or explicit arguments. nginx needs its extracted nginx f
 
 - Runtime destination: `<chosen root>/<id>/<version>`, initially `<Aevrik data directory>/runtimes`; no global PATH, hosts or system-service modifications. Per-release roots and the default are persisted in `.locations.json` under the original runtime metadata directory. Choosing a folder never moves existing installations.
 - HTTPS-only downloads with a 20-second connection timeout, 30-minute request timeout and 2 GiB compressed-size limit. Downloads stream through a 64 KiB buffer to a temporary file on the chosen drive.
-- SHA-256 verification before extraction. ZIP paths reject traversal, Windows aliases, duplicate case-insensitive paths, links and special files. Limits: 40,000 entries and 8 GiB expanded content.
+- SHA-256 or SHA-512 verification before extraction. ZIP paths reject traversal, Windows aliases, duplicate case-insensitive paths, links and special files. Limits: 40,000 entries and 8 GiB expanded content.
 - Extraction occurs in a private temporary directory on the destination filesystem. The expected executable and completion marker must exist before atomic publication.
 - Existing destinations are never overwritten. An OS file lock serializes install/uninstall of the same package within the same metadata directory. A separate lock serializes atomic location-index updates.
 - Completed installs are discovered from their catalog-matching marker and executable on every launch. Failures never become Installed. Forced exits can leave unused download/staging files; they are not treated as completed packages.
@@ -46,12 +61,12 @@ Caddy needs a Caddyfile or explicit arguments. nginx needs its extracted nginx f
 
 Uninstall requires explicit confirmation and a matching ownership marker. It removes only the selected version directory, including any data/configuration stored inside it. Registered service executables, working directories, absolute path arguments and registered project folders protect referenced installations. Remove stopped service registrations first; this unlinks projects but preserves their files. Junctions, symlinks and nested managed installations block removal. Other versions and files outside the selected directory remain untouched.
 
-Cancel/resume, in-place upgrades, automatic catalog refresh, database initialization, graceful shutdown and automatic per-project version switching remain unavailable. MySQL, PostgreSQL and Redis are not in this release.
+Cancel/resume, in-place upgrades, unattended catalog refresh, database initialization, graceful shutdown and automatic per-project version switching remain unavailable. MySQL, PostgreSQL and Redis are not in this release.
 
 ## Maintaining the catalog
 
-Run `python tools/sync_catalog.py --output .tooling/catalog-candidate.json` to produce a candidate and provenance from official metadata. The standard-library source adapters live in `tools/catalog_sources/`. Downloads/metadata are cached under `.tooling/catalog-source-cache`; remove the cache entry for a changed metadata URL to refresh it. Existing shipped release pins are preserved.
+Run `python tools/sync_catalog.py --refresh --output .tooling/catalog-candidate.json` to produce a fresh candidate and provenance from official metadata. Use `--products dotnet zig nim` to refresh only the added language sources. The standard-library source adapters live in `tools/catalog_sources/`. Downloads/metadata are cached under `.tooling/catalog-source-cache`. Existing shipped release pins and provenance are preserved. Review and promote the candidate through the normal release workflow; every release publishes the catalog asset, allowing older compatible apps to fetch it without installing a new app build.
 
 Run `python tools/verify_catalog.py .tooling/catalog-candidate.json` before promoting the candidate. It checks every URL's ZIP signature and compressed size; it does not download/hash/extract every archive. Review both JSON files, copy them together into the bundled catalog, then run Rust and UI checks. Use `cargo run -p aevrik-engine --example install_smoke -- <absolute-isolated-directory> <release-id> ...` for actual digest/extraction validation. With no IDs, the smoke test installs the original four releases only.
 
-Release evidence distinguishes all-URL checks from full installations of representative releases. All 140 URLs passed the local header/ZIP-signature check. Full installations of the newly added products are deferred to the GitHub runner. The native smoke test installs two Caddy versions into a chosen folder, configures the selected path, checks a real HTTP response, reopens the app and tests guarded uninstall. Tagged CI runs must also install MongoDB, DuckDB and SQLite and successfully query each executable's version before publishing.
+Release evidence distinguishes URL checks from full installations. All 39 added URLs passed local header/ZIP-signature checks; this does not prove full archive checksums or execution. Full installation and version checks for .NET SDK, both .NET runtimes, Zig and Nim are added to the existing hosted smoke script alongside MongoDB, DuckDB and SQLite. They run for versioned/stable releases and when `full_package_smoke` is selected. Rust tests, compilation and these native checks remain pending until CI runs.

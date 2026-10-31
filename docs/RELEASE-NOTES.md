@@ -2,8 +2,10 @@
 
 - Choose and remember a runtime installation folder, including another drive such as `D:\Aevrik\runtimes`. Downloads and extraction stay on that drive.
 - Uninstall a specific managed version with explicit confirmation. Referenced runtimes and junction/symlink trees are protected. Remove stopped service registrations without deleting their files.
-- Expand to 14 products and 140 pinned releases, adding MongoDB, DuckDB, SQLite and more Node.js versions. DuckDB uses the available Windows ZIP releases; the selection does not imply every upstream release is included.
-- Stream downloads to disk with SHA-256 validation, a 2 GiB download limit and an 8 GiB extraction limit.
+- Expand to 19 products and 179 pinned releases, including .NET SDK, .NET Runtime, ASP.NET Core Runtime, Zig and Nim. Nim requires a separate C compiler.
+- Check for runtime catalog updates and install newer versions into a chosen folder without replacing existing versions or switching services.
+- Check Aevrik releases in Settings and open the download page for manual installation.
+- Stream downloads to disk with SHA-256/SHA-512 validation, a 2 GiB download limit and an 8 GiB extraction limit.
 - Adopt `id.luzyver.aevrik.desktop`; retain existing legacy metadata and runtime paths in place.
 - Build EXE/ZIP, run native smoke tests and publish tagged releases on GitHub-hosted Windows runners.
 

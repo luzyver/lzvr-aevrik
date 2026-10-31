@@ -15,6 +15,7 @@ import {dialog,openForm,registration} from './forms';
 import {catalog,PackageController} from './packages';
 import {installDialog,uninstallDialog,removeServiceDialog} from './package-dialogs';
 import {storage,loadStorage,openDataFolderDialog} from './storage';
+import {checkRuntimeUpdates,checkAppUpdate,appUpdates} from './updates';
 
 const backend=new Backend(invoke);
 const refreshStorage=()=>loadStorage(backend,()=>{if(state.page==='settings'&&!dialog.open)render();});
@@ -70,8 +71,8 @@ document.addEventListener('click',async event=>{
   if(target.dataset.selectService){state.selectedService=target.dataset.selectService;render();}
   if(target.dataset.nav==='packages')void packages.refresh();
   if(target.dataset.nav==='settings')void refreshStorage();
-  if(target.dataset.install){
-   const item=catalog.items.find(p=>p.id===target.dataset.install);
+  if(target.dataset.install||target.dataset.updatePackage){
+   const item=catalog.items.find(p=>p.id===(target.dataset.install||target.dataset.updatePackage));
    if(item&&!dialog.open){const root=await backend.installRoot();if(!dialog.open)installDialog(item,root);}
   }
   if(target.dataset.uninstall){const item=catalog.items.find(p=>p.id===target.dataset.uninstall);if(item)uninstallDialog(item);}
@@ -91,6 +92,9 @@ document.addEventListener('click',async event=>{
    } finally {target.removeAttribute('disabled');}
   }
   const action=target.dataset.action;
+  if(action==='check-runtime-updates')await checkRuntimeUpdates(backend,()=>packages.refresh(),()=>{if(state.page==='packages'&&!dialog.open)render();});
+  if(action==='check-app-update')await checkAppUpdate(backend,()=>{if(state.page==='settings'&&!dialog.open)render();});
+  if(action==='open-app-release'&&appUpdates.result)await backend.openReleasePage(appUpdates.result.tag);
   if(action==='reload-storage')await refreshStorage();
   if(action==='change-data-folder')openDataFolderDialog();
   if(action==='cancel-data-change'&&storage.info){

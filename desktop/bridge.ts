@@ -4,6 +4,8 @@ export interface Service {id:string;name:string;executable:string;args:string[];
 export interface LogEntry {timestamp:number;service:string;level:string;message:string}
 export interface Snapshot {projects:Project[];services:Service[];logs:LogEntry[];theme:string}
 export interface StorageInfo {current:string;next:string|null;application:string;overridden:boolean}
+export interface CatalogUpdate {added:number;total:number}
+export interface AppUpdate {channel:string;currentVersion:string;latestVersion:string;currentCommit:string;latestCommit:string;tag:string;status:'available'|'current'|'ahead'|'unknown';message:string}
 export class Backend {
   private invoke: Invoke;
   constructor(invoke: Invoke) {this.invoke=invoke;}
@@ -11,6 +13,9 @@ export class Backend {
   storage():Promise<StorageInfo> {return this.invoke('storage_info');}
   setDataDirectory(directory:string):Promise<StorageInfo> {return this.invoke('set_data_directory',{directory});}
   packages(): Promise<RuntimePackage[]> {return this.invoke('list_packages');}
+  refreshCatalog():Promise<CatalogUpdate> {return this.invoke('refresh_catalog');}
+  checkAppUpdate():Promise<AppUpdate> {return this.invoke('check_app_update');}
+  openReleasePage(tag:string):Promise<void> {return this.invoke('open_release_page',{tag});}
   installRoot():Promise<string> {return this.invoke('package_install_root');}
   installPackage(id:string,destination?:string): Promise<void> {return this.invoke('install_package',destination===undefined?{id}:{id,destination});}
   uninstallPackage(id:string):Promise<void> {return this.invoke('uninstall_package',{id});}

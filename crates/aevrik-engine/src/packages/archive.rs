@@ -1,5 +1,5 @@
 use super::{PackageError, PackageResult, catalog::Package};
-use sha2::{Digest, Sha256};
+use sha2::{Digest, Sha256, Sha512};
 use std::{
     collections::HashSet,
     fs,
@@ -55,15 +55,25 @@ fn unpack_reader<R: Read + Seek>(
 ) -> PackageResult<()> {
     reader.seek(SeekFrom::Start(0))?;
     let mut hash = Sha256::new();
+    let mut hash512 = Sha512::new();
     let mut buffer = [0_u8; 64 * 1024];
     loop {
         let count = reader.read(&mut buffer)?;
         if count == 0 {
             break;
         }
-        hash.update(&buffer[..count]);
+        if package.sha512.is_empty() {
+            hash.update(&buffer[..count]);
+        } else {
+            hash512.update(&buffer[..count]);
+        }
     }
-    if format!("{:x}", hash.finalize()) != package.sha256 {
+    let matches = if package.sha512.is_empty() {
+        format!("{:x}", hash.finalize()) == package.sha256
+    } else {
+        format!("{:x}", hash512.finalize()) == package.sha512
+    };
+    if !matches {
         return Err(PackageError::Invalid(
             "Checksum mismatch. No package was installed; retry the download.".into(),
         ));
@@ -160,6 +170,8 @@ pub fn installed(root: &Path, package: &Package) -> Option<PathBuf> {
     (marker.id == package.id
         && marker.version == package.version
         && marker.sha256 == package.sha256
+        && marker.sha512 == package.sha512
+        && marker.executable == package.executable
         && executable.is_file())
     .then_some(executable)
 }

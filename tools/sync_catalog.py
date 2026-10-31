@@ -6,14 +6,18 @@ Metadata/archive cache: .tooling/catalog-source-cache. Remove selected cache fil
 import argparse, concurrent.futures, datetime, json
 from collections import Counter
 from pathlib import Path
-from catalog_sources import languages, servers, extras
+from catalog_sources import languages, servers, extras, common
 from catalog_sources.common import ROOT, PROVENANCE, version_key
 
 TARGET=ROOT/'crates/aevrik-engine/src/packages/catalog.json'
 
-def run(output):
+def run(output, products=None):
     legacy=json.loads(TARGET.read_text())
-    tasks=[languages.php,languages.node,languages.go,languages.python,languages.java,servers.github,servers.maria,servers.nginx,extras.mongo,extras.duckdb,extras.sqlite]
+    source_path=TARGET.with_suffix('.sources.json')
+    prior_sources={p['id']:p for p in json.loads(source_path.read_text())['entries']} if source_path.exists() else {}
+    tasks=[languages.php,languages.node,languages.go,languages.python,languages.java,languages.dotnet,languages.zig,languages.nim,servers.github,servers.maria,servers.nginx,extras.mongo,extras.duckdb,extras.sqlite]
+    if products:tasks=[task for task in tasks if task.__name__ in products]
+    if not tasks:raise ValueError('No matching catalog sources')
     results=[]
     with concurrent.futures.ThreadPoolExecutor(max_workers=5) as pool:
         futures={pool.submit(task):task.__name__ for task in tasks}
@@ -24,22 +28,26 @@ def run(output):
         previous=old.get((p['name'],p['version']))
         if previous:
             # Preserve public release identity, hash, URL and install path of every shipped package.
-            for key in ['id','url','sha256','executable']:p[key]=previous[key]
+            for key in ['id','url','sha256','executable','architecture']:p[key]=previous[key]
+            if 'sha512' in previous:p['sha512']=previous['sha512']
+            else:p.pop('sha512',None)
     keys={(p['name'],p['version']) for p in results}
     for p in legacy:
         if (p['name'],p['version']) not in keys:
             p.setdefault('family',{'Node.js':'node','Java (Temurin)':'java'}.get(p['name'],p['name'].lower()))
             p.setdefault('architecture','x64');p.setdefault('channel','Release');results.append(p)
-    order=['caddy','nginx','php','node','python','go','java','bun','deno','mariadb','mongodb','duckdb','sqlite','mailpit']
+    order=['caddy','nginx','php','node','python','go','java','bun','deno','dotnet-sdk','dotnet-runtime','aspnet-runtime','zig','nim','mariadb','mongodb','duckdb','sqlite','mailpit']
     results.sort(key=lambda p:version_key(p['version']),reverse=True)
     results.sort(key=lambda p:order.index(p['family']))
     assert len({p['id'] for p in results})==len(results),'Duplicate release id'
     output.parent.mkdir(parents=True,exist_ok=True)
     output.write_text(json.dumps(results,indent=2)+'\n',encoding='utf-8')
-    provenance={'generatedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'entries':[{ 'id':p['id'],'version':p['version'],**PROVENANCE.get((p['family'],p['version']),{'url':p['url'],'digestMethod':'preserved-shipped-pin'})} for p in results]}
+    provenance={'generatedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'entries':[prior_sources.get(p['id'],{ 'id':p['id'],'version':p['version'],**PROVENANCE.get((p['family'],p['version']),{'url':p['url'],'digestMethod':'preserved-shipped-pin'})}) for p in results]}
     output.with_suffix('.sources.json').write_text(json.dumps(provenance,indent=2)+'\n')
     print(json.dumps({'products':dict(Counter(p['name'] for p in results)),'releases':len(results),'output':str(output)},indent=2))
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--output',type=Path,default=TARGET)
-    run(parser.parse_args().output)
+    parser.add_argument('--products',nargs='+');parser.add_argument('--refresh',action='store_true')
+    args=parser.parse_args();common.REFRESH=args.refresh
+    run(args.output,args.products)

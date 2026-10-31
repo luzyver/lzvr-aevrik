@@ -1,6 +1,10 @@
 //! Pinned, isolated runtime installation. This manager never starts a service.
 mod archive;
 mod catalog;
+mod catalog_update;
+#[cfg(test)]
+mod catalog_update_tests;
+pub use catalog_update::CatalogUpdate;
 mod download;
 mod locations;
 mod removal;
@@ -27,7 +31,7 @@ pub enum PackageError {
     #[error("Package metadata: {0}")]
     Json(#[from] serde_json::Error),
 }
-type PackageResult<T> = Result<T, PackageError>;
+pub(crate) type PackageResult<T> = Result<T, PackageError>;
 
 #[derive(Clone, Default, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -67,7 +71,8 @@ impl PackageManager {
             .progress
             .lock()
             .map_err(|_| PackageError::Invalid("Installer state is unavailable.".into()))?;
-        Ok(catalog::all()?
+        Ok(self
+            .catalog()?
             .into_iter()
             .map(|package| {
                 let root = roots.get(&package.id).unwrap_or(&self.root);
@@ -135,7 +140,8 @@ impl PackageManager {
         Ok(lock)
     }
     pub fn install_at(&self, id: &str, destination: Option<&Path>) -> PackageResult<()> {
-        let package = catalog::all()?
+        let package = self
+            .catalog()?
             .into_iter()
             .find(|p| p.id == id)
             .ok_or_else(|| PackageError::Invalid("Unknown catalog package.".into()))?;

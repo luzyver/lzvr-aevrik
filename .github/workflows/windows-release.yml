@@ -92,6 +92,8 @@ jobs:
           git merge-base --is-ancestor HEAD refs/remotes/origin/master
           if ($LASTEXITCODE -ne 0) { throw 'Stable release tag must point to a commit on master.' }
       - run: npm ci
+      - name: Stamp the build identity for update checks
+        run: '"AEVRIK_BUILT_AT=$([DateTimeOffset]::UtcNow.ToUnixTimeSeconds())" >> $env:GITHUB_ENV'
       - run: npm test
       - run: npm run build
       - run: cargo fmt --all --check
@@ -214,7 +216,7 @@ jobs:
             gh api --method POST "repos/$GH_REPO/git/refs" -f ref="refs/tags/$CHANNEL" -f sha="$BUILD_SHA"
           fi
           release_id=$(gh api --paginate "repos/$GH_REPO/releases?per_page=100" --jq ".[] | select(.tag_name == \"$CHANNEL\") | .id")
-          assets=("Aevrik-$CHANNEL-windows-x64.exe" "Aevrik-$CHANNEL-windows-x64.zip" "Aevrik-$CHANNEL-windows-x64-setup.exe" SHA256SUMS.txt build-info.json)
+          assets=("Aevrik-$CHANNEL-windows-x64.exe" "Aevrik-$CHANNEL-windows-x64.zip" "Aevrik-$CHANNEL-windows-x64-setup.exe" runtime-catalog.json SHA256SUMS.txt build-info.json)
           if [[ -n "$release_id" ]]; then
             gh release upload "$CHANNEL" --repo "$GH_REPO" --clobber "${assets[@]}"
             gh release edit "$CHANNEL" --repo "$GH_REPO" --title "Aevrik $CHANNEL" --prerelease --latest=false --notes-file RELEASE-NOTES.md
@@ -274,4 +276,4 @@ jobs:
           gh release create "$RELEASE_TAG" --repo "$GH_REPO" --verify-tag \
             "${release_flags[@]}" \
             --title "Aevrik $RELEASE_TAG" --notes-file RELEASE-NOTES.md \
-            ./*.exe ./*.zip SHA256SUMS.txt build-info.json
+            ./*.exe ./*.zip runtime-catalog.json SHA256SUMS.txt build-info.json

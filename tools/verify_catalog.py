@@ -11,7 +11,7 @@ def check(package):
     assert magic==b'PK\x03\x04',f'Not a ZIP archive: {magic!r}'
     size=int(response.headers.get('Content-Range','').split('/')[-1]) if response.headers.get('Content-Range') else int(response.headers.get('Content-Length','0'))
     assert not size or size<=2*1024*1024*1024,f'Archive exceeds installer limit: {size}'
-    return {'id':package['id'],'version':package['version'],'url':package['url'],'status':'passed','archiveBytes':size,'digest':package['sha256']}
+    return {'id':package['id'],'version':package['version'],'url':package['url'],'status':'passed','archiveBytes':size,'digest':package.get('sha512') or package['sha256']}
   except Exception as error:
    if attempt==2:return {'id':package['id'],'url':package['url'],'status':'failed','error':str(error)}
    time.sleep(1)

@@ -54,7 +54,8 @@ fn key(path: &Path) -> String {
 
 impl PackageManager {
     pub fn uninstall(&self, id: &str, protected_paths: &[PathBuf]) -> PackageResult<()> {
-        let package = catalog::all()?
+        let package = self
+            .catalog()?
             .into_iter()
             .find(|p| p.id == id)
             .ok_or_else(|| invalid("Unknown catalog package."))?;
@@ -76,6 +77,7 @@ impl PackageManager {
         if marker.id != package.id
             || marker.version != package.version
             || marker.sha256 != package.sha256
+            || marker.sha512 != package.sha512
             || marker.executable != package.executable
             || archive::installed(&root, &package).is_none()
         {

@@ -1,0 +1,19 @@
+{
+  "scope": "Runtime catalog expansion and update checks",
+  "catalog": {"products": 19, "versions": 179, "preservedShippedVersions": 140, "newArchiveUrlsChecked": 39},
+  "local": {
+    "pythonTests": 41,
+    "dotnetAssetMetadataMatches": 27,
+    "dotnetRuntimeArchivesFullyVerified": ["10.0.12", "10.0.13", "10.0.14"],
+    "nodeTests": 7,
+    "browserScripts": 7,
+    "typescriptAndVite": "passed",
+    "rustfmt": "passed",
+    "designDetector": [],
+    "workflowLint": "passed with existing concurrency.queue diagnostic excluded for actionlint 1.7.12",
+    "diffWhitespace": "passed"
+  },
+  "hostedPending": ["Rust compile and clippy", "Rust unit/integration tests", "Full download, checksum, extraction and execution of added runtimes", "Native update IPC", "GitHub release publication"],
+  "limits": ["Browser checks mock IPC", "URL checks inspect ZIP headers and sizes; .NET Runtime 10.0.12-10.0.14 additionally passed full SHA-512, ZIP CRC and dotnet.exe presence checks without execution", "App update installation is manual", "Catalog refresh uses the published curated channel asset", "Ruby and Rust toolchains remain unimplemented"],
+  "commitOrPushPerformed": false
+}

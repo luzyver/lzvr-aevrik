@@ -54,15 +54,18 @@ Publication uses the built artifacts directly. Tags created with `GITHUB_TOKEN` 
 
 ## Rolling dev and beta releases
 
-Every successful push or manual run on `dev` or `beta` updates that branch's GitHub prerelease: **Aevrik dev** (tag `dev`) or **Aevrik beta** (tag `beta`). The first run creates it; subsequent runs replace these five assets in place, where `<channel>` is `dev` or `beta`:
+Every successful push or manual run on `dev` or `beta` updates that branch's GitHub prerelease: **Aevrik dev** (tag `dev`) or **Aevrik beta** (tag `beta`). The first run creates it; subsequent runs replace these six assets in place, where `<channel>` is `dev` or `beta`:
 
 - `Aevrik-<channel>-windows-x64.exe`
 - `Aevrik-<channel>-windows-x64.zip`
 - `Aevrik-<channel>-windows-x64-setup.exe`
 - `SHA256SUMS.txt`
 - `build-info.json`
+- `runtime-catalog.json`
 
 The tag moves to the built commit. The prerelease is never marked as the latest stable release. Its notes record the actual application version, commit and workflow URL. The application version does not increment automatically on each push.
+
+The binary embeds its channel, commit and build timestamp. `build-info.json` records that same timestamp for rolling update comparisons. The catalog is included in the artifact checksums and published by all release paths. App update checks open the release page; they do not silently execute an installer. Catalog checks merge additions into the selected data folder and leave installed runtimes and services unchanged.
 
 Runs are serialized within each channel, and publication checks that the built commit is still that branch's current head. An older queued build cannot overwrite a newer build's release. Channels use separate tags and releases. A failed build/test stage leaves the existing release unchanged. Asset replacement uses GitHub's upload API and is not an atomic multi-file transaction; a failed upload step must be rerun to finish replacement.
 

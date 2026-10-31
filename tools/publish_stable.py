@@ -23,8 +23,8 @@ def publish(directory, repo, sha, tag, run=gh):
     if (info['version'], info['commit'], info['channel']) != (version, sha, 'versioned'):
         raise ValueError('Build metadata does not match the stable release.')
     names = {f'Aevrik-{version}-windows-x64.exe', f'Aevrik-{version}-windows-x64.zip',
-             f'Aevrik-{version}-windows-x64-setup.exe'}
-    if len(info['artifacts']) != 3 or {item['name'] for item in info['artifacts']} != names:
+             f'Aevrik-{version}-windows-x64-setup.exe', 'runtime-catalog.json'}
+    if len(info['artifacts']) != 4 or {item['name'] for item in info['artifacts']} != names:
         raise ValueError('Unexpected stable artifacts.')
     checksums = []
     for item in info['artifacts']:

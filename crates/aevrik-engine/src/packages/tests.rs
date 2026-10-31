@@ -2,6 +2,23 @@ use super::*;
 use std::io::{Cursor, Write};
 use zip::{ZipWriter, write::SimpleFileOptions};
 
+#[test]
+fn publisher_sha512_is_checked_before_extraction() {
+    use sha2::{Digest, Sha512};
+    let root = tempfile::tempdir().unwrap();
+    let bytes = fixture(&[("caddy.exe", b"fixture")]);
+    let mut package = catalog::all().unwrap().remove(0);
+    package.sha256.clear();
+    package.sha512 = "0".repeat(128);
+    assert!(archive::publish(&bytes, &package, root.path()).is_err());
+    assert!(!root.path().join(&package.id).exists());
+    package.sha512 = format!("{:x}", Sha512::digest(&bytes));
+    archive::publish(&bytes, &package, root.path()).unwrap();
+    assert!(archive::installed(root.path(), &package).is_some());
+    package.sha512 = "0".repeat(128);
+    assert!(archive::installed(root.path(), &package).is_none());
+}
+
 fn fixture(entries: &[(&str, &[u8])]) -> Vec<u8> {
     let mut zip = ZipWriter::new(Cursor::new(Vec::new()));
     for (name, body) in entries {

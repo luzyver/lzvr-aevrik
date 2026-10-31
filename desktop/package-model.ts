@@ -10,6 +10,12 @@ export const catalog:{items:RuntimePackage[];loaded:boolean;error:string;categor
 };
 export interface PackageGroup {family:string;all:RuntimePackage[];versions:RuntimePackage[];selected:RuntimePackage}
 const order=new Intl.Collator('en',{numeric:true});
+export function availableUpdate(all:RuntimePackage[]):RuntimePackage|undefined {
+ const installed=all.filter(p=>p.status==='installed').sort((a,b)=>order.compare(b.version,a.version))[0];
+ if(!installed)return;
+ return all.filter(p=>p.status!=='installed'&&!/preview|beta|alpha|rc|nightly|dev/i.test(p.channel+' '+p.version)&&order.compare(p.version,installed.version)>0)
+  .sort((a,b)=>order.compare(b.version,a.version))[0];
+}
 export function groups(query=''):PackageGroup[] {
  const families=new Map<string,RuntimePackage[]>();
  for(const p of catalog.items){const key=p.family||p.name;const versions=families.get(key)||[];versions.push(p);families.set(key,versions);}

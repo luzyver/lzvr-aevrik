@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def main():
     catalog = json.loads((ROOT/'crates/aevrik-engine/src/packages/catalog.json').read_text())
     selected = [next(p for p in catalog if p['family'] == family)
-                for family in ['mongodb', 'duckdb', 'sqlite']]
+                for family in ['mongodb', 'duckdb', 'sqlite', 'dotnet-sdk', 'dotnet-runtime', 'aspnet-runtime', 'zig', 'nim']]
     destination = Path(tempfile.mkdtemp(prefix='aevrik-catalog-', dir=os.environ.get('RUNNER_TEMP')))
     subprocess.run(['cargo', 'run', '--locked', '-p', 'aevrik-engine', '--example',
                     'install_smoke', '--', str(destination), *[p['id'] for p in selected]],
@@ -19,7 +19,8 @@ def main():
     checks = []
     for package in selected:
         executable = destination/package['id']/package['version']/package['executable']
-        result = subprocess.run([str(executable), '--version'], cwd=destination,
+        argument = '--list-runtimes' if package['family'] in ['dotnet-runtime','aspnet-runtime'] else 'version' if package['family']=='zig' else '--version'
+        result = subprocess.run([str(executable), argument], cwd=destination,
                                 capture_output=True, text=True, check=True, timeout=30)
         output = result.stdout + result.stderr
         assert package['version'] in output, (package['id'], output)

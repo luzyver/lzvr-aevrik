@@ -33,7 +33,8 @@ The hosted build produces an unsigned Setup EXE plus portable EXE/ZIP. Setup ins
 - First-launch data-folder selection and **Settings → Data folder → Change folder**; changes apply on the next launch.
 - Actual native window minimize, maximize, drag and close.
 - Fixed desktop chrome and workspace; lists, properties and output scroll independently.
-- An offline-visible catalog of 14 products and 140 selectable versions: Caddy, nginx, PHP, Node.js, Python, Go, Java (Temurin), Bun, Deno, MariaDB, MongoDB, DuckDB, SQLite and Mailpit, with HTTPS downloads, pinned SHA-256 verification, progress and retry.
+- An offline-visible catalog of 19 products and 179 selectable versions, adding .NET SDK, .NET Runtime, ASP.NET Core Runtime, Zig and Nim. HTTPS downloads use pinned SHA-256 or publisher SHA-512 verification, progress and retry.
+- **Runtimes → Check for updates** fetches the published catalog for this build's channel. Newer runtime versions install separately in a chosen folder; existing services keep their executable. **Settings → Aevrik updates** checks the app release and opens its download page. App installation remains manual.
 - Multiple versions installed side by side, with independent progress/status and service registration prefilled from the selected executable. Existing services keep their paths.
 - Choose the runtime installation folder for each new install, for example `D:\Aevrik\runtimes`; the last choice is remembered. Downloads stream to that drive.
 - Uninstall a selected managed version after confirmation. Referenced runtimes and unsafe folder trees are protected. Remove a stopped service registration separately without deleting its files.
@@ -79,7 +80,7 @@ For an isolated or portable metadata directory, set `AEVRIK_DATA_DIR` to an abso
 
 ## Not implemented yet
 
-Automatic runtime updates and catalog refresh, cancel/resume, service-registration editing, automatic per-project configuration, DNS/hosts/proxy routing, HTTPS certificates, database initialization/administration, graceful service shutdown, system tray, start with Windows, signing and automatic app updates. MySQL, PostgreSQL and Redis are not bundled. Corresponding native pages describe availability instead of simulating success.
+Unattended runtime/catalog updates, cancel/resume, service-registration editing, automatic per-project configuration, DNS/hosts/proxy routing, HTTPS certificates, database initialization/administration, graceful service shutdown, system tray, start with Windows, signing and automatic app installation. MySQL, PostgreSQL, Redis, Ruby and Rust toolchains are not bundled. Nim requires a separately configured C compiler. Corresponding native pages describe availability instead of simulating success.
 
 ## Frontend development
 

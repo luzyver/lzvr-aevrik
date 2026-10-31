@@ -3,6 +3,7 @@ import hashlib
 import tempfile
 import unittest
 import zipfile
+from unittest.mock import patch
 from pathlib import Path
 from ci_release import validate_version, package_release
 
@@ -24,6 +25,20 @@ class ReleaseTests(unittest.TestCase):
         (self.bundle/'Aevrik_0.1.0-beta-1_x64-setup.exe').write_bytes(b'MZ setup fixture')
         (self.root/'docs/RELEASE-NOTES.md').write_text('Fixture release notes')
         (self.root/'docs/PORTABLE-README.txt').write_text('Fixture portable instructions')
+        source=self.root/'crates/aevrik-engine/src/packages'
+        source.mkdir(parents=True)
+        (source/'catalog.json').write_text('[{"id":"fixture"}]')
+
+    def test_release_includes_versioned_catalog_feed_and_hash(self):
+        out=self.root/'release'
+        with patch.dict('os.environ',{'GITHUB_SHA':'fixture-commit','AEVRIK_BUILT_AT':'1234567890'}):
+            result=package_release(self.root,out,channel='dev')
+        self.assertTrue((out/'runtime-catalog.json').exists(), 'Missing catalog release asset')
+        feed=json.loads((out/'runtime-catalog.json').read_text())
+        self.assertEqual(feed, {'schemaVersion':1,'packages':[{'id':'fixture'}]})
+        self.assertIn('runtime-catalog.json', {item['name'] for item in result['artifacts']})
+        self.assertEqual(result['builtAt'],1234567890)
+        self.assertEqual(result['commit'],'fixture-commit')
 
     def tearDown(self):
         self.temp.cleanup()
@@ -74,7 +89,7 @@ class ReleaseTests(unittest.TestCase):
         with zipfile.ZipFile(out/'Aevrik-beta-windows-x64.zip') as archive:
             self.assertEqual(archive.read('Aevrik-beta-windows-x64.exe'),replacement)
         self.assertEqual({a['name'] for a in result['artifacts']},
-                         {'Aevrik-beta-windows-x64.exe','Aevrik-beta-windows-x64.zip','Aevrik-beta-windows-x64-setup.exe'})
+                         {'Aevrik-beta-windows-x64.exe','Aevrik-beta-windows-x64.zip','Aevrik-beta-windows-x64-setup.exe','runtime-catalog.json'})
         for artifact in result['artifacts']:
             digest=hashlib.sha256((out/artifact['name']).read_bytes()).hexdigest()
             self.assertEqual(artifact['sha256'],digest)
@@ -89,7 +104,7 @@ class ReleaseTests(unittest.TestCase):
         package_release(self.root,out,channel='beta')
         checksums=(out/'SHA256SUMS.txt').read_bytes()
         self.assertNotIn(b'\r',checksums)
-        self.assertEqual(checksums.count(b'\n'),3)
+        self.assertEqual(checksums.count(b'\n'),4)
 
     def test_setup_is_packaged_and_hashed_separately_from_portable(self):
         out = self.root/'release'

@@ -7,11 +7,12 @@ ROOT=Path(__file__).resolve().parents[2]
 CACHE=ROOT/'.tooling/catalog-source-cache'
 CACHE.mkdir(parents=True,exist_ok=True)
 PROVENANCE={}
+REFRESH=False
 
 def fetch(url, *, fresh=False):
     if not url.startswith('https://'):raise ValueError('HTTPS required')
     path=CACHE/hashlib.sha256(url.encode()).hexdigest()
-    if not fresh and path.exists():return path.read_bytes()
+    if not fresh and not REFRESH and path.exists():return path.read_bytes()
     request=urllib.request.Request(url,headers={'User-Agent':'Aevrik-Catalog/0.3'})
     with urllib.request.urlopen(request,timeout=90) as response:data=response.read()
     path.write_bytes(data)
@@ -28,14 +29,18 @@ def selected_versions(values, per_line=2, lines=None):
         counts[line]=counts.get(line,0)+1;result.append(value)
     return result
 
-def entry(family,name,version,category,description,url,exe,sha=None,source_url=None,architecture='x64',channel='Release'):
+def entry(family,name,version,category,description,url,exe,sha=None,source_url=None,architecture='x64',channel='Release',sha512=None):
     method='publisher-sha256'
-    if not sha:
+    if sha512:
+        if not re.fullmatch(r'[a-fA-F0-9]{128}',sha512):raise ValueError(f'Invalid SHA-512: {name} {version}')
+        sha='';method='publisher-sha512'
+    elif not sha:
         sha=hashlib.sha256(fetch(url)).hexdigest();method='official-https-archive-sha256'
-    if not re.fullmatch(r'[a-fA-F0-9]{64}',sha):raise ValueError(f'Invalid SHA-256: {name} {version}')
+    if not sha512 and not re.fullmatch(r'[a-fA-F0-9]{64}',sha):raise ValueError(f'Invalid SHA-256: {name} {version}')
     release_id=family+'-'+re.sub(r'[^a-z0-9.-]','-',version.lower())
     p=dict(id=release_id,family=family,name=name,version=version,category=category,description=description,
            url=url,source=urlparse(url).netloc,
            sha256=sha.lower(),executable=exe,architecture=architecture,channel=channel)
+    if sha512:p['sha512']=sha512.lower()
     PROVENANCE[(family,version)]={'url':source_url or url,'digestMethod':method}
     return p

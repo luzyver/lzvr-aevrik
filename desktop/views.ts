@@ -3,6 +3,7 @@ import {esc,icon,button,badge,empty,header,hydrate} from './ui';
 import {servicePanel,projectPanel,output} from './panels';
 import {packagesView} from './packages';
 import {storageRows} from './storage';
+import {appUpdateRow} from './updates';
 let renderedView='';
 const matches=(...values:string[])=>values.join(' ').toLowerCase().includes(state.query.toLowerCase());
 function toolbar() {return `<div class="toolbar"><span class="muted">Registered on this computer</span><label class="search-field">${icon('search')}<input id="search" type="search" placeholder="Filter by name…" value="${esc(state.query)}" aria-label="Filter resources"></label></div>`;}
@@ -25,6 +26,7 @@ function domains() {
 function settings() {
  return header('Settings','Preferences for this computer.')+`<div class="settings-grid"><div class="panel"><div class="settings-row"><div><strong>Appearance</strong><p>Choose graphite or pearl. Your preference is saved locally.</p></div>${button('theme',state.snapshot!.theme==='dark'?'Use light':'Use dark','sun')}</div>
  ${storageRows()}
+ ${appUpdateRow()}
  <div class="settings-row"><div><strong>When Aevrik closes</strong><p>All managed processes and their children are terminated. Close database services using their own shutdown tools first.</p></div><span class="badge">Stop processes</span></div>
  <div class="settings-row"><div><strong>Start with Windows / system tray</strong><p>Not available in this build.</p></div></div>
  </div>
