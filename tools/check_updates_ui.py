@@ -80,6 +80,10 @@ def run():
   expect(install).to_be_enabled()
   page.evaluate('window.failInstall=false')
   page.locator('[data-action="check-app-update"]').click()
+  # The async result replaces this section. Wait before scrolling/screenshotting
+  # so Playwright cannot retain an element detached by the completed request.
+  expect(page.locator('#app-update-status')).to_contain_text('newer build')
+  expect(install).to_be_enabled()
   page.locator('#app-update-section').scroll_into_view_if_needed()
   page.screenshot(path=str(OUT/'app-updates-800.png'))
   page.set_viewport_size({'width':1280,'height':820})
@@ -90,6 +94,7 @@ def run():
   for status in ['current','ahead','unknown']:
    page.evaluate('status=>window.appStatus=status',status)
    page.locator('[data-action="check-app-update"]').click()
+   expect(page.locator('[data-action="check-app-update"]')).to_be_enabled()
    expect(install).to_have_count(0)
   expect(page.locator('[data-action="open-app-release"]')).to_be_visible()
   page.evaluate('window.appStatus="available"')
