@@ -103,6 +103,8 @@ jobs:
       - name: Install browser test tooling
         run: python -m pip install playwright==1.63.0
       - run: python -m playwright install chromium
+      - name: Test delayed native browser connection
+        run: python tools/check_native_browser.py
       - run: python tools/run_ui_checks.py
       - name: Check official package URLs
         if: inputs.verify_catalog == true

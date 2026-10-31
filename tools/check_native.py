@@ -2,6 +2,7 @@
 import argparse, json, os, socket, subprocess, tempfile, time, urllib.request
 from pathlib import Path
 from playwright.sync_api import sync_playwright, expect
+from native_browser import wait_for_page
 
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"previews"/"desktop"
@@ -40,9 +41,7 @@ def run(executable=None):
   try:
    process=subprocess.Popen([str(exe)],cwd=data,env=env,startupinfo=startup)
    browser=p.chromium.connect_over_cdp(endpoint(debug_port,process))
-   deadline=time.monotonic()+20
-   while not browser.contexts[0].pages and time.monotonic()<deadline:time.sleep(.1)
-   page=browser.contexts[0].pages[0]
+   page=wait_for_page(browser)
    page.on("pageerror",lambda error:errors.append(str(error)))
    expect(page.locator("#engine-status")).to_have_text("Engine connected",timeout=20000)
    expect(page.get_by_text("Your local stack starts here",exact=True)).to_be_visible()
@@ -100,7 +99,7 @@ def run(executable=None):
    checks.append("Native Close exits and releases the owned service port")
    process=subprocess.Popen([str(exe)],cwd=data,env=env,startupinfo=startup)
    browser=p.chromium.connect_over_cdp(endpoint(debug_port,process))
-   page=browser.contexts[0].pages[0]
+   page=wait_for_page(browser)
    expect(page.locator("#engine-status")).to_have_text("Engine connected",timeout=20000)
    expect(page.locator("html")).to_have_attribute("data-theme","light")
    snapshot=page.evaluate("window.__TAURI_INTERNALS__.invoke('snapshot')")

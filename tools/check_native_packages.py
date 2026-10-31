@@ -3,6 +3,7 @@ import argparse, ctypes, json, os, socket, subprocess, tempfile, time, urllib.re
 from pathlib import Path
 from playwright.sync_api import sync_playwright, expect
 from check_native import ROOT, OUT, free_port, endpoint
+from native_browser import wait_for_page
 
 def resize(process, width, height):
  handles=[]
@@ -35,7 +36,7 @@ def run(exe):
   try:
    process=subprocess.Popen([str(exe)],cwd=data,env=env,startupinfo=startup)
    browser=p.chromium.connect_over_cdp(endpoint(debug,process))
-   page=browser.contexts[0].pages[0]
+   page=wait_for_page(browser)
    page.on('pageerror',lambda e:errors.append(str(e)))
    expect(page.locator('#engine-status')).to_have_text('Engine connected',timeout=20000)
    page.locator('[data-action="browse-packages"]').click()
@@ -118,7 +119,7 @@ def run(exe):
    page.locator('[data-window="close"]').click();process.wait(timeout=15);browser.close()
    with socket.socket() as sock:sock.bind(('127.0.0.1',port))
    process=subprocess.Popen([str(exe)],cwd=data,env=env,startupinfo=startup)
-   browser=p.chromium.connect_over_cdp(endpoint(debug,process));page=browser.contexts[0].pages[0]
+   browser=p.chromium.connect_over_cdp(endpoint(debug,process));page=wait_for_page(browser)
    expect(page.locator('#engine-status')).to_have_text('Engine connected',timeout=20000)
    page.locator('[data-nav="packages"]').click()
    expect(page.locator('[data-configure="caddy"]')).to_be_visible()
