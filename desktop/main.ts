@@ -107,6 +107,10 @@ document.addEventListener('click',async event=>{
    const project=state.snapshot.projects.find(p=>p.id===target.dataset.id);
    if(project)openNpmDialog(project,backend,mutate);
   }
+  if(action==='unlink-project-service'){
+   const form=document.querySelector<HTMLFormElement>('#project-properties');
+   if(form&&!state.busy){(form.elements.namedItem('serviceId') as HTMLSelectElement).value='';form.requestSubmit();}
+  }
   if(action==='check-runtime-updates')await checkRuntimeUpdates(backend,()=>packages.refresh(),()=>{if(state.page==='packages'&&!dialog.open)render();});
   if(action==='check-app-update')await checkAppUpdate(backend,()=>{if(state.page==='settings'&&!dialog.open)render();});
   if(action==='install-app-update')await installAppUpdate(backend,()=>{if(state.page==='settings'&&!dialog.open)render();});

@@ -67,6 +67,33 @@ with sync_playwright() as p:
     page.locator('#npm-service [data-npm-close]').first.click()
     page.wait_for_timeout(1100)
     expect(page.locator('#dialog')).not_to_be_visible()
+    # A project linked to bare node.exe needs a visible recovery path. Keep the
+    # old registration intact: another project may still reference it.
+    page.reload()
+    page.evaluate(r'''() => {
+      window.fixture.services.push({id:'bare-node',name:'Node.js 26.13.0',executable:'D:\\Node runtime\\node.exe',cwd:'D:\\Node runtime',args:[],state:'stopped',pid:null,exitCode:0,port:null});
+      window.fixture.projects[0].serviceId='bare-node';
+      window.fixture.projects[0].runtime='Node.js 26.13.0';
+    }''')
+    page.locator('[data-nav="projects"]').click()
+    page.locator('[data-select-project="portfolio"]').click()
+    expect(page.locator('[data-project-launch-help]')).to_contain_text('without a script')
+    expect(page.locator('.detail-pane [data-action="start"]')).to_have_count(0)
+    page.set_viewport_size({'width':800,'height':600})
+    page.screenshot(path=str(OUT/'npm-project-recovery-800.png'))
+    assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
+    page.locator('[data-action="unlink-project-service"]').click()
+    expect(page.locator('#project-properties [name="serviceId"]')).to_have_value('')
+    expect(page.locator('#project-properties [name="runtime"]')).to_have_value('Node.js 26.13.0')
+    assert page.evaluate('window.fixture.services[0].id')=='bare-node'
+    page.locator('[data-action="setup-npm"]').click()
+    expect(page.locator('#npm-service [name="script"]')).to_have_value('dev')
+    page.locator('#npm-service [type="submit"]').click()
+    expect(page.locator('#dialog')).not_to_be_visible()
+    page.locator('.detail-pane [data-action="start"]').click()
+    expect(page.locator('.detail-pane [data-action="stop"]')).to_be_visible()
+    assert page.evaluate('window.fixture.services.find(s=>s.id==="npm-service").state')=='running'
+    assert page.evaluate('window.fixture.services.find(s=>s.id==="bare-node").state')=='stopped'
     assert not errors,errors
     browser.close()
-print('npm project setup, script preview, save/link, errors, empty and stale-dialog states passed.')
+print('npm setup, save/link, errors, empty/stale dialogs and bare-Node recovery through Start passed.')
