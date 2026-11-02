@@ -2,6 +2,7 @@
 mod app_install;
 mod commands;
 mod installer;
+mod npm;
 mod operations;
 mod packages;
 mod startup;
@@ -38,6 +39,8 @@ fn main() {
             commands::snapshot,
             commands::add_project,
             commands::register_service,
+            npm::project_scripts,
+            npm::register_npm_service,
             commands::control_service,
             commands::set_theme,
             commands::update_project,

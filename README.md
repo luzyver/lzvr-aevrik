@@ -52,6 +52,10 @@ Runtime labels and domain labels are metadata. They do not switch executable ver
 
 ## Register a service
 
+For an npm project, open **Projects**, select the project, and choose **Set up npm script**. Aevrik reads `package.json`, lists its scripts, and offers installed Node.js runtimes plus Node on PATH. Choose a script (such as `dev`) and Node, optionally enter the expected port, then **Save service**. This registers and links the service; press **Start** to run it. If a service is already linked, select **No linked service** and save project properties before setting up another. The previous service remains registered.
+
+The selected Node runs its bundled npm, including normal pre/post hooks and local dependency commands. Its directory is added to the child process PATH only; Windows PATH and project files are unchanged. Install project dependencies separately before starting. Missing scripts or a Node installation without bundled npm produce an error. This flow supports npm scripts; pnpm, Yarn and workspace-package selection are not yet provided.
+
 Open **Runtimes**, choose a product version, select **Install**, choose its folder and confirm. Then use **Configure service**. Supply the working directory, foreground launch arguments and optional port before registering. Installation alone does not start a service. MariaDB and MongoDB installation supply binaries only; database initialization and configuration are still manual. SQLite and DuckDB are command-line tools, not persistent servers. See [package catalog details](docs/PACKAGE-CATALOG.md).
 
 Use **Register service**, select its .exe and working directory, and enter one argument per line. Arguments are passed directly without shell expansion; do not add quoting around paths with spaces. Selecting a file does not launch it. Press **Start** after registration.

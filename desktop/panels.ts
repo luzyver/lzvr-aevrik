@@ -22,6 +22,7 @@ export function projectPanel(project?:Project):string {
  const linked=services.find(s=>s.id===project.serviceId);
  return `<aside class="detail-pane"><h3>Properties</h3><div class="detail-identity"><span class="project-logo">${esc(project.name[0])}</span><div><h2>${esc(project.name)}</h2>${badge(project.state)}</div></div>
  ${linked?`<div class="header-actions">${controls(linked)}</div>`:''}
+ ${!linked?button('setup-npm','Set up npm script','terminal',false,`data-id="${esc(project.id)}"`):''}
  <h3 class="detail-section">Project directory</h3><code class="detail-path">${esc(project.path)}</code>
  <div class="detail-row"><span>Domain label</span><code>${esc(project.domain)}</code></div><div class="detail-row"><span>HTTPS / routing</span><strong>Not configured</strong></div>
  <form id="project-properties" data-id="${esc(project.id)}"><label class="field">Managed service<select name="serviceId"><option value="">No linked service</option>${services.map(s=>`<option value="${esc(s.id)}" ${s.id===project.serviceId?'selected':''}>${esc(s.name)}</option>`).join('')}</select></label>

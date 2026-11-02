@@ -26,6 +26,8 @@ impl std::ops::Deref for Project {
 #[derive(Debug, Clone, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ServiceInput {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub npm_script: Option<String>,
     pub name: String,
     pub executable: String,
     pub args: Vec<String>,

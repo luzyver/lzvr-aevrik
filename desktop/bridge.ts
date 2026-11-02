@@ -1,6 +1,8 @@
 export type Invoke = <T>(command: string, args?: Record<string, unknown>) => Promise<T>;
 export interface Project {id:string;name:string;path:string;domain:string;runtime:string;serviceId:string|null;state:string}
-export interface Service {id:string;name:string;executable:string;args:string[];cwd:string;port:number|null;state:string;pid:number|null;exitCode:number|null}
+export interface Service {id:string;name:string;executable:string;args:string[];cwd:string;port:number|null;state:string;pid:number|null;exitCode:number|null;npmScript?:string}
+export interface ProjectScripts {scripts:{name:string;command:string}[];nodes:{executable:string;label:string}[]}
+export interface NpmServiceInput {projectId:string;script:string;nodeExecutable:string;port:number|null}
 export interface LogEntry {timestamp:number;service:string;level:string;message:string}
 export interface Snapshot {projects:Project[];services:Service[];logs:LogEntry[];theme:string}
 export interface StorageInfo {current:string;next:string|null;application:string;overridden:boolean}
@@ -11,6 +13,11 @@ export class Backend {
   private invoke: Invoke;
   constructor(invoke: Invoke) {this.invoke=invoke;}
   snapshot(): Promise<Snapshot> {return this.invoke('snapshot');}
+  projectScripts(id:string):Promise<ProjectScripts> {return this.invoke('project_scripts',{id});}
+  async registerNpmService(input:NpmServiceInput):Promise<Snapshot> {
+    await this.invoke('register_npm_service',{input});
+    return this.snapshot();
+  }
   storage():Promise<StorageInfo> {return this.invoke('storage_info');}
   setDataDirectory(directory:string):Promise<StorageInfo> {return this.invoke('set_data_directory',{directory});}
   packages(): Promise<RuntimePackage[]> {return this.invoke('list_packages');}

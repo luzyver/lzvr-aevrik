@@ -15,7 +15,7 @@ pub async fn remove_service(state: State<'_, AppState>, id: String) -> Result<()
     .await
 }
 
-async fn with_engine<T: Send + 'static>(
+pub(crate) async fn with_engine<T: Send + 'static>(
     state: State<'_, AppState>,
     operation: impl FnOnce(&mut Engine) -> Result<T, String> + Send + 'static,
 ) -> Result<T, String> {

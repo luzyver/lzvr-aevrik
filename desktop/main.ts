@@ -16,6 +16,7 @@ import {catalog,PackageController} from './packages';
 import {installDialog,uninstallDialog,removeServiceDialog,defaultDialog,defaultPlans} from './package-dialogs';
 import {storage,loadStorage,openDataFolderDialog} from './storage';
 import {checkRuntimeUpdates,checkAppUpdate,installAppUpdate,appUpdates} from './updates';
+import {openNpmDialog} from './npm-dialog';
 
 const backend=new Backend(invoke);
 const refreshStorage=()=>loadStorage(backend,()=>{if(state.page==='settings'&&!dialog.open)render();});
@@ -102,6 +103,10 @@ document.addEventListener('click',async event=>{
    } finally {target.removeAttribute('disabled');}
   }
   const action=target.dataset.action;
+  if(action==='setup-npm'){
+   const project=state.snapshot.projects.find(p=>p.id===target.dataset.id);
+   if(project)openNpmDialog(project,backend,mutate);
+  }
   if(action==='check-runtime-updates')await checkRuntimeUpdates(backend,()=>packages.refresh(),()=>{if(state.page==='packages'&&!dialog.open)render();});
   if(action==='check-app-update')await checkAppUpdate(backend,()=>{if(state.page==='settings'&&!dialog.open)render();});
   if(action==='install-app-update')await installAppUpdate(backend,()=>{if(state.page==='settings'&&!dialog.open)render();});

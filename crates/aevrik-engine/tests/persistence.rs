@@ -26,6 +26,7 @@ fn removing_a_stopped_service_unlinks_projects_and_preserves_files() {
     let mut engine = Engine::open(&dir.path().join("metadata.sqlite")).unwrap();
     let service = engine
         .register_service(ServiceInput {
+            npm_script: None,
             name: "Fixture".into(),
             executable: executable.to_string_lossy().into(),
             args: vec!["0".into()],
@@ -94,6 +95,7 @@ fn invalid_paths_domains_and_executables_do_not_create_records() {
         assert!(engine.add_project(project(dir.path(), domain)).is_err());
     }
     let invalid = ServiceInput {
+        npm_script: None,
         name: "Bad".into(),
         executable: "cmd.exe".into(),
         args: vec![],

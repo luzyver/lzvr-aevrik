@@ -4,6 +4,7 @@ mod error;
 mod job;
 mod logs;
 mod model;
+pub mod npm;
 mod process;
 mod service_removal;
 mod storage;

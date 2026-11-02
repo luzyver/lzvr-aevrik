@@ -6,6 +6,7 @@ use std::{
 
 fn service(dir: &std::path::Path, args: Vec<String>, port: Option<u16>) -> ServiceInput {
     ServiceInput {
+        npm_script: None,
         name: "Fixture".into(),
         executable: env!("CARGO_BIN_EXE_process-fixture").into(),
         args,

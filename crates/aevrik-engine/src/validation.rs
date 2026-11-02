@@ -62,6 +62,7 @@ pub(crate) fn service(input: &mut ServiceInput) -> Result<()> {
     }
     input.executable = path.canonicalize()?.to_string_lossy().into();
     input.cwd = directory(&input.cwd)?.to_string_lossy().into();
+    crate::npm::validate(input)?;
     if input.port == Some(0) {
         return Err(invalid("Port must be between 1 and 65535."));
     }

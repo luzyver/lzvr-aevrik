@@ -67,6 +67,7 @@ impl Processes {
             drop(listener);
         }
         let mut command = Command::new(&config.executable);
+        crate::npm::environment(&mut command, &config)?;
         command
             .args(&config.args)
             .current_dir(&config.cwd)

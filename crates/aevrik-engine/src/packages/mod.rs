@@ -47,12 +47,12 @@ struct Progress {
 #[serde(rename_all = "camelCase")]
 pub struct PackageView {
     #[serde(flatten)]
-    package: catalog::Package,
+    pub package: catalog::Package,
     pub status: String,
     bytes: u64,
     total: Option<u64>,
     error: Option<String>,
-    path: Option<String>,
+    pub path: Option<String>,
     install_directory: Option<String>,
     terminal_default: DefaultStatus,
 }

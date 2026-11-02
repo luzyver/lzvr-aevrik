@@ -80,6 +80,43 @@ impl Store {
             exit_code: None,
         })
     }
+    pub fn add_project_service(
+        &mut self,
+        project_id: &str,
+        config: ServiceInput,
+    ) -> Result<Service> {
+        let transaction = self.connection.transaction()?;
+        let json: String = transaction.query_row(
+            "SELECT config FROM projects WHERE id=?1",
+            [project_id],
+            |r| r.get(0),
+        )?;
+        let mut project: ProjectInput = serde_json::from_str(&json)?;
+        if project.service_id.is_some() {
+            return Err(invalid(
+                "This project already has a linked service. Unlink it in project properties before setting up another.",
+            ));
+        }
+        let id = uuid::Uuid::new_v4().to_string();
+        project.service_id = Some(id.clone());
+        project.runtime = "Node.js · npm".into();
+        transaction.execute(
+            "INSERT INTO services(id,config) VALUES(?1,?2)",
+            params![id, serde_json::to_string(&config)?],
+        )?;
+        transaction.execute(
+            "UPDATE projects SET config=?1 WHERE id=?2",
+            params![serde_json::to_string(&project)?, project_id],
+        )?;
+        transaction.commit()?;
+        Ok(Service {
+            id,
+            config,
+            state: "stopped".into(),
+            pid: None,
+            exit_code: None,
+        })
+    }
     pub fn remove_service(&mut self, id: &str) -> Result<()> {
         let projects = self.projects()?;
         let transaction = self.connection.transaction()?;
