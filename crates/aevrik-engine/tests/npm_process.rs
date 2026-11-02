@@ -39,7 +39,8 @@ fn npm_runs_hooks_with_selected_node_and_stops_descendants() {
         .find(|p| aevrik_engine::npm::npm_cli(p).is_ok())
         .expect("Node with npm on PATH");
     let root = tempfile::tempdir().unwrap();
-    let node_dir = root.path().join("Selected Node");
+    // Exercise an alias: Windows temp paths can also use short names or different casing.
+    let node_dir = root.path().join(".").join("Selected Node");
     std::fs::create_dir_all(&node_dir).unwrap();
     std::fs::copy(&original, node_dir.join("node.exe")).unwrap();
     copy_tree(
@@ -85,9 +86,19 @@ fn npm_runs_hooks_with_selected_node_and_stops_descendants() {
     });
     let logs = engine.snapshot().unwrap().logs;
     assert!(logs.iter().any(|l| l.message == "predev-ran"));
-    assert!(
-        logs.iter()
-            .any(|l| l.message == format!("selected-node:{}", node_dir.join("node.exe").display()))
+    let actual_node = logs
+        .iter()
+        .find_map(|l| l.message.strip_prefix("selected-node:"))
+        .unwrap_or_else(|| {
+            panic!(
+                "Missing selected Node output: {:?}",
+                logs.iter().map(|l| &l.message).collect::<Vec<_>>()
+            )
+        });
+    assert_eq!(
+        Path::new(actual_node).canonicalize().unwrap(),
+        node_dir.join("node.exe").canonicalize().unwrap(),
+        "npm must run the selected Node executable"
     );
     assert!(TcpListener::bind(("127.0.0.1", port)).is_err());
     engine.stop_service(&service.id).unwrap();
