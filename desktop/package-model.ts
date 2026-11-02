@@ -1,3 +1,4 @@
+import {packageCategory} from './package-categories.ts';
 export interface RuntimePackage {
  id:string;family?:string;name:string;version:string;category:string;description:string;source:string;
  architecture?:string;channel?:string;
@@ -23,8 +24,8 @@ export function groups(query=''):PackageGroup[] {
  const result:PackageGroup[]=[];const search=query.trim().toLowerCase();
  for(const [family,all] of families){
   all.sort((a,b)=>order.compare(b.version,a.version));
-  if(catalog.category!=='All'&&all[0]!.category!==catalog.category)continue;
-  const versions=all.filter(p=>`${p.name} ${p.version} ${p.category} ${p.channel??''}`.toLowerCase().includes(search));
+  if(catalog.category!=='All'&&packageCategory(all[0]!)!==catalog.category)continue;
+  const versions=all.filter(p=>`${p.name} ${p.version} ${packageCategory(p)} ${p.channel??''}`.toLowerCase().includes(search));
   if(!versions.length)continue;
   const selected=versions.find(p=>p.id===catalog.selected[family])??versions[0]!;
   result.push({family,all,versions,selected});

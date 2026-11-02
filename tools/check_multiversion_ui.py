@@ -50,7 +50,7 @@ with sync_playwright() as p:
  expect(page.locator('.package-row')).to_have_count(1)
  expect(page.locator('[data-package-version="php"]')).to_have_value('php-8.3.29')
  page.locator('#search').fill('')
- page.locator('#package-category').select_option('Web server')
+ page.locator('#package-category').select_option('Web servers')
  expect(page.locator('.package-row')).to_have_count(1)
  assert not errors,errors
  browser.close()

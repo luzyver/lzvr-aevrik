@@ -2,10 +2,12 @@ import {state} from './state';
 import {esc,icon,button,empty,header} from './ui';
 import {catalog,groups,availableUpdate,type PackageGroup} from './package-model';
 import {runtimeUpdates} from './updates';
+import {packageCategory,packageCategories} from './package-categories';
 
 const mib=(value:number)=>(value/1048576).toFixed(1)+' MiB';
 function row(group:PackageGroup) {
  const {selected:p,all,versions,family}=group;
+ const category=packageCategory(p);
  const busy=catalog.pending.has(p.id)||p.status==='downloading'||p.status==='verifying';
  const downloading=p.status==='downloading';
  const label=p.status==='verifying'?'Verifying & extracting…':downloading?'Downloading…':busy?'Starting download…':p.status==='installed'?'Installed':'Available';
@@ -17,8 +19,8 @@ function row(group:PackageGroup) {
  const defaultControl=terminal?.supported?`${!terminal.active?`<button class="button" data-default="${esc(p.id)}" ${busy?'disabled':''}>Set as default</button>`:''}${terminal.onPath?`<button class="button" data-clear-default="${esc(p.id)}" ${busy?'disabled':''}>Remove from PATH</button>`:''}`:'';
  const control=p.status==='installed'?`${defaultControl}<button class="button" data-configure="${esc(p.id)}" ${busy?'disabled':''}>Configure service</button><button class="button danger" data-uninstall="${esc(p.id)}" ${busy||terminal?.onPath?'disabled':''} ${terminal?.onPath?'title="Remove this version from PATH before uninstalling."':''}>Uninstall</button>`:
   `<button class="button ${busy?'':'primary'}" data-install="${esc(p.id)}" ${busy?'disabled':''}>${busy?'Installing…':p.status==='failed'?'Retry':'Install'}</button>`;
- return `<article class="package-row" data-family="${esc(family)}" data-package="${esc(p.id)}"><span class="resource-icon">${icon(p.category==='Database'?'database':p.category==='Web server'?'server':'package')}</span>
- <div class="package-info"><div class="package-name"><h2>${esc(p.name)}</h2><span class="package-kind">${esc(p.category)}</span><span class="version-count">${all.length} versions${installed?` · ${installed} installed`:''}</span></div>
+ return `<article class="package-row" data-family="${esc(family)}" data-package="${esc(p.id)}"><span class="resource-icon">${icon(['Database servers','Embedded databases'].includes(category)?'database':category==='Web servers'?'server':'package')}</span>
+ <div class="package-info"><div class="package-name"><h2>${esc(p.name)}</h2><span class="package-kind">${esc(category)}</span><span class="version-count">${all.length} versions${installed?` · ${installed} installed`:''}</span></div>
  <p>${esc(p.description)}</p>
  <div class="package-version-line"><label class="package-version">Version <select data-package-version="${esc(family)}" aria-label="${esc(p.name)} version">${versions.map(v=>`<option value="${esc(v.id)}" ${v.id===p.id?'selected':''}>${esc(v.version)}${v.channel?' · '+esc(v.channel):''}${v.terminalDefault?.active?' · Default':v.status==='installed'?' · Installed':''}</option>`).join('')}</select></label><span class="package-meta">Windows ${esc(p.architecture??'x64')} · ${esc(p.source)}</span></div>
  ${p.path?`<code class="runtime-path">${esc(p.path)}</code>`:''}
@@ -31,8 +33,8 @@ function row(group:PackageGroup) {
 export function packagesView() {
  const filtered=groups(state.query);
  const families=new Set(catalog.items.map(p=>p.family||p.name)).size;
- const categories=['All',...new Set(catalog.items.map(p=>p.category))];
- return header('Runtime packages','Choose a product and version. Multiple versions can stay installed together.',button('add-service','Register local executable','plus'))+
+ const categories=packageCategories(catalog.items);
+ return header('Runtimes & tools','Install language runtimes, SDKs, servers and development tools. Keep multiple versions side by side.',button('add-service','Register local executable','plus'))+
  `<div class="catalog-update-bar"><button class="button" data-action="check-runtime-updates" ${runtimeUpdates.checking?'disabled':''}>${runtimeUpdates.checking?'Checking…':'Check for updates'}</button><p id="catalog-update-status" role="${runtimeUpdates.error?'alert':'status'}" class="${runtimeUpdates.error?'update-error':''}">${esc(runtimeUpdates.checking?'Checking the published runtime catalog…':runtimeUpdates.error||runtimeUpdates.message)}</p></div>
  <div class="toolbar catalog-toolbar"><label class="package-filter">Show <select id="package-category" aria-label="Package category">${categories.map(c=>`<option ${c===catalog.category?'selected':''}>${esc(c)}</option>`).join('')}</select></label>
  <span class="catalog-count">${families} products · ${catalog.items.length} versions</span><label class="search-field">${icon('search')}<input id="search" type="search" value="${esc(state.query)}" placeholder="Find a product or version…" aria-label="Filter packages"></label></div>

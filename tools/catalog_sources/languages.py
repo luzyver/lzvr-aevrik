@@ -52,6 +52,18 @@ def java():
     return result
 
 
+def java_jre(majors=(8,11,17,21,25)):
+    result=[]
+    for major in majors:
+        url=f'https://api.adoptium.net/v3/assets/latest/{major}/hotspot?architecture=x64&image_type=jre&os=windows'
+        release=metadata(url)[0];archive=release['binary']['package'];name=release['release_name']
+        if not archive['link'].endswith('.zip'):raise ValueError('Expected a Windows JRE ZIP')
+        result.append(entry('java-jre','Java JRE (Temurin)',name.removeprefix('jdk-').removeprefix('jdk'),'Runtimes',
+            'Run Java applications without the JDK compiler. JAVA_HOME and global PATH are unchanged.',
+            archive['link'],name+'-jre/bin/java.exe',archive['checksum'],url,channel='LTS'))
+    return result
+
+
 def dotnet(channels=('8.0','9.0','10.0')):
     result=[]
     asset_names={'sdk':'dotnet-sdk-win-x64.zip',

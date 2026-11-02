@@ -6,7 +6,7 @@ Metadata/archive cache: .tooling/catalog-source-cache. Remove selected cache fil
 import argparse, concurrent.futures, datetime, json
 from collections import Counter
 from pathlib import Path
-from catalog_sources import languages, servers, extras, common
+from catalog_sources import languages, servers, extras, runtimes, common
 from catalog_sources.common import ROOT, PROVENANCE, version_key
 
 TARGET=ROOT/'crates/aevrik-engine/src/packages/catalog.json'
@@ -15,7 +15,7 @@ def run(output, products=None):
     legacy=json.loads(TARGET.read_text())
     source_path=TARGET.with_suffix('.sources.json')
     prior_sources={p['id']:p for p in json.loads(source_path.read_text())['entries']} if source_path.exists() else {}
-    tasks=[languages.php,languages.node,languages.go,languages.python,languages.java,languages.dotnet,languages.zig,languages.nim,servers.github,servers.maria,servers.nginx,extras.mongo,extras.duckdb,extras.sqlite]
+    tasks=[languages.php,languages.node,languages.go,languages.python,languages.java,languages.java_jre,languages.dotnet,languages.zig,languages.nim,runtimes.luau,runtimes.wasmtime,servers.github,servers.maria,servers.nginx,extras.mongo,extras.duckdb,extras.sqlite]
     if products:tasks=[task for task in tasks if task.__name__ in products]
     if not tasks:raise ValueError('No matching catalog sources')
     results=[]
@@ -36,9 +36,12 @@ def run(output, products=None):
         if (p['name'],p['version']) not in keys:
             p.setdefault('family',{'Node.js':'node','Java (Temurin)':'java'}.get(p['name'],p['name'].lower()))
             p.setdefault('architecture','x64');p.setdefault('channel','Release');results.append(p)
-    order=['caddy','nginx','php','node','python','go','java','bun','deno','dotnet-sdk','dotnet-runtime','aspnet-runtime','zig','nim','mariadb','mongodb','duckdb','sqlite','mailpit']
+    categories=json.loads(TARGET.with_suffix('.categories.json').read_text())
+    by_family={family:category for category,families in categories.items() for family in families}
+    for p in results:p['category']=by_family.get(p['family'],p['category'])
+    order=['caddy','nginx','php','node','python','go','java','java-jre','bun','deno','dotnet-sdk','dotnet-runtime','aspnet-runtime','zig','nim','luau','wasmtime','mariadb','mongodb','duckdb','sqlite','mailpit']
     results.sort(key=lambda p:version_key(p['version']),reverse=True)
-    results.sort(key=lambda p:order.index(p['family']))
+    results.sort(key=lambda p:order.index(p['family']) if p['family'] in order else len(order))
     assert len({p['id'] for p in results})==len(results),'Duplicate release id'
     output.parent.mkdir(parents=True,exist_ok=True)
     output.write_text(json.dumps(results,indent=2)+'\n',encoding='utf-8')

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-31T08:09:52.199178+00:00",
+  "generatedAt": "2026-11-02T02:48:01.667360+00:00",
   "entries": [
     {
       "id": "caddy",
@@ -554,6 +554,36 @@
       "digestMethod": "publisher-sha256"
     },
     {
+      "id": "java-jre-25.0.5-8",
+      "version": "25.0.5+8",
+      "url": "https://api.adoptium.net/v3/assets/latest/25/hotspot?architecture=x64&image_type=jre&os=windows",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "java-jre-21.0.13-9",
+      "version": "21.0.13+9",
+      "url": "https://api.adoptium.net/v3/assets/latest/21/hotspot?architecture=x64&image_type=jre&os=windows",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "java-jre-17.0.20.1-1",
+      "version": "17.0.20.1+1",
+      "url": "https://api.adoptium.net/v3/assets/latest/17/hotspot?architecture=x64&image_type=jre&os=windows",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "java-jre-11.0.32.1-1",
+      "version": "11.0.32.1+1",
+      "url": "https://api.adoptium.net/v3/assets/latest/11/hotspot?architecture=x64&image_type=jre&os=windows",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "java-jre-8u504-b01",
+      "version": "8u504-b01",
+      "url": "https://api.adoptium.net/v3/assets/latest/8/hotspot?architecture=x64&image_type=jre&os=windows",
+      "digestMethod": "publisher-sha256"
+    },
+    {
       "id": "bun-1.4.4",
       "version": "1.4.4",
       "url": "https://api.github.com/repos/oven-sh/bun/releases?per_page=12",
@@ -857,6 +887,42 @@
       "id": "nim-2.2.6",
       "version": "2.2.6",
       "url": "https://nim-lang.org/download/nim-2.2.6_x64.zip.sha256",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "luau-0.745",
+      "version": "0.745",
+      "url": "https://api.github.com/repos/luau-lang/luau/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "luau-0.744",
+      "version": "0.744",
+      "url": "https://api.github.com/repos/luau-lang/luau/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "luau-0.743",
+      "version": "0.743",
+      "url": "https://api.github.com/repos/luau-lang/luau/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "wasmtime-50.0.1",
+      "version": "50.0.1",
+      "url": "https://api.github.com/repos/bytecodealliance/wasmtime/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "wasmtime-49.0.5",
+      "version": "49.0.5",
+      "url": "https://api.github.com/repos/bytecodealliance/wasmtime/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "wasmtime-48.0.8",
+      "version": "48.0.8",
+      "url": "https://api.github.com/repos/bytecodealliance/wasmtime/releases?per_page=10",
       "digestMethod": "publisher-sha256"
     },
     {

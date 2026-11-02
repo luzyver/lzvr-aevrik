@@ -1,0 +1,8 @@
+{
+  "Runtimes": ["php", "node", "python", "java-jre", "bun", "deno", "dotnet-runtime", "aspnet-runtime", "luau", "wasmtime"],
+  "SDKs & compilers": ["go", "java", "dotnet-sdk", "zig", "nim"],
+  "Web servers": ["caddy", "nginx"],
+  "Database servers": ["mariadb", "mongodb"],
+  "Embedded databases": ["duckdb", "sqlite"],
+  "Development tools": ["mailpit"]
+}

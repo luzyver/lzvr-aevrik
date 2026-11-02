@@ -1,0 +1,82 @@
+{
+  "preservedReleases": 179,
+  "newReleases": [
+    {
+      "id": "java-jre-25.0.5-8",
+      "status": "passed",
+      "archiveBytes": 58589419,
+      "executable": "jdk-25.0.5+8-jre/bin/java.exe",
+      "architecture": "x64"
+    },
+    {
+      "id": "java-jre-21.0.13-9",
+      "status": "passed",
+      "archiveBytes": 49106397,
+      "executable": "jdk-21.0.13+9-jre/bin/java.exe",
+      "architecture": "x64"
+    },
+    {
+      "id": "java-jre-17.0.20.1-1",
+      "status": "passed",
+      "archiveBytes": 43780109,
+      "executable": "jdk-17.0.20.1+1-jre/bin/java.exe",
+      "architecture": "x64"
+    },
+    {
+      "id": "java-jre-11.0.32.1-1",
+      "status": "passed",
+      "archiveBytes": 43578373,
+      "executable": "jdk-11.0.32.1+1-jre/bin/java.exe",
+      "architecture": "x64"
+    },
+    {
+      "id": "java-jre-8u504-b01",
+      "status": "passed",
+      "archiveBytes": 40104826,
+      "executable": "jdk8u504-b01-jre/bin/java.exe",
+      "architecture": "x64"
+    },
+    {
+      "id": "luau-0.745",
+      "status": "passed",
+      "archiveBytes": 3253334,
+      "executable": "luau.exe",
+      "architecture": "x64"
+    },
+    {
+      "id": "luau-0.744",
+      "status": "passed",
+      "archiveBytes": 3207318,
+      "executable": "luau.exe",
+      "architecture": "x64"
+    },
+    {
+      "id": "luau-0.743",
+      "status": "passed",
+      "archiveBytes": 3205518,
+      "executable": "luau.exe",
+      "architecture": "x64"
+    },
+    {
+      "id": "wasmtime-50.0.1",
+      "status": "passed",
+      "archiveBytes": 13126016,
+      "executable": "wasmtime-v50.0.1-x86_64-windows/wasmtime.exe",
+      "architecture": "x64"
+    },
+    {
+      "id": "wasmtime-49.0.5",
+      "status": "passed",
+      "archiveBytes": 13335206,
+      "executable": "wasmtime-v49.0.5-x86_64-windows/wasmtime.exe",
+      "architecture": "x64"
+    },
+    {
+      "id": "wasmtime-48.0.8",
+      "status": "passed",
+      "archiveBytes": 13033544,
+      "executable": "wasmtime-v48.0.8-x86_64-windows/wasmtime.exe",
+      "architecture": "x64"
+    }
+  ]
+}
