@@ -10,6 +10,7 @@ from pathlib import Path
 from pywinauto import Application
 from check_native import ROOT, OUT
 from check_data_location_native import check as check_storage, check_installed_startup
+from installer_navigation import select_application_directory
 
 KEY = r'Software\Microsoft\Windows\CurrentVersion\Uninstall\Aevrik'
 
@@ -41,20 +42,8 @@ def run():
             data_input.wait('visible',timeout=30)
             data_input.set_edit_text(str(data))
             window.capture_as_image().save(str(OUT/'setup-data-picker.png'))
-            window.child_window(control_id=1,class_name='Button').click()
-            deadline=time.monotonic()+30
-            while time.monotonic()<deadline:
-                edits=[control for control in window.descendants(class_name='Edit') if control.is_visible()]
-                if edits:
-                    edit=edits[0]
-                    edit.set_edit_text(str(destination))
-                    assert edit.window_text()==str(destination)
-                    window.capture_as_image().save(str(OUT/'setup-directory-picker.png'))
-                    break
-                window.child_window(control_id=1,class_name='Button').click()
-                time.sleep(.4)
-            else:
-                raise AssertionError('Setup never offered a directory picker')
+            select_application_directory(window,destination)
+            window.capture_as_image().save(str(OUT/'setup-directory-picker.png'))
             # Cancel the interactive preview; verify installation separately with
             # the same destination and NSIS's documented /D argument.
             window.close()
@@ -66,6 +55,11 @@ def run():
                 except Exception:
                     if process.poll() is None: raise
             process.wait(timeout=15)
+        except Exception:
+            if 'window' in locals() and window.exists(timeout=0):
+                window.capture_as_image().save(str(OUT/'setup-navigation-failure.png'))
+                window.print_control_identifiers()
+            raise
         finally:
             if process.poll() is None: process.terminate();process.wait(timeout=10)
         assert not config.exists(),'Cancelled Setup saved a data preference'
