@@ -144,6 +144,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Installer test tooling could not be installed.' }
           python tools/check_installer_navigation.py
           if ($LASTEXITCODE -ne 0) { throw 'Installer navigation regression failed.' }
+          python tools/check_nsis_navigation.py
+          if ($LASTEXITCODE -ne 0) { throw 'Real NSIS navigation regression failed.' }
           python tools/check_installer.py
       - name: Package Setup, portable EXE, ZIP and checksums
         env:

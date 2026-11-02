@@ -10,6 +10,7 @@ def fixture(mode):
     import win32gui as gui
 
     next_button = None
+    page_window = None
     page = 'welcome'
     advance = c.WM_APP + 1
 
@@ -19,12 +20,15 @@ def fixture(mode):
         timer.start()
 
     def messages(window, message, wparam, lparam):
-        nonlocal page
+        nonlocal page, page_window
         if message == advance:
             if page == 'transition':
+                gui.DestroyWindow(page_window)
+                page_window = gui.CreateWindowEx(0, '#32770', '', c.WS_CHILD | c.WS_VISIBLE,
+                                                 0, 0, 350, 80, window, 0, None, None)
                 gui.CreateWindowEx(0, 'Edit', 'Default application folder',
                                    c.WS_CHILD | c.WS_VISIBLE | c.WS_BORDER,
-                                   10, 45, 300, 25, window, 1019, None, None)
+                                   10, 45, 300, 25, page_window, 1019, None, None)
                 page = 'directory'
             gui.EnableWindow(next_button, True)
             return 0
@@ -52,6 +56,10 @@ def fixture(mode):
     window = gui.CreateWindowEx(c.WS_EX_NOACTIVATE, atom, 'Navigation fixture',
                                 c.WS_OVERLAPPEDWINDOW, -10000, -10000, 400, 200,
                                 0, 0, None, None)
+    page_window = gui.CreateWindowEx(0, '#32770', '', c.WS_CHILD | c.WS_VISIBLE,
+                                     0, 0, 350, 80, window, 0, None, None)
+    gui.CreateWindowEx(0, 'Static', 'Welcome', c.WS_CHILD | c.WS_VISIBLE,
+                       10, 10, 300, 25, page_window, 100, None, None)
     if mode == 'unrelated':
         gui.CreateWindowEx(0, 'Edit', 'Unrelated input', c.WS_CHILD | c.WS_VISIBLE,
                            10, 10, 300, 25, window, 1000, None, None)

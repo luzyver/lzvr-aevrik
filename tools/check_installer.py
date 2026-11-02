@@ -26,7 +26,11 @@ def run():
     bundles=list((ROOT/'target/release/bundle/nsis').glob('*-setup.exe'))
     assert len(bundles)==1,'Expected exactly one Setup executable'
     installer=bundles[0]
-    with tempfile.TemporaryDirectory(prefix='aevrik-setup-',dir=os.environ['RUNNER_TEMP']) as temporary:
+    # WebView can retain metrics-file handles after its owning app exits. Cleanup
+    # of runner scratch files must not mask a failed assertion (or fail a passed
+    # installation check); the disposable hosted runner removes any leftovers.
+    with tempfile.TemporaryDirectory(prefix='aevrik-setup-',dir=os.environ['RUNNER_TEMP'],
+                                     ignore_cleanup_errors=True) as temporary:
         scratch=Path(temporary)
         destination=scratch/'Custom application folder'
         # Portable first-run remains covered before Setup establishes the preference.
@@ -56,9 +60,14 @@ def run():
                     if process.poll() is None: raise
             process.wait(timeout=15)
         except Exception:
-            if 'window' in locals() and window.exists(timeout=0):
-                window.capture_as_image().save(str(OUT/'setup-navigation-failure.png'))
-                window.print_control_identifiers()
+            print(f'Setup navigation failed; installer exit code: {process.poll()}', flush=True)
+            if 'app' in locals():
+                try:
+                    for index, visible in enumerate(app.windows(visible_only=True)):
+                        visible.capture_as_image().save(str(OUT/f'setup-navigation-failure-{index}.png'))
+                        app.window(handle=visible.handle).print_control_identifiers()
+                except Exception as diagnostic_error:
+                    print(f'Could not capture Setup diagnostics: {diagnostic_error}', flush=True)
             raise
         finally:
             if process.poll() is None: process.terminate();process.wait(timeout=10)
