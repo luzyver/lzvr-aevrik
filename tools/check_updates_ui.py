@@ -7,6 +7,8 @@ window.updateItems=[{id:'node-old',family:'node',name:'Node.js',version:'20.0.0'
 window.updateCalls=[];
 const previous=window.__TAURI_INTERNALS__.invoke;
 window.__TAURI_INTERNALS__.invoke=async(command,args)=>{
+ // Theme persistence crosses IPC; keep it asynchronous to expose capture races.
+ if(command==='set_theme')await new Promise(r=>setTimeout(r,75));
  if(command==='list_packages')return structuredClone(window.updateItems);
  if(command==='refresh_catalog'){
   window.updateCalls.push(command);
@@ -88,6 +90,9 @@ def run():
   page.screenshot(path=str(OUT/'app-updates-800.png'))
   page.set_viewport_size({'width':1280,'height':820})
   page.locator('[data-action="theme"]').first.click()
+  # click() does not await theme IPC or the resulting Settings rerender.
+  expect(page.locator('html')).to_have_attribute('data-theme','light')
+  expect(page.locator('#main')).not_to_have_attribute('aria-busy','true')
   page.locator('#app-update-section').scroll_into_view_if_needed()
   page.screenshot(path=str(OUT/'app-updates-light.png'))
   expect(page.locator('#app-update-status')).to_contain_text('newer build')
