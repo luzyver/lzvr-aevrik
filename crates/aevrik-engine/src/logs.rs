@@ -1,3 +1,5 @@
+mod terminal;
+
 use crate::model::LogEntry;
 use std::{
     collections::VecDeque,
@@ -38,43 +40,57 @@ impl Logs {
     }
     pub fn capture(
         &self,
-        mut reader: impl Read + Send + 'static,
+        reader: impl Read + Send + 'static,
         service: String,
         level: &'static str,
     ) {
         let logs = self.clone();
-        std::thread::spawn(move || {
-            let mut buffer = [0u8; 2048];
-            let mut line = Vec::new();
-            loop {
-                match reader.read(&mut buffer) {
-                    Ok(0) => break,
-                    Ok(n) => {
-                        for &byte in &buffer[..n] {
-                            if byte == b'\n' || line.len() >= 8192 {
-                                logs.push(
-                                    &service,
-                                    level,
-                                    String::from_utf8_lossy(&line)
-                                        .trim_end_matches('\r')
-                                        .to_string(),
-                                );
-                                line.clear();
-                            }
-                            if byte != b'\n' {
-                                line.push(byte);
-                            }
+        std::thread::spawn(move || logs.read_output(reader, &service, level));
+    }
+    fn push_output(&self, service: &str, level: &str, line: &[u8]) {
+        let text = String::from_utf8_lossy(line);
+        let message = terminal::message(text.trim_end_matches('\r'));
+        if !message.trim().is_empty() {
+            self.push(service, terminal::level(message, level), message);
+        }
+    }
+
+    fn read_output(&self, mut reader: impl Read, service: &str, level: &str) {
+        let mut terminal = terminal::Terminal::default();
+        let mut buffer = [0u8; 2048];
+        let mut line = Vec::new();
+        loop {
+            match reader.read(&mut buffer) {
+                Ok(0) => break,
+                Ok(n) => {
+                    for &byte in &buffer[..n] {
+                        if !terminal.text_byte(byte) {
+                            continue;
+                        }
+                        // Flush before a new UTF-8 codepoint, never inside one.
+                        if byte == b'\n'
+                            || line.len() >= 8196
+                            || (line.len() >= 8192 && byte & 0xc0 != 0x80)
+                        {
+                            self.push_output(service, level, &line);
+                            line.clear();
+                        }
+                        if byte != b'\n' {
+                            line.push(byte);
                         }
                     }
-                    Err(error) => {
-                        logs.push(&service, "ERROR", format!("Log capture: {error}"));
-                        break;
-                    }
+                }
+                Err(error) => {
+                    self.push_output(service, level, &line);
+                    line.clear();
+                    self.push(service, "ERROR", format!("Log capture: {error}"));
+                    break;
                 }
             }
-            if !line.is_empty() {
-                logs.push(&service, level, String::from_utf8_lossy(&line).to_string());
-            }
-        });
+        }
+        self.push_output(service, level, &line);
     }
 }
+
+#[cfg(test)]
+mod tests;

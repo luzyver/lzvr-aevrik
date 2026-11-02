@@ -40,3 +40,5 @@ main>.workspace-log{flex:0 0 clamp(96px,23%,168px);margin-top:12px}
 .app-update-row {align-items:flex-start;flex-wrap:wrap;gap:12px;}
 .app-update-row > div:first-child {flex:1 1 280px;min-width:0;}
 @media(max-width:900px) {.catalog-update-bar {align-items:flex-start;}.update-actions {flex-wrap:wrap;}}
+
+.log-error{color:var(--danger)}
