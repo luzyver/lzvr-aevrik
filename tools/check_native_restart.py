@@ -6,8 +6,8 @@ import tempfile
 
 from playwright.sync_api import expect, sync_playwright
 
-from check_native import ROOT, endpoint, free_port
-from native_browser import wait_for_page
+from check_native import ROOT, free_port
+from native_browser import connect_native, wait_for_debugger_exit, wait_for_page
 from native_lifecycle import exit_application
 
 
@@ -23,13 +23,13 @@ def run():
                    'domain': 'restart.test', 'runtime': '', 'serviceId': None}
         original = None
         with sync_playwright() as p:
-            for restarted in (False, True):
+            for restarted in range(5):
                 port = free_port()
                 env['WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS'] = f'--remote-debugging-port={port}'
                 process = subprocess.Popen([str(ROOT / 'target/release/aevrik.exe')],
                                            env=env, cwd=scratch, startupinfo=startup)
                 try:
-                    browser = p.chromium.connect_over_cdp(endpoint(port, process))
+                    browser = connect_native(p, port, process)
                     try:
                         page = wait_for_page(browser)
                         expect(page.locator('#engine-status')).to_have_text('Engine connected', timeout=20000)
@@ -52,11 +52,12 @@ def run():
                             assert process.wait(timeout=20) == 0, 'Explicit Exit failed after recovery'
                     finally:
                         browser.close()
+                    wait_for_debugger_exit(port)
                 finally:
                     if process.poll() is None:
                         process.terminate()
                         process.wait(timeout=10)
-    print('Native forced restart: saved project, data directory, released locks and normal Exit passed.')
+    print('Five native launches: forced restart recovery, saved project, data directory, released browser locks and normal Exit passed.')
 
 
 if __name__ == '__main__':

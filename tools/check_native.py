@@ -1,8 +1,8 @@
 """Smoke-test the actual Windows executable and Rust IPC with isolated test data."""
-import argparse, json, os, socket, subprocess, tempfile, time, urllib.request
+import argparse, json, os, socket, subprocess, tempfile, time
 from pathlib import Path
 from playwright.sync_api import sync_playwright, expect
-from native_browser import wait_for_page
+from native_browser import connect_native, wait_for_debugger_exit, wait_for_page
 from native_lifecycle import exit_application, restore_from_tray, wait_visible
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -13,16 +13,6 @@ def free_port():
  with socket.socket() as sock:
   sock.bind(("127.0.0.1",0))
   return sock.getsockname()[1]
-
-def endpoint(port, process):
- deadline=time.monotonic()+45
- while time.monotonic()<deadline:
-  if process.poll() is not None:raise RuntimeError(f"Aevrik exited: {process.returncode}")
-  try:
-   with urllib.request.urlopen(f"http://127.0.0.1:{port}/json/version",timeout=1) as response:
-    return json.load(response)["webSocketDebuggerUrl"]
-  except (OSError, ValueError):time.sleep(.2)
- raise TimeoutError("WebView2 debugging endpoint did not appear")
 
 def run(executable=None):
  data=Path(tempfile.mkdtemp(prefix="aevrik-native-"))
@@ -41,7 +31,7 @@ def run(executable=None):
  with sync_playwright() as p:
   try:
    process=subprocess.Popen([str(exe)],cwd=data,env=env,startupinfo=startup)
-   browser=p.chromium.connect_over_cdp(endpoint(debug_port,process))
+   browser=connect_native(p,debug_port,process)
    page=wait_for_page(browser)
    page.on("pageerror",lambda error:errors.append(str(error)))
    expect(page.locator("#engine-status")).to_have_text("Engine connected",timeout=20000)
@@ -106,9 +96,12 @@ def run(executable=None):
    assert process.wait(timeout=15)==0,'Explicit Exit did not shut down cleanly'
    with socket.socket() as freed:freed.bind(("127.0.0.1",port))
    browser.close()
+   wait_for_debugger_exit(debug_port)
    checks.append("Explicit Exit stops Aevrik and releases the owned service port")
+   debug_port=free_port()
+   env["WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS"]=f"--remote-debugging-port={debug_port}"
    process=subprocess.Popen([str(exe)],cwd=data,env=env,startupinfo=startup)
-   browser=p.chromium.connect_over_cdp(endpoint(debug_port,process))
+   browser=connect_native(p,debug_port,process)
    page=wait_for_page(browser)
    expect(page.locator("#engine-status")).to_have_text("Engine connected",timeout=20000)
    expect(page.locator("html")).to_have_attribute("data-theme","light")

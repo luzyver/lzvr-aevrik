@@ -12,8 +12,8 @@ import win32gui
 from playwright.sync_api import expect, sync_playwright
 from pywinauto.timings import TimeoutError, wait_until
 
-from check_native import ROOT, endpoint, free_port
-from native_browser import wait_for_page
+from check_native import ROOT, free_port
+from native_browser import connect_native, wait_for_page
 from native_lifecycle import exit_from_tray, wait_visible, window_handle
 
 
@@ -57,7 +57,7 @@ def check(mode):
         timer = None
         try:
             with sync_playwright() as p:
-                browser = p.chromium.connect_over_cdp(endpoint(port, process))
+                browser = connect_native(p, port, process)
                 try:
                     page = wait_for_page(browser)
                     expect(page.locator('#engine-status')).to_have_text('Engine connected', timeout=20000)

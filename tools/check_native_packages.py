@@ -2,8 +2,8 @@
 import argparse, ctypes, json, os, socket, subprocess, tempfile, time, urllib.request
 from pathlib import Path
 from playwright.sync_api import sync_playwright, expect
-from check_native import ROOT, OUT, free_port, endpoint
-from native_browser import wait_for_page
+from check_native import ROOT, OUT, free_port
+from native_browser import connect_native, wait_for_debugger_exit, wait_for_page
 from native_lifecycle import exit_application
 from catalog_scroll import scroll_to_last_package
 
@@ -37,7 +37,7 @@ def run(exe):
  with sync_playwright() as p:
   try:
    process=subprocess.Popen([str(exe)],cwd=data,env=env,startupinfo=startup)
-   browser=p.chromium.connect_over_cdp(endpoint(debug,process))
+   browser=connect_native(p,debug,process)
    page=wait_for_page(browser)
    page.on('pageerror',lambda e:errors.append(str(e)))
    expect(page.locator('#engine-status')).to_have_text('Engine connected',timeout=20000)
@@ -118,9 +118,12 @@ def run(exe):
    scroll_to_last_package(page)
    checks.append('Catalog scroll reaches the final package while main and window remain fixed')
    exit_application(page);process.wait(timeout=15);browser.close()
+   wait_for_debugger_exit(debug)
    with socket.socket() as sock:sock.bind(('127.0.0.1',port))
+   debug=free_port()
+   env['WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS']=f'--remote-debugging-port={debug}'
    process=subprocess.Popen([str(exe)],cwd=data,env=env,startupinfo=startup)
-   browser=p.chromium.connect_over_cdp(endpoint(debug,process));page=wait_for_page(browser)
+   browser=connect_native(p,debug,process);page=wait_for_page(browser)
    expect(page.locator('#engine-status')).to_have_text('Engine connected',timeout=20000)
    page.locator('[data-nav="packages"]').click()
    expect(page.locator('[data-configure="caddy"]')).to_be_visible()

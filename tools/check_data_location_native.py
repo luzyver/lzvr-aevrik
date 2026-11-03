@@ -5,8 +5,8 @@ import subprocess
 from pathlib import Path
 from playwright.sync_api import sync_playwright, expect
 from pywinauto import Application
-from check_native import free_port, endpoint, OUT
-from native_browser import wait_for_page
+from check_native import free_port, OUT
+from native_browser import connect_native, wait_for_debugger_exit, wait_for_page
 from native_lifecycle import exit_application
 
 
@@ -22,7 +22,7 @@ def check_installed_startup(executable, expected):
     process=subprocess.Popen([str(executable)],env=env,cwd=executable.parent)
     try:
         with sync_playwright() as p:
-            browser=p.chromium.connect_over_cdp(endpoint(port,process))
+            browser=connect_native(p,port,process)
             try:
                 page=wait_for_page(browser)
                 expect(page.locator('#engine-status')).to_have_text('Engine connected',timeout=20000)
@@ -33,6 +33,7 @@ def check_installed_startup(executable, expected):
                 process.wait(timeout=20)
             finally:
                 browser.close()
+            wait_for_debugger_exit(port)
     finally:
         if process.poll() is None: process.terminate();process.wait(timeout=10)
 
@@ -50,8 +51,12 @@ def check(executable, scratch):
     source.mkdir()
     profile.mkdir(parents=True, exist_ok=True)
     processes=[]
+    previous_port=None
     with sync_playwright() as p:
         def launch(overridden=None, setup=False):
+            nonlocal previous_port
+            if previous_port is not None:
+                wait_for_debugger_exit(previous_port)
             port=free_port()
             env=os.environ.copy()
             env.pop('AEVRIK_DATA_DIR',None)
@@ -63,7 +68,8 @@ def check(executable, scratch):
             startup.wShowWindow=0
             process=subprocess.Popen([str(executable)],env=env,cwd=scratch,startupinfo=startup)
             processes.append(process)
-            browser=p.chromium.connect_over_cdp(endpoint(port,process))
+            previous_port=port
+            browser=connect_native(p,port,process)
             page=wait_for_page(browser)
             if setup:
                 expect(page.get_by_role('heading',name='Choose your data folder')).to_be_visible(timeout=20000)
