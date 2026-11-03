@@ -5,6 +5,7 @@ from playwright.sync_api import sync_playwright, expect
 from check_native import ROOT, OUT, free_port, endpoint
 from native_browser import wait_for_page
 from native_lifecycle import exit_application
+from catalog_scroll import scroll_to_last_package
 
 def resize(process, width, height):
  handles=[]
@@ -114,9 +115,8 @@ def run(exe):
    resize(process,800,600)
    page.screenshot(path=str(OUT/'native-catalog-800.png'))
    # Confirm the list scrolls independently all the way to the final package.
-   page.locator('.package-row').last.locator('[data-install]').scroll_into_view_if_needed()
-   expect(page.locator('.package-row').last.locator('[data-install]')).to_be_in_viewport()
-   assert page.locator('#main').evaluate('(e)=>e.scrollTop')==0
+   scroll_to_last_package(page)
+   checks.append('Catalog scroll reaches the final package while main and window remain fixed')
    exit_application(page);process.wait(timeout=15);browser.close()
    with socket.socket() as sock:sock.bind(('127.0.0.1',port))
    process=subprocess.Popen([str(exe)],cwd=data,env=env,startupinfo=startup)
