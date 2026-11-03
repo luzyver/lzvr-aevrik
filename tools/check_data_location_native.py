@@ -7,7 +7,7 @@ from playwright.sync_api import sync_playwright, expect
 from pywinauto import Application
 from check_native import free_port, endpoint, OUT
 from native_browser import wait_for_page
-from native_lifecycle import exit_application
+from native_lifecycle import exit_application, exit_from_tray
 
 
 def check_installed_startup(executable, expected):
@@ -109,8 +109,11 @@ def check(executable, scratch):
             assert same(saved['directory'].removeprefix('\\\\?\\'),source)
             assert (source/'aevrik.sqlite').is_file() and (source/'runtimes').is_dir()
             assert not (profile/'aevrik.sqlite').exists()
-            main.close()
+            # Close now hides the workspace in the tray. Use explicit Exit for
+            # a cold restart; CDP is still attached to the setup WebView here.
+            exit_from_tray(process)
             process.wait(timeout=20)
+            assert process.returncode == 0, 'Tray Exit did not shut down cleanly'
             browser.close()
 
             process,browser,page=launch()
