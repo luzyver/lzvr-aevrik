@@ -58,14 +58,31 @@ def exit_application(page):
     page.locator('[data-action="exit-app"]').click()
 
 
-def exit_from_tray(process):
+def exit_from_tray(process, timeout=10):
     """Exit through the real tray menu when no workspace WebView is attached."""
     from pywinauto import Application
+    from pywinauto.timings import TimeoutError
 
-    app = Application(backend='win32').connect(process=process.pid, timeout=10)
+    app = Application(backend='win32').connect(process=process.pid, timeout=timeout)
     hwnd = window_handle(process, class_name="tray_icon_app")
-    # Open this process's native menu with tray-icon's WM_RBUTTONUP callback.
-    assert ctypes.windll.user32.PostMessageW(hwnd, 6002, 0, 0x0205)
     popup = app.window(class_name='#32768')
-    popup.wait('visible', timeout=10)
-    popup.menu().get_menu_path('Exit and stop services', exact=True)[0].click_input()
+    deadline = time.monotonic() + timeout
+    # tray-icon drops callbacks while Shell_NotifyIconGetRect cannot find the
+    # newly registered icon. Retry opening until the real menu is visible.
+    while not (popup.exists(timeout=0) and popup.is_visible()):
+        assert process.poll() is None, 'Aevrik exited before its tray menu opened'
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            raise TimeoutError(f'Aevrik tray menu did not appear within {timeout}s (PID {process.pid})')
+        assert ctypes.windll.user32.PostMessageW(hwnd, 6002, 0, 0x0205)
+        try:
+            popup.wait('visible', timeout=min(.5, remaining), retry_interval=.05)
+        except TimeoutError:
+            continue
+    item = popup.menu().get_menu_path('Exit and stop services', exact=True)[0]
+    assert item.is_enabled(), 'Tray Exit is disabled'
+    command = item.item_id()
+    # Dispatch the selected item's real WM_COMMAND to its tray owner. Mouse
+    # coordinates can lose a race with focus/cursor changes on the CI desktop.
+    assert ctypes.windll.user32.PostMessageW(hwnd, 0x001F, 0, 0)  # WM_CANCELMODE
+    assert ctypes.windll.user32.PostMessageW(hwnd, 0x0111, command, 0)  # WM_COMMAND
