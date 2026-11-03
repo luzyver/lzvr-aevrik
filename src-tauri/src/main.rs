@@ -7,6 +7,7 @@ mod operations;
 mod packages;
 mod startup;
 mod storage;
+mod tray;
 mod updates;
 use commands::AppState;
 use tauri::Manager;
@@ -26,7 +27,9 @@ fn main() {
     let app = tauri::Builder::default()
         .manage(app_install::InstallState::default())
         .setup(startup::initialize)
+        .on_window_event(tray::on_window_event)
         .invoke_handler(tauri::generate_handler![
+            tray::exit_app,
             startup::setup_info,
             startup::complete_setup,
             startup::exit_setup,

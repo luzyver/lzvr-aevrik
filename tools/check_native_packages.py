@@ -4,6 +4,7 @@ from pathlib import Path
 from playwright.sync_api import sync_playwright, expect
 from check_native import ROOT, OUT, free_port, endpoint
 from native_browser import wait_for_page
+from native_lifecycle import exit_application
 
 def resize(process, width, height):
  handles=[]
@@ -116,7 +117,7 @@ def run(exe):
    page.locator('.package-row').last.locator('[data-install]').scroll_into_view_if_needed()
    expect(page.locator('.package-row').last.locator('[data-install]')).to_be_in_viewport()
    assert page.locator('#main').evaluate('(e)=>e.scrollTop')==0
-   page.locator('[data-window="close"]').click();process.wait(timeout=15);browser.close()
+   exit_application(page);process.wait(timeout=15);browser.close()
    with socket.socket() as sock:sock.bind(('127.0.0.1',port))
    process=subprocess.Popen([str(exe)],cwd=data,env=env,startupinfo=startup)
    browser=p.chromium.connect_over_cdp(endpoint(debug,process));page=wait_for_page(browser)
@@ -146,7 +147,7 @@ def run(exe):
    page.locator('[data-package-version="caddy"]').select_option('caddy')
    expect(page.locator('[data-configure="caddy"]')).to_be_visible()
    checks.append('Chosen runtime folder remembered; in-use uninstall blocked; stopped registration removed before uninstall; other version and external files retained')
-   page.locator('[data-window="close"]').click();process.wait(timeout=15);browser.close()
+   exit_application(page);process.wait(timeout=15);browser.close()
    assert not errors,errors
   finally:
    if process and process.poll() is None:process.terminate();process.wait(timeout=15)

@@ -9,6 +9,6 @@ tauri-build = { version = "2", features = [] }
 
 [dependencies]
 aevrik-engine = { path = "../crates/aevrik-engine" }
-tauri = { version = "2", features = [] }
+tauri = { version = "2", features = ["tray-icon"] }
 serde = { version = "1", features = ["derive"] }
 rfd = "0.15"

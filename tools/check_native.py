@@ -3,6 +3,7 @@ import argparse, json, os, socket, subprocess, tempfile, time, urllib.request
 from pathlib import Path
 from playwright.sync_api import sync_playwright, expect
 from native_browser import wait_for_page
+from native_lifecycle import exit_application, restore_from_tray, wait_visible
 
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"previews"/"desktop"
@@ -91,12 +92,21 @@ def run(executable=None):
    page.locator('[data-action="theme"]').first.click()
    expect(page.locator("html")).to_have_attribute("data-theme","light")
    page.screenshot(path=str(OUT/"native-project.png"))
-   # Close through the real window control; verifies cleanup on actual application exit.
+   # Close hides the window but preserves the engine and its owned service.
    page.locator('[data-window="close"]').click()
+   time.sleep(1)
+   wait_visible(process,False)
+   with socket.create_connection(("127.0.0.1",port),timeout=2):pass
+   restore_from_tray(process)
+   restored=page.evaluate("window.__TAURI_INTERNALS__.invoke('snapshot')")
+   assert restored["services"][0]["pid"]==restarted["services"][0]["pid"]
+   assert restored["logs"],"Service logs disappeared after restoring the window"
+   checks.append("Native Close hides the window; service stays reachable with the same PID and logs after tray restore")
+   exit_application(page)
    process.wait(timeout=15)
    with socket.socket() as freed:freed.bind(("127.0.0.1",port))
    browser.close()
-   checks.append("Native Close exits and releases the owned service port")
+   checks.append("Explicit Exit stops Aevrik and releases the owned service port")
    process=subprocess.Popen([str(exe)],cwd=data,env=env,startupinfo=startup)
    browser=p.chromium.connect_over_cdp(endpoint(debug_port,process))
    page=wait_for_page(browser)
@@ -108,7 +118,7 @@ def run(executable=None):
    assert snapshot["services"][0]["state"]=="stopped"
    assert snapshot["services"][0]["pid"] is None
    checks.append("Projects, service registration and theme persist across executable restart; processes do not autostart")
-   page.locator('[data-window="close"]').click()
+   exit_application(page)
    process.wait(timeout=15)
    browser.close()
    assert not errors,errors

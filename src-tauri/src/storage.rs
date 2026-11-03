@@ -47,7 +47,7 @@ fn lock(directory: &Path, name: &str) -> Result<fs::File, Box<dyn std::error::Er
         .truncate(false)
         .open(directory.join(name))?;
     file.try_lock().map_err(
-        |_| "Another Aevrik instance is using these settings or this data folder. Close it first.",
+        |_| "Another Aevrik instance is using these settings or this data folder. Open it from the system tray, or choose Exit and stop services before launching another copy.",
     )?;
     Ok(file)
 }

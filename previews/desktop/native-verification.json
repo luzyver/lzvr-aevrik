@@ -4,9 +4,10 @@
   "checks": [
     "Release executable opens with a real empty Rust snapshot",
     "Actual service registration, port conflict, start, output, PID and restart",
-    "Native Close exits and releases the owned service port",
+    "Native Close hides the window; service stays reachable with the same PID and logs after tray restore",
+    "Explicit Exit stops Aevrik and releases the owned service port",
     "Projects, service registration and theme persist across executable restart; processes do not autostart"
   ],
   "consoleErrors": [],
-  "isolatedTestDirectory": "C:\\Users\\Victus\\AppData\\Local\\Temp\\aevrik-native-09lrvbh4"
+  "isolatedTestDirectory": "C:\\Users\\Victus\\AppData\\Local\\Temp\\aevrik-native-wwflg0j1"
 }

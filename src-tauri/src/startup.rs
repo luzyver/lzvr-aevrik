@@ -44,6 +44,7 @@ fn open_workspace(
     }
     // Retain initialized state and its lock if WebView creation fails. A retry
     // recreates the window, never removes state referenced by IPC handlers.
+    crate::tray::initialize(app)?;
     WebviewWindowBuilder::from_config(app, &app.config().app.windows[0])?
         .data_directory(std::path::PathBuf::from(storage::display(directory)).join("webview"))
         .build()?;

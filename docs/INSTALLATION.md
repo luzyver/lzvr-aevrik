@@ -36,6 +36,8 @@ After verification, Aevrik launches Setup in passive update mode for the current
 
 Portable copies without a saved workspace open **Choose your data folder** on first launch. Type a path or use **Browse…**, then select **Open Aevrik**. **Use default folder** restores the Windows-profile path; **Exit** closes setup without creating a workspace. Use a separate directory such as `D:\AevrikData`. Invalid paths show an inline error so you can correct the selection. Installed copies use the folder saved by Setup and go straight to the workspace. **Settings → Data folder → Change folder** schedules another folder for the next launch; the current folder stays active until exit. **Keep current folder** cancels a pending change.
 
+Closing the workspace window keeps Aevrik and its services running in the system tray. Click the tray icon to reopen it. To apply a data-folder change, choose **Exit and stop services** in Settings or the tray menu, then launch Aevrik again. Use that explicit exit before manually installing or uninstalling Aevrik too.
+
 The first-launch screen uses a separate WebView cache under `%LOCALAPPDATA%\id.luzyver.aevrik.desktop\setup-webview`. It does not initialize the default workspace. After confirmation, the main window's WebView cache, metadata and default runtimes use the selected data folder.
 
 The selected folder holds `aevrik.sqlite`, `runtimes` and `webview`. Previously selected per-runtime destinations remain specific to their workspace. Database-server data and project files stay wherever their launch settings put them. A small `%APPDATA%\id.luzyver.aevrik.desktop\data-location.json` file remembers the selected workspace; installing the application on another drive does not relocate this pointer file.

@@ -7,6 +7,7 @@ from playwright.sync_api import sync_playwright, expect
 from pywinauto import Application
 from check_native import free_port, endpoint, OUT
 from native_browser import wait_for_page
+from native_lifecycle import exit_application
 
 
 def check_installed_startup(executable, expected):
@@ -28,7 +29,7 @@ def check_installed_startup(executable, expected):
                 info=page.evaluate("window.__TAURI_INTERNALS__.invoke('storage_info')")
                 assert Path(info['current']).resolve()==expected.resolve()
                 expect(page.locator('#setup-open')).to_have_count(0)
-                page.locator('[data-window="close"]').click()
+                exit_application(page)
                 process.wait(timeout=20)
             finally:
                 browser.close()
@@ -72,7 +73,7 @@ def check(executable, scratch):
             return process,browser,page
 
         def close(process,browser,page):
-            page.locator('[data-window="close"]').click()
+            exit_application(page)
             process.wait(timeout=20)
             browser.close()
 

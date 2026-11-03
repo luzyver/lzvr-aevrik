@@ -58,7 +58,7 @@ with sync_playwright() as p:
     expect(page.locator('#dialog')).not_to_be_visible()
     expect(page.locator('#storage-current')).to_have_text('C:\\AevrikData')
     expect(page.locator('#storage-next')).to_contain_text('D:\\Development data\\Aevrik')
-    expect(page.locator('#storage-next')).to_contain_text('Close and reopen')
+    expect(page.locator('#storage-next')).to_contain_text('Exit and stop services, then reopen')
     expect(page.locator('[data-action="cancel-data-change"]')).to_be_in_viewport()
     assert page.evaluate('window.savedLocations') == ['D:\\Development data\\Aevrik']
     page.screenshot(path=str(OUT/'data-folder-settings-800.png'))

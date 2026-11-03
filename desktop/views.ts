@@ -27,8 +27,9 @@ function settings() {
  return header('Settings','Preferences for this computer.')+`<div class="settings-grid"><div class="panel"><div class="settings-row"><div><strong>Appearance</strong><p>Choose graphite or pearl. Your preference is saved locally.</p></div>${button('theme',state.snapshot!.theme==='dark'?'Use light':'Use dark','sun')}</div>
  ${storageRows()}
  ${appUpdateRow()}
- <div class="settings-row"><div><strong>When Aevrik closes</strong><p>All managed processes and their children are terminated. Close database services using their own shutdown tools first.</p></div><span class="badge">Stop processes</span></div>
- <div class="settings-row"><div><strong>Start with Windows / system tray</strong><p>Not available in this build.</p></div></div>
+ <div class="settings-row"><div><strong>When the window closes</strong><p>Aevrik stays in the system tray. Services and projects keep running. Click its tray icon to reopen the window.</p></div><span class="badge">Keep running</span></div>
+ <div class="settings-row"><div><strong>Exit Aevrik</strong><p>Exit stops all managed processes and their children. Shut down database services using their own tools first.</p></div>${button('exit-app','Exit and stop services','close')}</div>
+ <div class="settings-row"><div><strong>Start with Windows</strong><p>Not available in this build.</p></div></div>
  </div>
  <p class="page-footnote">Aevrik 0.1.0-beta-1 · Rust engine · Tauri desktop shell</p></div>`;
 }

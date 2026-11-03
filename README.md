@@ -31,7 +31,7 @@ The hosted build produces an unsigned Setup EXE plus portable EXE/ZIP. Setup ins
 
 - Windows Setup with a selectable application folder and a registered uninstaller.
 - First-launch data-folder selection and **Settings → Data folder → Change folder**; changes apply on the next launch.
-- Actual native window minimize, maximize, drag and close.
+- Native window minimize, maximize and drag. Close hides Aevrik in the system tray while services and projects keep running; click the tray icon to reopen it.
 - Fixed desktop chrome and workspace; lists, properties and output scroll independently.
 - An offline-visible catalog of 22 products and 190 selectable versions, including Java JRE (Temurin), Luau and Wasmtime. Packages are grouped into runtimes, SDKs & compilers, web servers, database servers, embedded databases and development tools. HTTPS downloads use pinned SHA-256 or publisher SHA-512 verification, progress and retry.
 - **Runtimes → Check for updates** fetches the published catalog for this build's channel. Newer runtime versions install separately in a chosen folder; existing services keep their executable. **Settings → Aevrik updates** checks the app release and opens its download page. App installation remains manual.
@@ -64,7 +64,9 @@ Use a foreground process. Daemonized programs, self-installing Windows services 
 
 An expected port is an availability preflight on 127.0.0.1; it does not configure the executable's listening port and is not a readiness check. **Running** means the process is alive.
 
-**Stop, Restart and closing Aevrik terminate the owned process tree through a Windows Job Object.** Graceful shutdown protocols are not implemented. Shut down database servers through their own tools before closing Aevrik; do not use this build to manage important database workloads. Existing external processes are not killed to free occupied ports.
+**Closing the window keeps services and projects running in the system tray.** Click the Aevrik tray icon to reopen it. To quit fully, choose **Exit and stop services** in the tray menu or Settings. Background operation lasts while Aevrik and the Windows session remain running; it does not provide startup at boot or operation through sleep, sign-out or shutdown.
+
+**Stop, Restart and explicit Exit terminate the owned process tree through a Windows Job Object.** Graceful shutdown protocols are not implemented. Shut down database servers through their own tools before exiting Aevrik; do not use this build to manage important database workloads. Existing external processes are not killed to free occupied ports.
 
 ## Storage
 
@@ -84,7 +86,7 @@ For an isolated or portable metadata directory, set `AEVRIK_DATA_DIR` to an abso
 
 ## Not implemented yet
 
-Unattended runtime/catalog updates, cancel/resume, service-registration editing, automatic per-project configuration, DNS/hosts/proxy routing, HTTPS certificates, database initialization/administration, graceful service shutdown, system tray, start with Windows, signing and automatic app installation. MySQL, PostgreSQL, Redis, Ruby and Rust toolchains are not bundled. Nim requires a separately configured C compiler. Corresponding native pages describe availability instead of simulating success.
+Unattended runtime/catalog updates, cancel/resume, service-registration editing, automatic per-project configuration, DNS/hosts/proxy routing, HTTPS certificates, database initialization/administration, graceful service shutdown, start with Windows, signing and automatic app installation. MySQL, PostgreSQL, Redis, Ruby and Rust toolchains are not bundled. Nim requires a separately configured C compiler. Corresponding native pages describe availability instead of simulating success.
 
 ## Frontend development
 

@@ -103,6 +103,7 @@ document.addEventListener('click',async event=>{
    } finally {target.removeAttribute('disabled');}
   }
   const action=target.dataset.action;
+  if(action==='exit-app'){await invoke('exit_app');return;}
   if(action==='setup-npm'){
    const project=state.snapshot.projects.find(p=>p.id===target.dataset.id);
    if(project)openNpmDialog(project,backend,mutate);
@@ -172,7 +173,7 @@ document.addEventListener('submit',async event=>{
    }
   } else if(form.id==='data-location') {
    storage.info=await backend.setDataDirectory(String(new FormData(form).get('directory')??'').trim());
-   dialog.close();render();toast(storage.info.next?'Data folder saved. Close and reopen Aevrik to apply it.':'Current data folder retained.');
+   dialog.close();render();toast(storage.info.next?'Data folder saved. Choose Exit and stop services, then reopen Aevrik to apply it.':'Current data folder retained.');
    document.querySelector('#storage-next')?.scrollIntoView({block:'nearest'});
   } else if(form.id==='package-install') {
    const destination=String(new FormData(form).get('destination')??'').trim();
