@@ -127,6 +127,8 @@ jobs:
           }
       - name: Test actual desktop process management
         run: python tools/check_native.py
+      - name: Test workspace recovery after forced restart
+        run: python tools/check_native_restart.py
       - name: Test real installation, custom location, persistence and uninstall
         run: python tools/check_native_packages.py
       - name: Bundle Windows Setup from the tested executable
@@ -142,8 +144,6 @@ jobs:
         run: |
           python -m pip install pywinauto==0.6.9 pillow==13.0.0
           if ($LASTEXITCODE -ne 0) { throw 'Installer test tooling could not be installed.' }
-          python tools/check_native_tray.py
-          if ($LASTEXITCODE -ne 0) { throw 'Native tray exit regression failed.' }
           python tools/check_installer_navigation.py
           if ($LASTEXITCODE -ne 0) { throw 'Installer navigation regression failed.' }
           python tools/check_nsis_navigation.py

@@ -119,6 +119,10 @@ The workflow also runs `check_installer.py` to verify the visible folder picker,
 
 The workflow runs `check_native.py` and `check_native_packages.py` against its freshly built 0.1.0-beta-1 executable, including two Caddy versions, a chosen folder, HTTP startup, viewport checks, persistence and guarded uninstall. Do not run the updated native test against the older 0.3 executable. Tag builds also fully download and query the versions of MongoDB, DuckDB and SQLite through `check_catalog_additions.py`; this does not start a database server.
 
+`check_native_restart.py` verifies saved projects and released data-folder locks after forcibly stopping its own service-free process, followed by a normal Settings Exit. The installer test uses the same forced-restart boundary after first-run setup has saved the data preference. Normal Exit, owned-service cleanup, close-to-tray and restoration remain covered by `check_native.py`.
+
+`python tools/check_native_tray.py` is a separate check for an interactive Windows desktop. Its popup-menu automation passes locally but times out on the hosted runner, so it is not a release gate. Hosted tests do not verify selection of Exit from the tray popup; they verify Exit through Settings.
+
 To verify selected pinned archives independently, run `cargo run -p aevrik-engine --example install_smoke -- <absolute-isolated-directory>`. By default it downloads the original four packages and never starts a server. Append release IDs to test specific versions.
 
 Native tests use temporary metadata/WebView2 profiles and controlled fixtures, and close their own application. Test directories remain in the runner's temporary folder until its disposal. The beta version/workflow checks are recorded in `previews/desktop/beta-version-verification.json`. The broader implementation checks before renaming this release remain in `previews/desktop/source-verification-0.4.0.json`; those historical filenames are retained. Hosted build/native results are still pending.

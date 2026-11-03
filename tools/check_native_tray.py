@@ -1,4 +1,4 @@
-"""Exercise real tray Exit with normal, delayed and unavailable shell icons."""
+"""Interactive-desktop tray-menu checks; not a hosted-runner release gate."""
 import ctypes
 from ctypes import wintypes
 import os

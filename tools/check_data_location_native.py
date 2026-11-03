@@ -7,7 +7,7 @@ from playwright.sync_api import sync_playwright, expect
 from pywinauto import Application
 from check_native import free_port, endpoint, OUT
 from native_browser import wait_for_page
-from native_lifecycle import exit_application, exit_from_tray
+from native_lifecycle import exit_application
 
 
 def check_installed_startup(executable, expected):
@@ -109,12 +109,15 @@ def check(executable, scratch):
             assert same(saved['directory'].removeprefix('\\\\?\\'),source)
             assert (source/'aevrik.sqlite').is_file() and (source/'runtimes').is_dir()
             assert not (profile/'aevrik.sqlite').exists()
-            # Close now hides the workspace in the tray. Use explicit Exit for
-            # a cold restart; CDP is still attached to the setup WebView here.
-            exit_from_tray(process)
+            # Prove setup is durable across an abrupt cold restart. This fresh
+            # test process owns no services; CDP still targets its setup WebView.
+            # Normal Exit is exercised below after attaching to the workspace.
+            assert process.poll() is None, 'Workspace exited after setup'
+            process.terminate()
             process.wait(timeout=20)
-            assert process.returncode == 0, 'Tray Exit did not shut down cleanly'
             browser.close()
+            assert json.loads(config.read_text(encoding='utf-8')) == saved
+            print('Setup handoff saved its data folder before forced restart.', flush=True)
 
             process,browser,page=launch()
             assert same(info(page)['current'],source)

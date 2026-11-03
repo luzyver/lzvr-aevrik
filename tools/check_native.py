@@ -103,7 +103,7 @@ def run(executable=None):
    assert restored["logs"],"Service logs disappeared after restoring the window"
    checks.append("Native Close hides the window; service stays reachable with the same PID and logs after tray restore")
    exit_application(page)
-   process.wait(timeout=15)
+   assert process.wait(timeout=15)==0,'Explicit Exit did not shut down cleanly'
    with socket.socket() as freed:freed.bind(("127.0.0.1",port))
    browser.close()
    checks.append("Explicit Exit stops Aevrik and releases the owned service port")
@@ -119,7 +119,7 @@ def run(executable=None):
    assert snapshot["services"][0]["pid"] is None
    checks.append("Projects, service registration and theme persist across executable restart; processes do not autostart")
    exit_application(page)
-   process.wait(timeout=15)
+   assert process.wait(timeout=15)==0,'Explicit Exit after restart did not shut down cleanly'
    browser.close()
    assert not errors,errors
   finally:
