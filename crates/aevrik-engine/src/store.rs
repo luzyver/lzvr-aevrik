@@ -169,10 +169,106 @@ impl Store {
             .unwrap_or_else(|| "dark".into()))
     }
     pub fn set_theme(&mut self, theme: &str) -> Result<()> {
-        if !["dark", "light"].contains(&theme) {
-            return Err(invalid("Theme must be dark or light."));
+        if !["dark", "light", "system"].contains(&theme) {
+            return Err(invalid("Theme must be dark, light or system."));
         }
-        self.connection.execute("INSERT INTO preferences(key,value) VALUES('theme',?1) ON CONFLICT(key) DO UPDATE SET value=excluded.value",[theme])?;
+        self.set_preference("theme", theme)
+    }
+    pub fn preference(&self, key: &str) -> Result<Option<String>> {
+        Ok(self
+            .connection
+            .query_row("SELECT value FROM preferences WHERE key=?1", [key], |r| {
+                r.get(0)
+            })
+            .optional()?)
+    }
+    pub fn set_preference(&mut self, key: &str, value: &str) -> Result<()> {
+        self.connection.execute("INSERT INTO preferences(key,value) VALUES(?1,?2) ON CONFLICT(key) DO UPDATE SET value=excluded.value",[key,value])?;
+        Ok(())
+    }
+    pub fn remove_project(&mut self, id: &str) -> Result<()> {
+        if self
+            .connection
+            .execute("DELETE FROM projects WHERE id=?1", [id])?
+            == 0
+        {
+            return Err(invalid("Project no longer exists."));
+        }
+        Ok(())
+    }
+    pub fn edit_project(
+        &mut self,
+        id: &str,
+        name: String,
+        path: String,
+        domain: String,
+        linked: Option<Service>,
+        running: bool,
+    ) -> Result<()> {
+        let mut project = self
+            .projects()?
+            .into_iter()
+            .find(|p| p.id == id)
+            .ok_or_else(|| invalid("Project no longer exists."))?;
+        let previous = std::mem::replace(&mut project.config.path, path);
+        project.config.name = name;
+        project.config.domain = domain;
+        crate::validation::project(&mut project.config)?;
+        // An npm service runs in the project folder, so it moves with the project.
+        // Saved folders differ only by the verbatim prefix npm services drop.
+        let shown = |path: &str| crate::npm::display_path(std::path::Path::new(path));
+        let service = match linked {
+            Some(mut service)
+                if shown(&project.config.path) != shown(&previous)
+                    && shown(&service.config.cwd) == shown(&previous) =>
+            {
+                if running {
+                    return Err(invalid(format!(
+                        "Stop {} before changing this project's folder.",
+                        service.config.name
+                    )));
+                }
+                service.config.cwd = project.config.path.clone();
+                crate::validation::service(&mut service.config)?;
+                Some(service)
+            }
+            _ => None,
+        };
+        let exists: bool = self.connection.query_row(
+            "SELECT EXISTS(SELECT 1 FROM projects WHERE (domain=?1 OR name=?2) AND id<>?3)",
+            params![project.config.domain, project.config.name, id],
+            |r| r.get(0),
+        )?;
+        if exists {
+            return Err(invalid("A project already uses that name or domain."));
+        }
+        let transaction = self.connection.transaction()?;
+        transaction.execute(
+            "UPDATE projects SET name=?1,domain=?2,config=?3 WHERE id=?4",
+            params![
+                project.config.name,
+                project.config.domain,
+                serde_json::to_string(&project.config)?,
+                id
+            ],
+        )?;
+        if let Some(service) = service {
+            transaction.execute(
+                "UPDATE services SET config=?1 WHERE id=?2",
+                params![serde_json::to_string(&service.config)?, service.id],
+            )?;
+        }
+        transaction.commit()?;
+        Ok(())
+    }
+    pub fn update_service(&mut self, id: &str, config: &ServiceInput) -> Result<()> {
+        if self.connection.execute(
+            "UPDATE services SET config=?1 WHERE id=?2",
+            params![serde_json::to_string(config)?, id],
+        )? == 0
+        {
+            return Err(invalid("Service no longer exists."));
+        }
         Ok(())
     }
     pub fn update_project(

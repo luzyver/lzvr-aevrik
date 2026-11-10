@@ -56,6 +56,12 @@ def restore_from_tray(process):
 def exit_application(page):
     page.locator('[data-nav="settings"]').click()
     page.locator('[data-action="exit-app"]').click()
+    # Exit asks for confirmation only while services are running.
+    confirm = page.locator('#exit-confirm [type="submit"]')
+    try:
+        confirm.click(timeout=1500)
+    except Exception:
+        pass  # Nothing was running, or the application already exited.
 
 
 def exit_from_tray(process, timeout=10):

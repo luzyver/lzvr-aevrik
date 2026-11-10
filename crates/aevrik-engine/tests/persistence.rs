@@ -57,6 +57,186 @@ fn project(path: &std::path::Path, domain: &str) -> ProjectInput {
     }
 }
 
+fn fixture(dir: &std::path::Path, name: &str) -> ServiceInput {
+    ServiceInput {
+        npm_script: None,
+        name: name.into(),
+        executable: env!("CARGO_BIN_EXE_process-fixture").into(),
+        args: vec!["0".into()],
+        cwd: dir.to_string_lossy().into(),
+        port: None,
+    }
+}
+
+#[test]
+fn projects_can_be_edited_and_removed_without_touching_their_folder() {
+    let dir = tempfile::tempdir().unwrap();
+    let moved = dir.path().join("moved");
+    std::fs::create_dir(&moved).unwrap();
+    let path = dir.path().join("metadata.sqlite");
+    let mut engine = Engine::open(&path).unwrap();
+    let first = engine
+        .add_project(project(dir.path(), "atlas.test"))
+        .unwrap();
+    let mut other = project(dir.path(), "other.test");
+    other.name = "Other".into();
+    let second = engine.add_project(other).unwrap();
+    // Another project's name or domain is refused; its own values are not a conflict.
+    let folder = dir.path().to_string_lossy().to_string();
+    assert!(
+        engine
+            .edit_project(
+                &second.id,
+                "Other".into(),
+                folder.clone(),
+                "ATLAS.test".into()
+            )
+            .is_err()
+    );
+    assert!(
+        engine
+            .edit_project(
+                &second.id,
+                "atlas".into(),
+                folder.clone(),
+                "other.test".into()
+            )
+            .is_err()
+    );
+    assert!(
+        engine
+            .edit_project(&first.id, "Atlas".into(), folder, "nope.com".into())
+            .is_err()
+    );
+    engine
+        .edit_project(
+            &first.id,
+            "Atlas 2".into(),
+            moved.to_string_lossy().into(),
+            "Atlas-2.test".into(),
+        )
+        .unwrap();
+    engine.remove_project(&second.id).unwrap();
+    assert!(engine.remove_project(&second.id).is_err());
+    drop(engine);
+    let snapshot = Engine::open(&path).unwrap().snapshot().unwrap();
+    assert_eq!(snapshot.projects.len(), 1);
+    assert_eq!(snapshot.projects[0].name, "Atlas 2");
+    assert_eq!(snapshot.projects[0].domain, "atlas-2.test");
+    assert!(snapshot.projects[0].path.ends_with("moved"));
+    assert_eq!(snapshot.projects[0].runtime, "PHP");
+    assert!(moved.is_dir() && dir.path().is_dir());
+}
+
+#[test]
+fn a_stopped_service_can_be_edited_and_a_running_one_cannot() {
+    let dir = tempfile::tempdir().unwrap();
+    let path = dir.path().join("metadata.sqlite");
+    let mut engine = Engine::open(&path).unwrap();
+    let service = engine
+        .register_service(fixture(dir.path(), "Fixture"))
+        .unwrap();
+    let mut edited = fixture(dir.path(), "Renamed");
+    edited.port = Some(8123);
+    edited.args = vec!["0".into(), "extra".into()];
+    engine.start_service(&service.id).unwrap();
+    assert!(engine.update_service(&service.id, edited.clone()).is_err());
+    engine.stop_service(&service.id).unwrap();
+    let mut invalid = edited.clone();
+    invalid.executable = "missing.exe".into();
+    assert!(engine.update_service(&service.id, invalid).is_err());
+    assert!(engine.update_service("missing", edited.clone()).is_err());
+    engine.update_service(&service.id, edited).unwrap();
+    drop(engine);
+    let snapshot = Engine::open(&path).unwrap().snapshot().unwrap();
+    assert_eq!(snapshot.services[0].id, service.id);
+    assert_eq!(snapshot.services[0].config.name, "Renamed");
+    assert_eq!(snapshot.services[0].config.port, Some(8123));
+    assert_eq!(snapshot.services[0].config.args, ["0", "extra"]);
+}
+
+#[test]
+fn a_service_that_exited_by_itself_is_not_restored() {
+    let dir = tempfile::tempdir().unwrap();
+    let path = dir.path().join("metadata.sqlite");
+    let mut engine = Engine::open(&path).unwrap();
+    engine.set_restore_services(true).unwrap();
+    let kept = engine
+        .register_service(fixture(dir.path(), "Kept"))
+        .unwrap();
+    let mut failing = fixture(dir.path(), "Failing");
+    failing.args = vec!["exit".into()];
+    let failing = engine.register_service(failing).unwrap();
+    assert!(engine.start_all().unwrap().is_empty());
+    // Wait for the process to end without telling the engine about it.
+    std::thread::sleep(std::time::Duration::from_secs(2));
+    engine.shutdown().unwrap();
+    drop(engine);
+    let mut engine = Engine::open(&path).unwrap();
+    engine.restore_services().unwrap();
+    let snapshot = engine.snapshot().unwrap();
+    let state = |id: &str| {
+        snapshot
+            .services
+            .iter()
+            .find(|s| s.id == id)
+            .unwrap()
+            .state
+            .clone()
+    };
+    assert_eq!(state(&kept.id), "running");
+    // A restored process would be running or exited again, never stopped.
+    assert_eq!(state(&failing.id), "stopped");
+}
+
+#[test]
+fn running_services_are_restored_only_when_the_preference_is_enabled() {
+    let dir = tempfile::tempdir().unwrap();
+    let path = dir.path().join("metadata.sqlite");
+    let mut engine = Engine::open(&path).unwrap();
+    let kept = engine
+        .register_service(fixture(dir.path(), "Kept"))
+        .unwrap();
+    let stopped = engine
+        .register_service(fixture(dir.path(), "Stopped"))
+        .unwrap();
+    assert!(engine.start_all().unwrap().is_empty());
+    engine.stop_service(&stopped.id).unwrap();
+    drop(engine);
+    let mut engine = Engine::open(&path).unwrap();
+    engine.restore_services().unwrap();
+    let snapshot = engine.snapshot().unwrap();
+    assert!(!snapshot.restore_services);
+    assert!(snapshot.services.iter().all(|s| s.state == "stopped"));
+    engine.start_service(&kept.id).unwrap();
+    engine.set_restore_services(true).unwrap();
+    drop(engine);
+    let mut engine = Engine::open(&path).unwrap();
+    engine.restore_services().unwrap();
+    let snapshot = engine.snapshot().unwrap();
+    assert!(snapshot.restore_services);
+    let state = |id: &str| {
+        snapshot
+            .services
+            .iter()
+            .find(|s| s.id == id)
+            .unwrap()
+            .state
+            .clone()
+    };
+    assert_eq!(state(&kept.id), "running");
+    assert_eq!(state(&stopped.id), "stopped");
+    engine.stop_all().unwrap();
+    assert!(
+        engine
+            .snapshot()
+            .unwrap()
+            .services
+            .iter()
+            .all(|s| s.state != "running")
+    );
+}
+
 #[test]
 fn project_persists_and_domains_are_case_insensitively_unique() {
     let dir = tempfile::tempdir().expect("temp");

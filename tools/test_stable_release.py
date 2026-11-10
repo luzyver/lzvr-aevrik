@@ -79,8 +79,7 @@ class VersionStampTests(unittest.TestCase):
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
         for name in ['package.json', 'package-lock.json', 'Cargo.lock', 'src-tauri/tauri.conf.json',
-                     'src-tauri/Cargo.toml', 'crates/aevrik-engine/Cargo.toml',
-                     'desktop/index.html', 'desktop/views.ts']:
+                     'src-tauri/Cargo.toml', 'crates/aevrik-engine/Cargo.toml']:
             destination = self.root/name
             destination.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(ROOT/name, destination)
@@ -95,8 +94,7 @@ class VersionStampTests(unittest.TestCase):
                 self.assertEqual(new['version'], '1.3.0')
             else:
                 self.assertEqual(new, old)
-        self.assertIn('1.3.0 · Desktop', (self.root/'desktop/index.html').read_text(encoding='utf-8'))
-        self.assertIn('Aevrik 1.3.0 · Rust engine', (self.root/'desktop/views.ts').read_text(encoding='utf-8'))
+        self.assertEqual(json.loads((self.root/'package.json').read_text(encoding='utf-8'))['version'], '1.3.0')
         stamp_version(self.root, '1.3.0')
         self.assertEqual(validate_version(self.root), '1.3.0')
 

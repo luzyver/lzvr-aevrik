@@ -17,7 +17,7 @@ export function defaultDialog(item:RuntimePackage,plan:DefaultPlan) {
  defaultPlans.set(form,plan);
 }
 
-function open(id:string,resourceId:string,title:string,body:string,action:string,danger=false) {
+export function open(id:string,resourceId:string,title:string,body:string,action:string,danger=false) {
  dialog.innerHTML=`<form id="${id}" data-id="${esc(resourceId)}"><header class="dialog-header"><h2 id="dialog-title">${esc(title)}</h2><button class="icon-button" type="button" data-action="close-dialog" aria-label="Close">${icon('close')}</button></header><div class="dialog-body">${body}<p id="form-error" class="form-error" role="alert"></p></div><footer class="dialog-footer"><button class="button" type="button" data-action="close-dialog">Cancel</button><button class="button ${danger?'danger':'primary'}" type="submit">${action}</button></footer></form>`;
  dialog.showModal();
 }

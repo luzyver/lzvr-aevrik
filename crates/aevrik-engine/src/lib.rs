@@ -1,5 +1,7 @@
 //! Local metadata and owned child-process management, independent of Tauri.
+pub mod autostart;
 pub mod data_location;
+mod editing;
 mod error;
 mod job;
 mod logs;
@@ -48,7 +50,11 @@ impl Engine {
         Ok(service)
     }
     pub fn snapshot(&mut self) -> Result<Snapshot> {
+        let alive = self.processes.running().len();
         self.processes.poll()?;
+        if self.processes.running().len() != alive {
+            self.remember_running()?;
+        }
         let mut services = self.store.services()?;
         for service in &mut services {
             self.processes.decorate(service);
@@ -67,15 +73,18 @@ impl Engine {
             services,
             logs: self.processes.logs.snapshot(),
             theme: self.store.theme()?,
+            restore_services: self.restore_enabled()?,
         })
     }
     pub fn start_service(&mut self, id: &str) -> Result<()> {
         let service = self.store.service(id)?;
-        self.processes.start(&service)
+        self.processes.start(&service)?;
+        self.remember_running()
     }
     pub fn stop_service(&mut self, id: &str) -> Result<()> {
         self.store.service(id)?;
-        self.processes.stop(id)
+        self.processes.stop(id)?;
+        self.remember_running()
     }
     pub fn restart_service(&mut self, id: &str) -> Result<()> {
         self.stop_service(id)?;
@@ -96,7 +105,10 @@ impl Engine {
         self.processes.logs.clear();
     }
     pub fn shutdown(&mut self) -> Result<()> {
-        self.processes.shutdown()
+        // Save what is alive before stopping it; restore starts exactly these.
+        let remembered = self.remember_running();
+        let stopped = self.processes.shutdown();
+        remembered.and(stopped)
     }
 }
 pub mod packages;

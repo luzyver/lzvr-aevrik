@@ -4,7 +4,8 @@ export interface Service {id:string;name:string;executable:string;args:string[];
 export interface ProjectScripts {scripts:{name:string;command:string}[];nodes:{executable:string;label:string}[]}
 export interface NpmServiceInput {projectId:string;script:string;nodeExecutable:string;port:number|null}
 export interface LogEntry {timestamp:number;service:string;level:string;message:string}
-export interface Snapshot {projects:Project[];services:Service[];logs:LogEntry[];theme:string}
+export interface Snapshot {projects:Project[];services:Service[];logs:LogEntry[];theme:string;restoreServices?:boolean}
+export type OpenTarget = 'project-folder'|'project-terminal'|'service-url';
 export interface StorageInfo {current:string;next:string|null;application:string;overridden:boolean}
 export interface CatalogUpdate {added:number;total:number}
 export interface DefaultPlan {scope:'user'|'machine';removing:boolean;executable:string;currentExecutable:string|null;directories:string[];fingerprint:string}
@@ -38,6 +39,12 @@ export class Backend {
     await this.invoke(command,args);
     return this.snapshot();
   }
+  /** Resolves with one message per service that could not start. */
+  async controlAll(action:'start'|'stop'):Promise<string[]> {return (await this.invoke<string[]|undefined>('control_all',{action}))??[];}
+  open(kind:OpenTarget,id:string):Promise<void> {return this.invoke('open_target',{kind,id});}
+  async startupEnabled():Promise<boolean> {return (await this.invoke<boolean|undefined>('startup_enabled'))===true;}
+  async setStartup(enabled:boolean):Promise<boolean> {return (await this.invoke<boolean|undefined>('set_startup',{enabled}))===true;}
+  exit():Promise<void> {return this.invoke('exit_app');}
   pick(kind:'directory'|'executable'):Promise<string|null> {return this.invoke('pick_path',{kind});}
 }
 import type {RuntimePackage} from './packages';

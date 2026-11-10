@@ -34,18 +34,21 @@ The hosted build produces an unsigned Setup EXE plus portable EXE/ZIP. Setup ins
 - Native window minimize, maximize and drag. Close hides Aevrik in the system tray while services and projects keep running; click the tray icon to reopen it.
 - Fixed desktop chrome and workspace; lists, properties and output scroll independently.
 - An offline-visible catalog of 22 products and 190 selectable versions, including Java JRE (Temurin), Luau and Wasmtime. Packages are grouped into runtimes, SDKs & compilers, web servers, database servers, embedded databases and development tools. HTTPS downloads use pinned SHA-256 or publisher SHA-512 verification, progress and retry.
-- **Runtimes → Check for updates** fetches the published catalog for this build's channel. Newer runtime versions install separately in a chosen folder; existing services keep their executable. **Settings → Aevrik updates** checks the app release and opens its download page. App installation remains manual.
+- **Runtimes → Check for updates** fetches the published catalog for this build's channel. Newer runtime versions install separately in a chosen folder; existing services keep their executable. **Settings → Aevrik updates** checks the app release; **Download & install update** downloads and verifies Windows Setup, then opens it. Aevrik closes and reopens after installation.
 - Multiple versions installed side by side, with independent progress/status and service registration prefilled from the selected executable. Existing services keep their paths.
 - Choose the runtime installation folder for each new install, for example `D:\Aevrik\runtimes`; the last choice is remembered. Downloads stream to that drive.
 - Uninstall a selected managed version after confirmation. Referenced runtimes and unsafe folder trees are protected. Remove a stopped service registration separately without deleting its files.
 - Architecture labels: nginx is the official x86 Windows build; other catalog products are x64.
-- Register existing project folders; unique project names and .test domain labels are validated.
-- Register an existing .exe, working directory, argument list and optional expected TCP port.
-- Start, stop and restart registered processes; inspect their real PID and exit code.
-- Show stdout/stderr, bounded to the latest 800 log entries for the current session.
-- Link a project to a managed service and save its runtime label.
+- Register existing project folders; unique project names and .test domain labels are validated. Edit a project's name, folder and domain label, or remove it from Aevrik without touching its files.
+- Register an existing .exe, working directory, argument list and optional expected TCP port. Edit a stopped service's registration; npm services keep their script and allow a new name and port.
+- Start, stop and restart registered processes from the list row or the properties pane; **Start all** and **Stop all** in the list heading and the tray menu. Inspect the real PID and exit code; a process that exited by itself is shown as **Exited · code N**.
+- Open a service's `http://localhost:<port>` in the browser, and a project's folder or a terminal in it.
+- Show stdout/stderr, bounded to the latest 800 log entries for the current session. Output follows new lines, filters by service and copies to the clipboard.
+- Link a project to a managed service and save its runtime label, with installed runtimes offered as suggestions.
 - Persist registrations, project properties and appearance in SQLite.
-- Native file/folder pickers, filtering, Ctrl+K search focus and graphite/pearl appearance.
+- **Settings → Start with Windows** opens Aevrik in the tray at sign-in for this Windows account. **Settings → Restore services** starts the services that were running at the last exit.
+- Native file/folder pickers, filtering, a Ctrl+K command palette (pages, projects, services and actions) and graphite/pearl appearance that can follow Windows.
+- **Exit and stop services** asks for confirmation while services are running.
 - Visible validation, unavailable-port, IPC and startup errors.
 
 Runtime labels and domain labels are metadata. They do not switch executable versions or configure DNS.
@@ -64,7 +67,7 @@ Use a foreground process. Daemonized programs, self-installing Windows services 
 
 An expected port is an availability preflight on 127.0.0.1; it does not configure the executable's listening port and is not a readiness check. **Running** means the process is alive.
 
-**Closing the window keeps services and projects running in the system tray.** Click the Aevrik tray icon to reopen it. To quit fully, choose **Exit and stop services** in the tray menu or Settings. Background operation lasts while Aevrik and the Windows session remain running; it does not provide startup at boot or operation through sleep, sign-out or shutdown.
+**Closing the window keeps services and projects running in the system tray.** Click the Aevrik tray icon to reopen it. To quit fully, choose **Exit and stop services** in the tray menu or Settings. Background operation lasts while Aevrik and the Windows session remain running; it does not continue through sleep, sign-out or shutdown. **Start with Windows** adds a per-account `Run` entry that opens Aevrik hidden in the tray at sign-in; it is not a Windows service and does not run before sign-in.
 
 **Stop, Restart and explicit Exit terminate the owned process tree through a Windows Job Object.** Graceful shutdown protocols are not implemented. Shut down database servers through their own tools before exiting Aevrik; do not use this build to manage important database workloads. Existing external processes are not killed to free occupied ports.
 
@@ -82,11 +85,11 @@ Installation does not change PATH or system services. For Node.js, Python, PHP, 
 
 **Uninstall deletes everything inside the selected version folder.** Keep databases and personal configuration outside runtime folders. Removal is blocked for service/project references, mismatched ownership markers, nested managed installations, symlinks and junctions. Stop the service and use **Remove registration** first; this preserves files and unlinks projects.
 
-For an isolated or portable metadata directory, set `AEVRIK_DATA_DIR` to an absolute directory before launch. The application creates that directory. The override takes precedence over the saved preference and disables folder changes in Settings for that session. Service registrations persist, but processes do not start automatically after reopening. Logs are session-only. The app needs no administrator privileges for its implemented features.
+For an isolated or portable metadata directory, set `AEVRIK_DATA_DIR` to an absolute directory before launch. The application creates that directory. The override takes precedence over the saved preference and disables folder changes in Settings for that session. Service registrations persist; processes start automatically after reopening only when **Restore services** is on. Logs are session-only. The app needs no administrator privileges for its implemented features.
 
 ## Not implemented yet
 
-Unattended runtime/catalog updates, cancel/resume, service-registration editing, automatic per-project configuration, DNS/hosts/proxy routing, HTTPS certificates, database initialization/administration, graceful service shutdown, start with Windows, signing and automatic app installation. MySQL, PostgreSQL, Redis, Ruby and Rust toolchains are not bundled. Nim requires a separately configured C compiler. Corresponding native pages describe availability instead of simulating success.
+Unattended runtime/catalog updates, cancel/resume, automatic per-project configuration, DNS/hosts/proxy routing, HTTPS certificates, database initialization/administration, graceful service shutdown, signing and unattended app installation. MySQL, PostgreSQL, Redis, Ruby and Rust toolchains are not bundled. Nim requires a separately configured C compiler. Corresponding native pages describe availability instead of simulating success.
 
 ## Frontend development
 

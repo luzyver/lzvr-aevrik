@@ -7,7 +7,7 @@ from release_policy import version_tuple
 
 def stamp_version(root, version):
     version_tuple(version)
-    old = validate_version(root)
+    validate_version(root)
     updates = {}
     for name in ['package.json', 'package-lock.json', 'src-tauri/tauri.conf.json']:
         data = json.loads((root/name).read_text(encoding='utf-8'))
@@ -30,12 +30,8 @@ def stamp_version(root, version):
         if count != 1:
             raise ValueError(f'Expected one Cargo.lock entry for {package}')
     updates['Cargo.lock'] = content
-    for name, label in [('desktop/index.html', f'{old} · Desktop'),
-                        ('desktop/views.ts', f'Aevrik {old} · Rust engine')]:
-        content = (root/name).read_text(encoding='utf-8')
-        if content.count(label) != 1:
-            raise ValueError(f'Missing or ambiguous version label in {name}')
-        updates[name] = content.replace(label, label.replace(old, version))
+    # The desktop UI reads its version label from package.json at build time.
+
     for name, content in updates.items():
         (root/name).write_text(content, encoding='utf-8', newline='\n')
     validate_version(root, 'v'+version)

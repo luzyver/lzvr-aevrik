@@ -30,7 +30,11 @@ fn open_workspace(
 ) -> Result<(), Box<dyn std::error::Error>> {
     if app.try_state::<StorageState>().is_none() {
         let (storage, directory) = bootstrap.activate(directory)?;
-        let engine = Engine::open(&directory.join("aevrik.sqlite"))?;
+        let mut engine = Engine::open(&directory.join("aevrik.sqlite"))?;
+        // A service that cannot be restored is logged; it never blocks the workspace.
+        if let Err(error) = engine.restore_services() {
+            eprintln!("Restore services: {error}");
+        }
         let packages = PackageManager::new(directory.join("runtimes"))?;
         // Persist only after the chosen workspace can actually be opened.
         bootstrap.remember(&directory)?;
@@ -45,7 +49,10 @@ fn open_workspace(
     // Retain initialized state and its lock if WebView creation fails. A retry
     // recreates the window, never removes state referenced by IPC handlers.
     crate::tray::initialize(app)?;
+    // Started by Windows at sign-in: stay in the tray until the user opens the window.
+    let background = std::env::args_os().any(|argument| argument == "--background");
     WebviewWindowBuilder::from_config(app, &app.config().app.windows[0])?
+        .visible(!background)
         .data_directory(std::path::PathBuf::from(storage::display(directory)).join("webview"))
         .build()?;
     Ok(())

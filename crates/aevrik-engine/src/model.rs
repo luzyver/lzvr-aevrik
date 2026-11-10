@@ -59,4 +59,5 @@ pub struct Snapshot {
     pub services: Vec<Service>,
     pub logs: Vec<LogEntry>,
     pub theme: String,
+    pub restore_services: bool,
 }

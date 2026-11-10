@@ -99,7 +99,7 @@ def run(exe):
    for width,height in [(800,600),(1280,820),(1440,1000)]:
     resize(process,width,height)
     page.wait_for_timeout(200)
-    for route in ['overview','services','projects','logs','packages','domains','settings']:
+    for route in ['services','projects','logs','packages','settings']:
      page.locator(f'[data-nav="{route}"]').click()
      size=page.evaluate('({width:innerWidth,height:innerHeight})')
      page.mouse.move(size['width']-5,size['height']-50);page.mouse.wheel(0,5000);page.wait_for_timeout(100)

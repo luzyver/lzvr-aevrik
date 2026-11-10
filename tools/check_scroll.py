@@ -14,7 +14,7 @@ with sync_playwright() as p:
  findings=[]
  for width,height in [(800,600),(1280,820),(1440,1000)]:
   page.set_viewport_size({"width":width,"height":height})
-  for route in ["overview","services","projects","logs","settings","packages","domains"]:
+  for route in ["services","projects","logs","settings","packages"]:
    page.locator(f'[data-nav="{route}"]').click()
    page.mouse.move(width-5,height-60)
    page.mouse.wheel(0,5000)

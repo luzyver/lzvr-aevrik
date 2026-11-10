@@ -107,6 +107,65 @@ fn npm_service_is_linked_atomically_persists_and_revalidates_script() {
 }
 
 #[test]
+fn changing_the_project_folder_moves_its_npm_service_or_changes_nothing() {
+    let dir = tempfile::tempdir().unwrap();
+    let (old, new, empty) = (
+        dir.path().join("old"),
+        dir.path().join("new"),
+        dir.path().join("empty"),
+    );
+    for folder in [&old, &new, &empty] {
+        std::fs::create_dir(folder).unwrap();
+    }
+    for folder in [&old, &new] {
+        std::fs::write(
+            folder.join("package.json"),
+            r#"{"scripts":{"dev":"node server.js"}}"#,
+        )
+        .unwrap();
+    }
+    let mut engine = Engine::open(&dir.path().join("db.sqlite")).unwrap();
+    let id = project(&mut engine, &old);
+    engine
+        .register_npm_service(NpmServiceInput {
+            project_id: id.clone(),
+            node_executable: node_fixture(dir.path()),
+            script: "dev".into(),
+            port: None,
+        })
+        .unwrap();
+    let mut edit = |folder: &Path| {
+        engine.edit_project(
+            &id,
+            "Portfolio".into(),
+            folder.to_string_lossy().into(),
+            "portfolio.test".into(),
+        )
+    };
+    // A folder without the script would leave the service unable to start.
+    assert!(edit(&empty).is_err());
+    let snapshot = engine.snapshot().unwrap();
+    assert!(snapshot.projects[0].path.ends_with("old"));
+    assert!(snapshot.services[0].config.cwd.ends_with("old"));
+    let mut edit = |folder: &Path| {
+        engine.edit_project(
+            &id,
+            "Portfolio".into(),
+            folder.to_string_lossy().into(),
+            "portfolio.test".into(),
+        )
+    };
+    edit(&new).unwrap();
+    let snapshot = engine.snapshot().unwrap();
+    assert!(snapshot.projects[0].path.ends_with("new"));
+    assert!(snapshot.services[0].config.cwd.ends_with("new"));
+    assert_eq!(
+        snapshot.services[0].config.npm_script.as_deref(),
+        Some("dev")
+    );
+}
+
+#[test]
 fn missing_bundled_npm_and_unknown_project_do_not_create_services() {
     let dir = tempfile::tempdir().unwrap();
     let mut engine = Engine::open(&dir.path().join("db.sqlite")).unwrap();

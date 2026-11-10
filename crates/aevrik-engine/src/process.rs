@@ -51,6 +51,11 @@ impl Processes {
             service.exit_code = *code;
         }
     }
+    pub fn running(&self) -> Vec<String> {
+        let mut ids: Vec<_> = self.active.keys().cloned().collect();
+        ids.sort();
+        ids
+    }
     pub fn start(&mut self, service: &Service) -> Result<()> {
         self.poll()?;
         if self.active.contains_key(&service.id) {
