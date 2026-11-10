@@ -159,7 +159,26 @@ def run():
   page.evaluate("window.dispatchEvent(new Event('aevrik-exit-requested'))")
   expect(page.locator("#exit-confirm")).to_contain_text("Local HTTP 2")
   assert not page.evaluate("window.exited")
-  page.locator('#exit-confirm [data-action="close-dialog"]').last.click()
+  # A dialog's close event arrives late: Ctrl+K pressed before it must still open a working palette.
+  page.evaluate("""()=>{document.querySelector('#exit-confirm [data-action="close-dialog"]').click();
+   document.dispatchEvent(new KeyboardEvent('keydown',{key:'k',ctrlKey:true,bubbles:true}));}""")
+  page.locator("#command-query").fill("output")
+  expect(page.locator(".command-result")).to_have_count(1)
+  page.keyboard.press("Escape")
+  expect(page.locator("#dialog")).not_to_be_visible()
+  # A palette command that opens a form hands the dialog over: Enter in the form is not a palette Enter.
+  page.keyboard.press("Control+k")
+  page.locator("#command-query").fill("add project")
+  expect(page.locator(".command-result")).to_have_count(1)
+  page.keyboard.press("Enter")
+  expect(page.locator("#registration")).to_be_visible()
+  expect(page.locator("#dialog")).not_to_have_class(re.compile("command-dialog"))
+  page.locator('#registration [name="name"]').fill("Palette project")
+  page.keyboard.press("Enter")
+  expect(page.locator('#registration [name="name"]')).to_have_value("Palette project")
+  expect(page.locator("#dialog")).not_to_have_class(re.compile("command-dialog"))
+  page.locator('#registration [data-action="close-dialog"]').first.click()
+  expect(page.locator("#dialog")).not_to_be_visible()
   # With the palette open, the tray's Exit replaces it: Enter must not run a palette command.
   page.keyboard.press("Control+k")
   page.locator("#command-query").fill("output")

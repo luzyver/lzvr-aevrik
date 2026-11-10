@@ -21,9 +21,11 @@ function mark() {
  const input=dialog.querySelector('#command-query');
  if(shown.length)input?.setAttribute('aria-activedescendant',`command-${active}`);else input?.removeAttribute('aria-activedescendant');
 }
+/** Closes the palette and drops its marker at once: the command may open another dialog before the close event. */
+function dismiss() {dialog.close();dialog.classList.remove('command-dialog');}
 async function run(command?:Command) {
  if(!command)return;
- dialog.close();
+ dismiss();
  await command.run();
 }
 /** Ctrl+K: jump to any page, project or service, or run a command, from the keyboard. */
@@ -34,12 +36,13 @@ export function openPalette(items:Command[]) {
  list('');
  dialog.showModal();
 }
-dialog.addEventListener('close',()=>dialog.classList.remove('command-dialog'));
+// The close event is queued: by the time it arrives the palette may already be open again.
+dialog.addEventListener('close',()=>{if(!dialog.open)dialog.classList.remove('command-dialog');});
 dialog.addEventListener('input',event=>{if(isOpen()&&(event.target as Element).id==='command-query')list((event.target as HTMLInputElement).value);});
 dialog.addEventListener('click',event=>{
  if(!isOpen())return;
  // A click on the backdrop lands on the dialog element itself.
- if(event.target===dialog){dialog.close();return;}
+ if(event.target===dialog){dismiss();return;}
  const index=(event.target as Element).closest<HTMLElement>('[data-command]')?.dataset.command;
  if(index!==undefined)void run(shown[Number(index)]);
 });
