@@ -33,7 +33,7 @@ def go():
         if not release['stable'] or line not in [f'1.{i}' for i in range(20,28)] or counts.get(line,0)>=2:continue
         archive=next((f for f in release['files'] if f['os']=='windows' and f['arch']=='amd64' and f['filename'].endswith('.zip')),None)
         if not archive:continue
-        result.append(entry('go','Go',version,'Language','Go compiler and toolchain. Use its executable path or configure PATH yourself.',f"https://go.dev/dl/{archive['filename']}",'go/bin/go.exe',archive['sha256'],url))
+        result.append(entry('go','Go',version,'Language','Go compiler and toolchain. Set as default to use go in new terminals.',f"https://go.dev/dl/{archive['filename']}",'go/bin/go.exe',archive['sha256'],url))
         counts[line]=counts.get(line,0)+1
     return result
 

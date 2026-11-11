@@ -3,6 +3,7 @@ import {esc,icon,button,empty,header} from './ui';
 import {catalog,groups,availableUpdate,type PackageGroup} from './package-model';
 import {runtimeUpdates} from './updates';
 import {packageCategory,packageCategories} from './package-categories';
+import {stackLogo} from './stack-logos';
 
 const mib=(value:number)=>(value/1048576).toFixed(1)+' MiB';
 function row(group:PackageGroup) {
@@ -19,7 +20,7 @@ function row(group:PackageGroup) {
  const defaultControl=terminal?.supported?`${!terminal.active?`<button class="button" data-default="${esc(p.id)}" ${busy?'disabled':''}>Set as default</button>`:''}${terminal.onPath?`<button class="button" data-clear-default="${esc(p.id)}" ${busy?'disabled':''}>Remove from PATH</button>`:''}`:'';
  const control=p.status==='installed'?`${defaultControl}<button class="button" data-configure="${esc(p.id)}" ${busy?'disabled':''}>Configure service</button><button class="button danger" data-uninstall="${esc(p.id)}" ${busy||terminal?.onPath?'disabled':''} ${terminal?.onPath?'title="Remove this version from PATH before uninstalling."':''}>Uninstall</button>`:
   `<button class="button ${busy?'':'primary'}" data-install="${esc(p.id)}" ${busy?'disabled':''}>${busy?'Installing…':p.status==='failed'?'Retry':'Install'}</button>`;
- return `<article class="package-row" data-family="${esc(family)}" data-package="${esc(p.id)}"><span class="resource-icon">${icon(['Database servers','Embedded databases'].includes(category)?'database':category==='Web servers'?'server':'package')}</span>
+ return `<article class="package-row" data-family="${esc(family)}" data-package="${esc(p.id)}"><span class="resource-icon">${stackLogo(family)||icon(['Database servers','Embedded databases'].includes(category)?'database':category==='Web servers'?'server':'package')}</span>
  <div class="package-info"><div class="package-name"><h2>${esc(p.name)}</h2><span class="package-kind">${esc(category)}</span><span class="version-count">${all.length} versions${installed?` · ${installed} installed`:''}</span></div>
  <p>${esc(p.description)}</p>
  <div class="package-version-line"><label class="package-version">Version <select data-package-version="${esc(family)}" aria-label="${esc(p.name)} version">${versions.map(v=>`<option value="${esc(v.id)}" ${v.id===p.id?'selected':''}>${esc(v.version)}${v.channel?' · '+esc(v.channel):''}${v.terminalDefault?.active?' · Default':v.status==='installed'?' · Installed':''}</option>`).join('')}</select></label><span class="package-meta">Windows ${esc(p.architecture??'x64')} · ${esc(p.source)}</span></div>

@@ -51,8 +51,31 @@ fn windows_path_key_handles_quotes_slashes_case_and_extended_prefix() {
 fn unsupported_families_cannot_modify_path() {
     assert_eq!(command("node"), Some("node"));
     assert_eq!(command("python"), Some("python"));
-    assert_eq!(command("mariadb"), None);
-    assert_eq!(command("dotnet-sdk"), None);
+    assert_eq!(command("go"), Some("go"));
+    assert_eq!(command("sqlite"), Some("sqlite3"));
+    for family in [
+        "mariadb",
+        "mongodb",
+        "nginx",
+        "java",
+        "java-jre",
+        "dotnet-sdk",
+    ] {
+        assert_eq!(command(family), None, "{family}");
+    }
+}
+
+#[test]
+fn default_commands_name_the_executable_each_catalog_package_ships() {
+    for package in super::super::catalog::all().unwrap() {
+        let Some(cmd) = command(&package.family) else {
+            continue;
+        };
+        let stem = Path::new(&package.executable)
+            .file_stem()
+            .and_then(|s| s.to_str());
+        assert_eq!(stem, Some(cmd), "{}", package.id);
+    }
 }
 
 fn environment(machine: &str, user: &str) -> Environment {

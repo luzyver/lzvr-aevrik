@@ -41,7 +41,8 @@ fn invalid(message: &str) -> PackageError {
     PackageError::Invalid(message.into())
 }
 
-// These CLI distributions do not require changing JAVA_HOME, GOROOT or SDK resolver policy.
+// These CLI distributions work from PATH alone: Go finds its own GOROOT from go.exe. Java (JAVA_HOME),
+// .NET (SDK resolver policy), nginx (needs its own working directory) and database servers stay out.
 fn command(family: &str) -> Option<&'static str> {
     match family {
         "node" => Some("node"),
@@ -49,8 +50,15 @@ fn command(family: &str) -> Option<&'static str> {
         "php" => Some("php"),
         "bun" => Some("bun"),
         "deno" => Some("deno"),
+        "go" => Some("go"),
         "zig" => Some("zig"),
         "nim" => Some("nim"),
+        "luau" => Some("luau"),
+        "wasmtime" => Some("wasmtime"),
+        "caddy" => Some("caddy"),
+        "duckdb" => Some("duckdb"),
+        "sqlite" => Some("sqlite3"),
+        "mailpit" => Some("mailpit"),
         _ => None,
     }
 }

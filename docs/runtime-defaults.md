@@ -1,9 +1,10 @@
 # Terminal runtime defaults
 
 In **Runtimes**, select an installed version, then **Set as default**. Supported
-families: Node.js, Python, PHP, Bun, Deno, Zig and Nim. Go, Java and the .NET
-distributions need separate toolchain/environment resolution and are not yet
-included in this action.
+families: Node.js, Python, PHP, Bun, Deno, Go, Zig, Nim, Luau, Wasmtime, Caddy,
+DuckDB, SQLite and Mailpit. Java and the .NET distributions need separate
+toolchain/environment resolution, nginx needs its own working directory, and
+database servers are not command-line tools; they are not included in this action.
 
 The confirmation shows the executable, the current PATH command, and the scope:
 the current Windows account when no system command takes priority, otherwise
