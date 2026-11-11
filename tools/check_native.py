@@ -35,6 +35,8 @@ def run(executable=None):
    page=wait_for_page(browser)
    page.on("pageerror",lambda error:errors.append(str(error)))
    expect(page.locator("#engine-status")).to_have_text("Engine connected",timeout=20000)
+   expect(page.get_by_text("Make room for your next project",exact=True)).to_be_visible()
+   page.locator('[data-nav="services"]').click()
    expect(page.get_by_text("Your local stack starts here",exact=True)).to_be_visible()
    assert page.locator(".window-title img").evaluate("(img)=>img.complete && img.naturalWidth>0")
    checks.append("Release executable opens with a real empty Rust snapshot")

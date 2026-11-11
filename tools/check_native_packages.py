@@ -41,6 +41,7 @@ def run(exe):
    page=wait_for_page(browser)
    page.on('pageerror',lambda e:errors.append(str(e)))
    expect(page.locator('#engine-status')).to_have_text('Engine connected',timeout=20000)
+   page.locator('[data-nav="services"]').click()
    page.locator('[data-action="browse-packages"]').click()
    manifest=json.loads((ROOT/'crates/aevrik-engine/src/packages/catalog.json').read_text())
    expect(page.locator('.package-row')).to_have_count(len({p.get('family',p['name']) for p in manifest}))
