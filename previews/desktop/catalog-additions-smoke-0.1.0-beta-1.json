@@ -1,21 +1,21 @@
 {
   "status": "passed",
-  "directory": "C:\\Users\\Victus\\AppData\\Local\\Temp\\aevrik-catalog-oijd42wg",
+  "directory": "D:\\luzyver.dev\\dalang\\state\\tmp\\aevrik-catalog-3iz7dt_9",
   "checks": [
     {
-      "id": "java-jre-25.0.5-8",
-      "executable": "C:\\Users\\Victus\\AppData\\Local\\Temp\\aevrik-catalog-oijd42wg\\java-jre-25.0.5-8\\25.0.5+8\\jdk-25.0.5+8-jre\\bin\\java.exe",
-      "output": "openjdk version \"25.0.5\" 2026-10-20 LTS\nOpenJDK Runtime Environment Temurin-25.0.5+8 (build 25.0.5+8-LTS)\nOpenJDK 64-Bit Server VM Temurin-25.0.5+8 (build 25.0.5+8-LTS, mixed mode, sharing)"
+      "id": "tinygo-0.44.0",
+      "executable": "D:\\luzyver.dev\\dalang\\state\\tmp\\aevrik-catalog-3iz7dt_9\\tinygo-0.44.0\\0.44.0\\tinygo\\bin\\tinygo.exe",
+      "output": "tinygo version 0.44.0 windows/amd64 (using go version <unknown> and LLVM version 22.1.4)"
     },
     {
-      "id": "luau-0.745",
-      "executable": "C:\\Users\\Victus\\AppData\\Local\\Temp\\aevrik-catalog-oijd42wg\\luau-0.745\\0.745\\luau.exe",
-      "output": "aevrik-luau-ok"
+      "id": "cmake-4.4.5",
+      "executable": "D:\\luzyver.dev\\dalang\\state\\tmp\\aevrik-catalog-3iz7dt_9\\cmake-4.4.5\\4.4.5\\cmake-4.4.5-windows-x86_64\\bin\\cmake.exe",
+      "output": "cmake version 4.4.5\n\nCMake suite maintained and supported by Kitware (kitware.com/cmake)."
     },
     {
-      "id": "wasmtime-50.0.1",
-      "executable": "C:\\Users\\Victus\\AppData\\Local\\Temp\\aevrik-catalog-oijd42wg\\wasmtime-50.0.1\\50.0.1\\wasmtime-v50.0.1-x86_64-windows\\wasmtime.exe",
-      "output": "wasmtime 50.0.1 (c307ec81d 2026-10-29)"
+      "id": "ninja-1.13.2",
+      "executable": "D:\\luzyver.dev\\dalang\\state\\tmp\\aevrik-catalog-3iz7dt_9\\ninja-1.13.2\\1.13.2\\ninja.exe",
+      "output": "1.13.2"
     }
   ]
 }

@@ -62,7 +62,7 @@ pub fn validate(packages: &[Package]) -> super::PackageResult<()> {
             || !url.username().is_empty()
             || url.password().is_some()
             || url.port().is_some()
-            || !matches!(
+            || !(matches!(
                 url.host_str(),
                 Some(
                     "api.nuget.org"
@@ -79,8 +79,12 @@ pub fn validate(packages: &[Package]) -> super::PackageResult<()> {
                         | "download.visualstudio.microsoft.com"
                         | "ziglang.org"
                         | "nim-lang.org"
+                        | "julialang-s3.julialang.org"
                 )
             )
+                // A shared storage host: only the Dart team's bucket is a publisher.
+                || (url.host_str() == Some("storage.googleapis.com")
+                    && url.path().starts_with("/dart-archive/")))
         {
             return Err(super::PackageError::Invalid(
                 "Invalid package metadata or unsupported publisher.".into(),

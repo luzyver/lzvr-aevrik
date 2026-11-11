@@ -20,16 +20,17 @@ with sync_playwright() as p:
     page.add_init_script(script)
     page.goto('http://127.0.0.1:1420')
     page.locator('[data-nav="packages"]').click()
-    expect(page.locator('.package-row')).to_have_count(22)
+    expect(page.locator('.package-row')).to_have_count(len({p['family'] for p in catalog}))
     category=page.locator('#package-category')
     expect(category.locator('option')).to_have_text([
         'All','Runtimes','SDKs & compilers','Web servers','Database servers','Embedded databases','Development tools'])
     for label,families in [
-        ('SDKs & compilers',{'go','java','dotnet-sdk','zig','nim'}),
+        ('SDKs & compilers',{'go','java','dotnet-sdk','zig','nim','gleam','gcc','llvm-mingw','dart','vlang','odin','haxe','tinygo'}),
         ('Database servers',{'mariadb','mongodb'}),
         ('Embedded databases',{'duckdb','sqlite'}),
-        ('Development tools',{'mailpit'}),
-        ('Runtimes',{'php','node','python','java-jre','bun','deno','dotnet-runtime','aspnet-runtime','luau','wasmtime'})]:
+        ('Web servers',{'caddy','nginx','traefik','frankenphp'}),
+        ('Development tools',{'mailpit','pocketbase','uv','pnpm','gh','hugo','typst','cmake','ninja'}),
+        ('Runtimes',{'php','node','python','java-jre','bun','deno','dotnet-runtime','aspnet-runtime','luau','wasmtime','erlang','perl','julia','powershell','nushell','babashka'})]:
         category.select_option(label=label)
         expect(page.locator('.package-row')).to_have_count(len(families))
         assert set(page.locator('.package-row').evaluate_all('(rows)=>rows.map(r=>r.dataset.family)'))==families

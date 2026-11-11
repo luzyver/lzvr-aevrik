@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-02T02:48:01.667360+00:00",
+  "generatedAt": "2026-11-11T04:45:25.234196+00:00",
   "entries": [
     {
       "id": "caddy",
@@ -66,6 +66,42 @@
       "version": "1.24.0",
       "url": "https://nginx.org/download/",
       "digestMethod": "official-https-archive-sha256"
+    },
+    {
+      "id": "traefik-3.7.18",
+      "version": "3.7.18",
+      "url": "https://api.github.com/repos/traefik/traefik/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "traefik-3.7.17",
+      "version": "3.7.17",
+      "url": "https://api.github.com/repos/traefik/traefik/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "traefik-2.11.62",
+      "version": "2.11.62",
+      "url": "https://api.github.com/repos/traefik/traefik/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "frankenphp-1.13.5",
+      "version": "1.13.5",
+      "url": "https://api.github.com/repos/php/frankenphp/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "frankenphp-1.13.4",
+      "version": "1.13.4",
+      "url": "https://api.github.com/repos/php/frankenphp/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "frankenphp-1.13.3",
+      "version": "1.13.3",
+      "url": "https://api.github.com/repos/php/frankenphp/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
     },
     {
       "id": "php-8.5.12-1",
@@ -656,6 +692,114 @@
       "digestMethod": "publisher-sha256"
     },
     {
+      "id": "erlang-29.1.2",
+      "version": "29.1.2",
+      "url": "https://api.github.com/repos/erlang/otp/releases?per_page=20",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "erlang-28.5.0.8",
+      "version": "28.5.0.8",
+      "url": "https://api.github.com/repos/erlang/otp/releases?per_page=20",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "erlang-27.3.4.19",
+      "version": "27.3.4.19",
+      "url": "https://api.github.com/repos/erlang/otp/releases?per_page=20",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "perl-5.42.3.1",
+      "version": "5.42.3.1",
+      "url": "https://api.github.com/repos/StrawberryPerl/Perl-Dist-Strawberry/releases?per_page=12",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "perl-5.42.2.1",
+      "version": "5.42.2.1",
+      "url": "https://api.github.com/repos/StrawberryPerl/Perl-Dist-Strawberry/releases?per_page=12",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "perl-5.40.5.1",
+      "version": "5.40.5.1",
+      "url": "https://api.github.com/repos/StrawberryPerl/Perl-Dist-Strawberry/releases?per_page=12",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "julia-1.13.3",
+      "version": "1.13.3",
+      "url": "https://julialang-s3.julialang.org/bin/versions.json",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "julia-1.12.7",
+      "version": "1.12.7",
+      "url": "https://julialang-s3.julialang.org/bin/versions.json",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "julia-1.11.9",
+      "version": "1.11.9",
+      "url": "https://julialang-s3.julialang.org/bin/versions.json",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "powershell-7.7.0",
+      "version": "7.7.0",
+      "url": "https://api.github.com/repos/PowerShell/PowerShell/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "powershell-7.6.10",
+      "version": "7.6.10",
+      "url": "https://api.github.com/repos/PowerShell/PowerShell/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "powershell-7.6.9",
+      "version": "7.6.9",
+      "url": "https://api.github.com/repos/PowerShell/PowerShell/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "nushell-0.117.0",
+      "version": "0.117.0",
+      "url": "https://api.github.com/repos/nushell/nushell/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "nushell-0.116.1",
+      "version": "0.116.1",
+      "url": "https://api.github.com/repos/nushell/nushell/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "nushell-0.116.0",
+      "version": "0.116.0",
+      "url": "https://api.github.com/repos/nushell/nushell/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "babashka-1.13.229",
+      "version": "1.13.229",
+      "url": "https://api.github.com/repos/babashka/babashka/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "babashka-1.13.228",
+      "version": "1.13.228",
+      "url": "https://api.github.com/repos/babashka/babashka/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "babashka-1.13.227",
+      "version": "1.13.227",
+      "url": "https://api.github.com/repos/babashka/babashka/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
       "id": "dotnet-sdk-10.0.403",
       "version": "10.0.403",
       "url": "https://builds.dotnet.microsoft.com/dotnet/release-metadata/10.0/releases.json",
@@ -887,6 +1031,150 @@
       "id": "nim-2.2.6",
       "version": "2.2.6",
       "url": "https://nim-lang.org/download/nim-2.2.6_x64.zip.sha256",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "gleam-1.19.2",
+      "version": "1.19.2",
+      "url": "https://api.github.com/repos/gleam-lang/gleam/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "gleam-1.19.1",
+      "version": "1.19.1",
+      "url": "https://api.github.com/repos/gleam-lang/gleam/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "gleam-1.19.0",
+      "version": "1.19.0",
+      "url": "https://api.github.com/repos/gleam-lang/gleam/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "gcc-16.2.0-r3",
+      "version": "16.2.0-r3",
+      "url": "https://api.github.com/repos/brechtsanders/winlibs_mingw/releases?per_page=40",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "gcc-16.1.0-r4",
+      "version": "16.1.0-r4",
+      "url": "https://api.github.com/repos/brechtsanders/winlibs_mingw/releases?per_page=40",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "gcc-15.3.0-r1",
+      "version": "15.3.0-r1",
+      "url": "https://api.github.com/repos/brechtsanders/winlibs_mingw/releases?per_page=40",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "llvm-mingw-20261104",
+      "version": "20261104",
+      "url": "https://api.github.com/repos/mstorsjo/llvm-mingw/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "llvm-mingw-20261020",
+      "version": "20261020",
+      "url": "https://api.github.com/repos/mstorsjo/llvm-mingw/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "llvm-mingw-20261006",
+      "version": "20261006",
+      "url": "https://api.github.com/repos/mstorsjo/llvm-mingw/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "dart-3.13.7",
+      "version": "3.13.7",
+      "url": "https://storage.googleapis.com/dart-archive/channels/stable/release/3.13.7/sdk/dartsdk-windows-x64-release.zip.sha256sum",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "dart-3.12.2",
+      "version": "3.12.2",
+      "url": "https://storage.googleapis.com/dart-archive/channels/stable/release/3.12.2/sdk/dartsdk-windows-x64-release.zip.sha256sum",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "dart-3.11.6",
+      "version": "3.11.6",
+      "url": "https://storage.googleapis.com/dart-archive/channels/stable/release/3.11.6/sdk/dartsdk-windows-x64-release.zip.sha256sum",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "vlang-0.5.2",
+      "version": "0.5.2",
+      "url": "https://api.github.com/repos/vlang/v/releases?per_page=40",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "vlang-0.5.1",
+      "version": "0.5.1",
+      "url": "https://api.github.com/repos/vlang/v/releases?per_page=40",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "vlang-0.5",
+      "version": "0.5",
+      "url": "https://api.github.com/repos/vlang/v/releases?per_page=40",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "odin-2026.11",
+      "version": "2026.11",
+      "url": "https://api.github.com/repos/odin-lang/Odin/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "odin-2026.10",
+      "version": "2026.10",
+      "url": "https://api.github.com/repos/odin-lang/Odin/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "odin-2026.09",
+      "version": "2026.09",
+      "url": "https://api.github.com/repos/odin-lang/Odin/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "haxe-4.3.7",
+      "version": "4.3.7",
+      "url": "https://api.github.com/repos/HaxeFoundation/haxe/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "haxe-4.3.6",
+      "version": "4.3.6",
+      "url": "https://api.github.com/repos/HaxeFoundation/haxe/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "haxe-4.3.5",
+      "version": "4.3.5",
+      "url": "https://api.github.com/repos/HaxeFoundation/haxe/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "tinygo-0.44.0",
+      "version": "0.44.0",
+      "url": "https://api.github.com/repos/tinygo-org/tinygo/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "tinygo-0.43.0",
+      "version": "0.43.0",
+      "url": "https://api.github.com/repos/tinygo-org/tinygo/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "tinygo-0.42.0",
+      "version": "0.42.0",
+      "url": "https://api.github.com/repos/tinygo-org/tinygo/releases?per_page=10",
       "digestMethod": "publisher-sha256"
     },
     {
@@ -1139,6 +1427,150 @@
       "id": "mailpit-1.31.2",
       "version": "1.31.2",
       "url": "https://api.github.com/repos/axllent/mailpit/releases?per_page=12",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "pocketbase-0.40.6",
+      "version": "0.40.6",
+      "url": "https://api.github.com/repos/pocketbase/pocketbase/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "pocketbase-0.40.5",
+      "version": "0.40.5",
+      "url": "https://api.github.com/repos/pocketbase/pocketbase/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "pocketbase-0.22.57",
+      "version": "0.22.57",
+      "url": "https://api.github.com/repos/pocketbase/pocketbase/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "uv-0.13.7",
+      "version": "0.13.7",
+      "url": "https://api.github.com/repos/astral-sh/uv/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "uv-0.13.6",
+      "version": "0.13.6",
+      "url": "https://api.github.com/repos/astral-sh/uv/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "uv-0.13.5",
+      "version": "0.13.5",
+      "url": "https://api.github.com/repos/astral-sh/uv/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "pnpm-12.19.0",
+      "version": "12.19.0",
+      "url": "https://api.github.com/repos/pnpm/pnpm/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "pnpm-12.18.0",
+      "version": "12.18.0",
+      "url": "https://api.github.com/repos/pnpm/pnpm/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "pnpm-11.28.11",
+      "version": "11.28.11",
+      "url": "https://api.github.com/repos/pnpm/pnpm/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "gh-2.103.3",
+      "version": "2.103.3",
+      "url": "https://api.github.com/repos/cli/cli/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "gh-2.103.2",
+      "version": "2.103.2",
+      "url": "https://api.github.com/repos/cli/cli/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "gh-2.103.1",
+      "version": "2.103.1",
+      "url": "https://api.github.com/repos/cli/cli/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "hugo-0.169.0",
+      "version": "0.169.0",
+      "url": "https://api.github.com/repos/gohugoio/hugo/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "hugo-0.168.0",
+      "version": "0.168.0",
+      "url": "https://api.github.com/repos/gohugoio/hugo/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "hugo-0.167.0",
+      "version": "0.167.0",
+      "url": "https://api.github.com/repos/gohugoio/hugo/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "typst-0.15.1",
+      "version": "0.15.1",
+      "url": "https://api.github.com/repos/typst/typst/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "typst-0.15.0",
+      "version": "0.15.0",
+      "url": "https://api.github.com/repos/typst/typst/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "typst-0.14.2",
+      "version": "0.14.2",
+      "url": "https://api.github.com/repos/typst/typst/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "cmake-4.4.5",
+      "version": "4.4.5",
+      "url": "https://api.github.com/repos/Kitware/CMake/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "cmake-4.4.4",
+      "version": "4.4.4",
+      "url": "https://api.github.com/repos/Kitware/CMake/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "cmake-4.3.6",
+      "version": "4.3.6",
+      "url": "https://api.github.com/repos/Kitware/CMake/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "ninja-1.13.2",
+      "version": "1.13.2",
+      "url": "https://api.github.com/repos/ninja-build/ninja/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "ninja-1.13.1",
+      "version": "1.13.1",
+      "url": "https://api.github.com/repos/ninja-build/ninja/releases?per_page=10",
+      "digestMethod": "publisher-sha256"
+    },
+    {
+      "id": "ninja-1.13.0",
+      "version": "1.13.0",
+      "url": "https://api.github.com/repos/ninja-build/ninja/releases?per_page=10",
       "digestMethod": "publisher-sha256"
     }
   ]

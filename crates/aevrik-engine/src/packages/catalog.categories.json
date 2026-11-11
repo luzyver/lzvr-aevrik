@@ -1,8 +1,8 @@
 {
-  "Runtimes": ["php", "node", "python", "java-jre", "bun", "deno", "dotnet-runtime", "aspnet-runtime", "luau", "wasmtime"],
-  "SDKs & compilers": ["go", "java", "dotnet-sdk", "zig", "nim"],
-  "Web servers": ["caddy", "nginx"],
+  "Runtimes": ["php", "node", "python", "java-jre", "bun", "deno", "dotnet-runtime", "aspnet-runtime", "luau", "wasmtime", "erlang", "perl", "julia", "powershell", "nushell", "babashka"],
+  "SDKs & compilers": ["go", "java", "dotnet-sdk", "zig", "nim", "gleam", "gcc", "llvm-mingw", "dart", "vlang", "odin", "haxe", "tinygo"],
+  "Web servers": ["caddy", "nginx", "traefik", "frankenphp"],
   "Database servers": ["mariadb", "mongodb"],
   "Embedded databases": ["duckdb", "sqlite"],
-  "Development tools": ["mailpit"]
+  "Development tools": ["mailpit", "pocketbase", "uv", "pnpm", "gh", "hugo", "typst", "cmake", "ninja"]
 }

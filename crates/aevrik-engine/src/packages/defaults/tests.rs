@@ -60,6 +60,7 @@ fn unsupported_families_cannot_modify_path() {
         "java",
         "java-jre",
         "dotnet-sdk",
+        "frankenphp",
     ] {
         assert_eq!(command(family), None, "{family}");
     }

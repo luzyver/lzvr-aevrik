@@ -2,8 +2,12 @@
 
 In **Runtimes**, select an installed version, then **Set as default**. Supported
 families: Node.js, Python, PHP, Bun, Deno, Go, Zig, Nim, Luau, Wasmtime, Caddy,
-DuckDB, SQLite and Mailpit. Java and the .NET distributions need separate
-toolchain/environment resolution, nginx needs its own working directory, and
+Traefik, DuckDB, SQLite, Mailpit, PocketBase, Gleam, uv, pnpm, GitHub CLI, Hugo,
+Typst, Erlang, Perl, Julia, PowerShell, Nushell, Babashka, GCC, Clang
+(LLVM-MinGW), Dart, V, Odin, Haxe, TinyGo, CMake and Ninja. GCC and Clang both
+provide `gcc` and `g++`; the one set as default last comes first on PATH. Java and the .NET distributions need separate
+toolchain/environment resolution, nginx needs its own working directory, the FrankenPHP folder carries a
+`php.exe` that would take over the PHP default, and
 database servers are not command-line tools; they are not included in this action.
 
 The confirmation shows the executable, the current PATH command, and the scope:

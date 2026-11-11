@@ -158,8 +158,24 @@ pub fn publish_reader<R: Read + Seek>(
     )?;
     fs::create_dir_all(final_path.parent().unwrap())?;
     // The caller holds the cross-process install lock. Rename publishes only a complete tree.
-    fs::rename(staging.path(), &final_path)?;
+    rename_published(staging.path(), &final_path)?;
     Ok(())
+}
+/// Antivirus and indexers briefly hold files of a freshly extracted tree, which makes Windows refuse the rename.
+fn rename_published(from: &Path, to: &Path) -> std::io::Result<()> {
+    let mut wait = std::time::Duration::from_millis(100);
+    loop {
+        match fs::rename(from, to) {
+            Err(error)
+                if error.kind() == std::io::ErrorKind::PermissionDenied
+                    && wait < std::time::Duration::from_secs(8) =>
+            {
+                std::thread::sleep(wait);
+                wait *= 2;
+            }
+            result => return result,
+        }
+    }
 }
 
 pub fn installed(root: &Path, package: &Package) -> Option<PathBuf> {

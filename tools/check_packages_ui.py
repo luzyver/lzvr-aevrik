@@ -29,7 +29,7 @@ with sync_playwright() as p:
  page.locator('[data-nav="packages"]').click()
  expect(page.locator('[data-install="caddy"]')).to_be_visible()
  expect(page.locator('.package-row')).to_have_count(len({p.get('family',p['name']) for p in CATALOG}))
- page.locator('#search').fill('php')
+ page.locator('#search').fill('nginx')
  expect(page.locator('.package-row')).to_have_count(1)
  page.locator('#search').fill('')
  page.evaluate('window.failInstall=true')

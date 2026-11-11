@@ -42,7 +42,8 @@ fn invalid(message: &str) -> PackageError {
 }
 
 // These CLI distributions work from PATH alone: Go finds its own GOROOT from go.exe. Java (JAVA_HOME),
-// .NET (SDK resolver policy), nginx (needs its own working directory) and database servers stay out.
+// .NET (SDK resolver policy), nginx (needs its own working directory), FrankenPHP (its folder also holds a
+// php.exe that would shadow the PHP default) and database servers stay out.
 fn command(family: &str) -> Option<&'static str> {
     match family {
         "node" => Some("node"),
@@ -59,6 +60,29 @@ fn command(family: &str) -> Option<&'static str> {
         "duckdb" => Some("duckdb"),
         "sqlite" => Some("sqlite3"),
         "mailpit" => Some("mailpit"),
+        "traefik" => Some("traefik"),
+        "gleam" => Some("gleam"),
+        "pocketbase" => Some("pocketbase"),
+        "uv" => Some("uv"),
+        "pnpm" => Some("pnpm"),
+        "gh" => Some("gh"),
+        "hugo" => Some("hugo"),
+        "typst" => Some("typst"),
+        "erlang" => Some("erl"),
+        "perl" => Some("perl"),
+        "julia" => Some("julia"),
+        "powershell" => Some("pwsh"),
+        "nushell" => Some("nu"),
+        "babashka" => Some("bb"),
+        "gcc" => Some("gcc"),
+        "llvm-mingw" => Some("clang"),
+        "dart" => Some("dart"),
+        "vlang" => Some("v"),
+        "odin" => Some("odin"),
+        "haxe" => Some("haxe"),
+        "tinygo" => Some("tinygo"),
+        "cmake" => Some("cmake"),
+        "ninja" => Some("ninja"),
         _ => None,
     }
 }

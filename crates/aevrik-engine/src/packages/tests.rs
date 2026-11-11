@@ -347,3 +347,26 @@ fn uninstall_refuses_junctions_without_touching_external_files() {
     );
     std::fs::remove_dir(junction).unwrap();
 }
+
+#[test]
+fn shared_storage_host_is_a_publisher_only_for_the_dart_bucket() {
+    let dart = catalog::all()
+        .unwrap()
+        .into_iter()
+        .find(|package| package.family == "dart")
+        .unwrap();
+    assert!(
+        dart.url
+            .starts_with("https://storage.googleapis.com/dart-archive/")
+    );
+    catalog::validate(std::slice::from_ref(&dart)).unwrap();
+    for url in [
+        "https://storage.googleapis.com/other-bucket/sdk.zip",
+        "https://storage.googleapis.com/dart-archive-copy/sdk.zip",
+        "https://storage.googleapis.com/storage/v1/b/dart-archive/o/sdk.zip",
+    ] {
+        let mut package = dart.clone();
+        package.url = url.into();
+        assert!(catalog::validate(&[package]).is_err(), "{url}");
+    }
+}

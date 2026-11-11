@@ -3,17 +3,22 @@ import re
 from .common import metadata, entry
 
 
-def _releases(repo, family, name, description, asset_name, executable):
-    url=f'https://api.github.com/repos/{repo}/releases?per_page=10'
+def _stable(tag):
+    version=tag.removeprefix('v')
+    return version if re.fullmatch(r'\d+(?:\.\d+)+',version) else None
+
+
+def _releases(repo, family, name, description, asset_name, executable, category='Runtimes', version_of=_stable, per_page=10):
+    url=f'https://api.github.com/repos/{repo}/releases?per_page={per_page}'
     result=[]
     for release in metadata(url):
-        version=release['tag_name'].removeprefix('v')
-        if release['prerelease'] or release['draft'] or not re.fullmatch(r'\d+(?:\.\d+)+',version):continue
+        version=version_of(release['tag_name'])
+        if release['prerelease'] or release['draft'] or not version:continue
         filename=asset_name(release['tag_name'])
         asset=next((a for a in release['assets'] if a['name']==filename),None)
         if not asset:continue
         digest=(asset.get('digest') or '').removeprefix('sha256:') or None
-        result.append(entry(family,name,version,'Runtimes',description,
+        result.append(entry(family,name,version,category,description,
             asset['browser_download_url'],executable(filename),digest,url))
         if len(result)==3:break
     if not result:raise ValueError(f'No stable Windows ZIP releases found for {name}')

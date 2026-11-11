@@ -1,34 +1,61 @@
 # Runtime catalog, version 0.1.0-beta-1
 
-The bundled catalog contains **19 products and 179 selectable releases**. It is available offline; installing requires HTTPS access to the official publisher. This is a pinned selection, not every historical release. Check for updates retrieves the curated catalog from the published Aevrik release for the current channel.
+The bundled catalog contains **46 products and 262 selectable releases**. It is available offline; installing requires HTTPS access to the official publisher. This is a pinned selection, not every historical release. Check for updates retrieves the curated catalog from the published Aevrik release for the current channel.
 
 | Product | Releases | Release lines |
 | --- | ---: | --- |
 | Caddy | 6 | 2.11 |
 | nginx | 5 | 1.31, 1.30, 1.28, 1.26, 1.24 |
+| Traefik | 3 | Three recent stable releases |
+| FrankenPHP | 3 | Three recent stable releases |
 | PHP | 12 | 8.5, 8.4, 8.3, 8.2, 8.1, 8.0, 7.4, 7.3, 7.2, 7.1, 7.0, 5.6 |
 | Node.js | 40 | 26, 24, 22, 20, 18, 16, 14, 12 |
 | Python | 8 | 3.15, 3.14, 3.13, 3.12, 3.11, 3.10, 3.9, 3.8 |
 | Go | 16 | 1.27, 1.26, 1.25, 1.24, 1.23, 1.22, 1.21, 1.20 |
 | Java (Temurin) | 5 | 25, 21, 17, 11, 8u504-b01 |
+| Java JRE (Temurin) | 5 | 25, 21, 17, 11, 8u504-b01 |
 | Bun | 6 | 1.4, 1.3 |
 | Deno | 6 | 2.9 |
+| Erlang/OTP | 3 | Newest release of the three current OTP majors |
+| Perl (Strawberry) | 3 | Three recent portable editions |
+| Julia | 3 | Newest patch of the three latest minor lines |
+| PowerShell | 3 | Three recent stable releases |
+| Nushell | 3 | Three recent stable releases |
+| Babashka | 3 | Three recent stable releases |
 | .NET SDK | 9 | 8.0, 9.0, 10.0 |
 | .NET Runtime | 9 | 8.0, 9.0, 10.0 |
 | ASP.NET Core Runtime | 9 | 8.0, 9.0, 10.0 |
 | Zig | 6 | Six recent stable Windows ZIP releases |
 | Nim | 6 | Six recent stable Windows ZIP releases |
+| Gleam | 3 | Three recent stable releases |
+| GCC (WinLibs) | 3 | Newest revision of the three latest GCC versions (UCRT, POSIX threads) |
+| Clang (LLVM-MinGW) | 3 | Three recent dated builds (UCRT) |
+| Dart SDK | 3 | Newest patch of the three latest minor lines |
+| V | 3 | Three recent tagged releases |
+| Odin | 3 | Three recent monthly releases |
+| Haxe | 3 | Three recent stable releases |
+| TinyGo | 3 | Three recent stable releases |
+| Luau | 3 | Three recent stable releases |
+| Wasmtime | 3 | Three recent stable releases |
 | MariaDB | 14 | 12.2, 12.1, 12.0, 11.8, 11.4, 10.11, 10.6 |
 | MongoDB | 8 | 9.0, 8.3, 8.0, 7.0 |
 | DuckDB | 6 | 1.5, 1.4 (Windows ZIP releases) |
 | SQLite | 2 | 3.54, 3.53 |
 | Mailpit | 6 | 1.32, 1.31 |
+| PocketBase | 3 | Three recent stable releases |
+| uv | 3 | Three recent stable releases |
+| pnpm | 3 | Three recent stable releases |
+| GitHub CLI | 3 | Three recent stable releases |
+| Hugo | 3 | Three recent stable releases (extended edition) |
+| Typst | 3 | Three recent stable releases |
+| CMake | 3 | Three recent stable releases |
+| Ninja | 3 | Three recent stable releases |
 
 All builds target Windows x64 except nginx, whose official Windows build is x86 and runs on x64 Windows. Older PHP/Node/Python/Go branches are provided for compatibility; their presence does not imply upstream support. Python uses the official CPython NuGet distribution, with pip. Java uses Eclipse Temurin JDKs; Bun uses the baseline x64 build.
 
 Exact URLs, digests, architecture and expected executables are in `crates/aevrik-engine/src/packages/catalog.json`. The adjacent `catalog.sources.json` records provenance per release. Microsoft packages use publisher SHA-512; other entries use SHA-256. Where publisher metadata is unavailable, SHA-256 is computed from the official HTTPS archive. A checksum pin is not a verified publisher signature.
 
-.NET SDK includes its runtime; choose it to build C#/F#/Visual Basic projects. The standalone .NET and ASP.NET runtimes run existing applications. Nim requires a separately installed C compiler. Aevrik does not run Nim's `finish.exe` or change global PATH. Rust and Ruby need additional installer/dependency support and are not listed as managed packages.
+.NET SDK includes its runtime; choose it to build C#/F#/Visual Basic projects. The standalone .NET and ASP.NET runtimes run existing applications. Nim requires a separately installed C compiler. Aevrik does not run Nim's `finish.exe` or change global PATH. Gleam is the compiler only: the BEAM target needs Erlang/OTP and the JavaScript target needs Node.js, Deno or Bun. FrankenPHP bundles its own PHP. pnpm is the standalone build and expects a separately installed Node.js. Erlang/OTP may need the Microsoft Visual C++ runtime (a `vc_redist.exe` is inside the package). Odin links with the Microsoft C++ Build Tools; TinyGo needs Go on PATH. Dart comes from the Dart team's `storage.googleapis.com/dart-archive` bucket and Julia from `julialang-s3.julialang.org`; app builds older than this catalog reject those two publishers, so their update check fails until Aevrik itself is updated. Elixir, Kotlin and Scala ship `.bat` launchers and D, Ruby and Rust ship 7z, installer or tar archives only, so they are not listed. Rust and Ruby need additional installer/dependency support and are not listed as managed packages.
 
 ## Update checks
 
